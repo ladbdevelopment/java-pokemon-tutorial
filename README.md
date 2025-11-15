@@ -8,6 +8,19 @@
 
 ---
 
+# 🎮 Tutorial Java - Proyecto Liga Pokémon
+
+## 📚 Recursos Disponibles
+
+### [📖 Tutorial Principal →](https://ladbdevelopment.github.io/java-pokemon-tutorial/)
+Tutorial interactivo completo con 9 temas de Java aplicados al proyecto Pokemon
+
+### [📋 Referencia Java →](https://ladbdevelopment.github.io/java-pokemon-tutorial/referencia.html)
+Guía técnica de Java sin contexto Pokemon (consulta rápida)
+
+### [🏗️ Guía del Proyecto →](https://ladbdevelopment.github.io/java-pokemon-tutorial/guia-proyecto.html)
+Arquitectura, diagramas UML y diseño del sistema Pokemon
+
 ## 📊 **Estadísticas de Tiempo y Esfuerzo**
 
 ### ⏱️ **Desglose de Horas por Fase**
