@@ -26,28 +26,28 @@
 #### 🔥 **Modo Intensivo (3-4 horas/día)**
 ```
 ┌─────────────────────────────────────────────────────┐
-│ DÍA 1-6:   Aprender Java (9 temas)                 │
+│ DÍA 1-6:   Aprender Java (9 temas)                  │
 │            → 3-4 horas diarias                      │
 │            → 1-2 temas por día                      │
 │            → Aprobar todos los quizzes              │
 │                                                     │
-│ DÍA 7:     Estudiar arquitectura                   │
+│ DÍA 7:     Estudiar arquitectura                    │
 │            → 3-4 horas                              │
 │            → Diagramas UML + Diseño                 │
 │                                                     │
-│ DÍA 8-13:  Implementar proyecto                    │
+│ DÍA 8-13:  Implementar proyecto                     │
 │            → 4 horas diarias                        │
-│            → Programar clases y funcionalidades    │
+│            → Programar clases y funcionalidades     │
 │                                                     │
-│ DÍA 14:    Pruebas y depuración                    │
+│ DÍA 14:    Pruebas y depuración                     │
 │            → 4 horas                                │
 │            → Testing completo                       │
 │                                                     │
-│ DÍA 15:    Documentación final                     │
+│ DÍA 15:    Documentación final                      │
 │            → 2-3 horas                              │
 │            → README + Comentarios                   │
 │                                                     │
-│ ✅ ENTREGA: DÍA 15                                  │
+│ ✅ ENTREGA: DÍA 15                                  
 └─────────────────────────────────────────────────────┘
 Total: 47-55 horas | Aprendizaje: 100% | Éxito: 95%
 ```
@@ -55,16 +55,16 @@ Total: 47-55 horas | Aprendizaje: 100% | Éxito: 95%
 #### ⚡ **Modo Moderado (2-3 horas/día)**
 ```
 ┌─────────────────────────────────────────────────────┐
-│ DÍA 1-9:   Aprender Java (9 temas)                 │
+│ DÍA 1-9:   Aprender Java (9 temas)                  │
 │            → 2-3 horas diarias                      │
 │            → 1 tema por día                         │
 │            → Aprobar quizzes                        │
 │                                                     │
-│ DÍA 10:    Estudiar arquitectura                   │
+│ DÍA 10:    Estudiar arquitectura                    │
 │            → 3 horas                                │
 │            → Diseño del sistema                     │
 │                                                     │
-│ DÍA 11-17: Implementar proyecto                    │
+│ DÍA 11-17: Implementar proyecto                     │
 │            → 3 horas diarias                        │
 │            → Desarrollo incremental                 │
 │                                                     │
@@ -72,10 +72,10 @@ Total: 47-55 horas | Aprendizaje: 100% | Éxito: 95%
 │            → 3 horas                                │
 │            → Testing                                │
 │                                                     │
-│ DÍA 19:    Documentación                           │
+│ DÍA 19:    Documentación                            │
 │            → 2 horas                                │
 │                                                     │
-│ ⚠️ REQUIERE: 19 días (4 días extra)                │
+│ ⚠️ REQUIERE: 19 días (4 días extra)                 
 └─────────────────────────────────────────────────────┘
 Total: 52-60 horas | Aprendizaje: 100% | Éxito: 85%
 ⚠️ RIESGO: Necesitas más tiempo del disponible
@@ -84,25 +84,25 @@ Total: 52-60 horas | Aprendizaje: 100% | Éxito: 85%
 #### 🚨 **Plan de Emergencia (Solo 15 días disponibles)**
 ```
 ┌─────────────────────────────────────────────────────┐
-│ DÍA 1-5:   Java acelerado (temas críticos)         │
+│ DÍA 1-5:   Java acelerado (temas críticos)          │
 │            → 4 horas diarias                        │
-│            → Temas: 1,2,3,5,6,7,8,9 (saltar tema 4)│
+│            → Temas: 1,2,3,5,6,7,8,9 (saltar tema 4) │
 │            → Aprobar quizzes clave                  │
 │                                                     │
-│ DÍA 6:     Arquitectura + Tema 4                   │
+│ DÍA 6:     Arquitectura + Tema 4                    │
 │            → 4 horas                                │
 │                                                     │
-│ DÍA 7-13:  Implementación intensiva                │
+│ DÍA 7-13:  Implementación intensiva                 │
 │            → 5 horas diarias                        │
 │            → MVP primero, luego extras              │
 │                                                     │
-│ DÍA 14:    Testing y fixes                         │
+│ DÍA 14:    Testing y fixes                          │
 │            → 5 horas                                │
 │                                                     │
-│ DÍA 15:    Documentación rápida                    │
+│ DÍA 15:    Documentación rápida                     │
 │            → 3 horas                                │
 │                                                     │
-│ ✅ ENTREGA: DÍA 15 (justo a tiempo)                │
+│ ✅ ENTREGA: DÍA 15 (justo a tiempo)                
 └─────────────────────────────────────────────────────┘
 Total: 60 horas | Aprendizaje: 90% | Éxito: 75%
 ⚠️ ALTO ESFUERZO - Requiere disciplina extrema
