@@ -1,0 +1,2845 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java para tu Proyecto Pokémon - Guía Completa</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.8em;
+            margin-bottom: 15px;
+        }
+
+        .header p {
+            font-size: 1.3em;
+            opacity: 0.95;
+        }
+
+        .progress-container {
+            background: #2d3748;
+            padding: 20px;
+            color: white;
+            text-align: center;
+        }
+
+        .progress-bar {
+            background: #4a5568;
+            height: 30px;
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 10px auto;
+            max-width: 600px;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #667eea 0%, #f093fb 100%);
+            height: 100%;
+            width: 0%;
+            transition: width 0.5s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .nav {
+            background: #2d3748;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            padding: 20px;
+        }
+
+        .nav-btn {
+            background: #4a5568;
+            color: white;
+            border: none;
+            padding: 15px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.95em;
+            transition: all 0.3s;
+            font-weight: 600;
+            position: relative;
+        }
+
+        .nav-btn:hover {
+            background: #667eea;
+            transform: translateY(-2px);
+        }
+
+        .nav-btn.active {
+            background: #667eea;
+        }
+
+        .nav-btn.completed::after {
+            content: "✓";
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            background: #38b2ac;
+            color: white;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9em;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card {
+            background: #f7fafc;
+            border-left: 5px solid #667eea;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .pokemon-connection {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+            border-left: 5px solid #e17055;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .pokemon-connection h3 {
+            color: #d63031;
+            margin-bottom: 15px;
+        }
+
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            line-height: 1.6;
+        }
+
+        .pokemon-example {
+            background: #e8f5e9;
+            border: 3px solid #4caf50;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .pokemon-example h4 {
+            color: #2e7d32;
+            margin-bottom: 10px;
+        }
+
+        .comment { color: #68d391; }
+        .keyword { color: #f687b3; }
+        .string { color: #fbb6ce; }
+
+        .quiz-container {
+            background: #fff3cd;
+            border: 3px solid #ffc107;
+            border-radius: 10px;
+            padding: 30px;
+            margin: 30px 0;
+        }
+
+        .quiz-header {
+            background: #ffc107;
+            color: #000;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.3em;
+            margin-bottom: 20px;
+        }
+
+        .quiz-question {
+            background: white;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 8px;
+            border-left: 4px solid #ffc107;
+        }
+
+        .quiz-question h4 {
+            color: #e65100;
+            margin-bottom: 15px;
+        }
+
+        .quiz-options {
+            margin: 15px 0;
+        }
+
+        .quiz-option {
+            background: #f7fafc;
+            padding: 12px 15px;
+            margin: 8px 0;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid #cbd5e0;
+        }
+
+        .quiz-option:hover {
+            background: #e6fffa;
+            border-color: #38b2ac;
+        }
+
+        .quiz-option.selected {
+            background: #bee3f8;
+            border-color: #3182ce;
+        }
+
+        .quiz-option.correct {
+            background: #c6f6d5;
+            border-color: #38a169;
+        }
+
+        .quiz-option.incorrect {
+            background: #fed7d7;
+            border-color: #e53e3e;
+        }
+
+        .quiz-submit {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1em;
+            margin: 20px 0;
+            transition: all 0.3s;
+        }
+
+        .quiz-submit:hover {
+            background: #5a67d8;
+            transform: translateY(-2px);
+        }
+
+        .quiz-result {
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-size: 1.1em;
+            text-align: center;
+            display: none;
+        }
+
+        .quiz-result.show {
+            display: block;
+        }
+
+        .quiz-result.pass {
+            background: #c6f6d5;
+            border: 2px solid #38a169;
+            color: #22543d;
+        }
+
+        .quiz-result.fail {
+            background: #fed7d7;
+            border: 2px solid #e53e3e;
+            color: #742a2a;
+        }
+
+        .visual-demo {
+            background: #f0f4f8;
+            border: 2px solid #667eea;
+            border-radius: 10px;
+            padding: 25px;
+            margin: 25px 0;
+        }
+
+        .array-visual {
+            display: flex;
+            gap: 5px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
+
+        .array-cell {
+            width: 60px;
+            height: 60px;
+            border: 2px solid #667eea;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            background: #edf2f7;
+            transition: all 0.3s;
+        }
+
+        .array-cell:hover {
+            transform: scale(1.1);
+            background: #bee3f8;
+        }
+
+        .array-index {
+            font-size: 0.7em;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .array-value {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #2d3748;
+        }
+
+        .interactive-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            margin: 10px 5px;
+            transition: all 0.3s;
+        }
+
+        .interactive-btn:hover {
+            background: #5a67d8;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .tip {
+            background: #e6fffa;
+            border-left: 5px solid #38b2ac;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+
+        .tip::before {
+            content: "💡 ";
+            font-size: 1.5em;
+        }
+
+        .warning {
+            background: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+
+        .warning::before {
+            content: "⚠️ ";
+            font-size: 1.5em;
+        }
+
+        h2 {
+            color: #2d3748;
+            margin: 30px 0 20px 0;
+            font-size: 2em;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        h3 {
+            color: #4a5568;
+            margin: 20px 0 15px 0;
+            font-size: 1.5em;
+        }
+
+        .practice-exercise {
+            background: #f0f9ff;
+            border: 3px dashed #3b82f6;
+            border-radius: 10px;
+            padding: 25px;
+            margin: 25px 0;
+        }
+
+        .practice-exercise h3 {
+            color: #1e40af;
+            margin-bottom: 15px;
+        }
+
+        .exercise-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #cbd5e0;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 1em;
+            margin: 10px 0;
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .output {
+            background: #f0fff4;
+            border: 2px solid #68d391;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+            font-family: monospace;
+        }
+
+        .uml-diagram {
+            background: white;
+            border: 3px solid #2d3748;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .uml-class {
+            background: #fff;
+            border: 2px solid #2d3748;
+            border-radius: 8px;
+            margin: 20px auto;
+            max-width: 500px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .uml-class-header {
+            background: #667eea;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.3em;
+            border-radius: 6px 6px 0 0;
+        }
+
+        .uml-section {
+            padding: 15px;
+            border-top: 2px solid #2d3748;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            line-height: 1.8;
+        }
+
+        .footer {
+            background: #2d3748;
+            color: white;
+            text-align: center;
+            padding: 30px;
+            margin-top: 40px;
+        }
+
+        .highlight {
+            background: #fef5e7;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+            color: #d35400;
+        }
+
+        input[type="number"], input[type="text"] {
+            padding: 10px;
+            border: 2px solid #cbd5e0;
+            border-radius: 8px;
+            font-size: 1em;
+            margin: 5px;
+        }
+
+        .matrix-visual {
+            display: inline-grid;
+            gap: 5px;
+            margin: 15px 0;
+        }
+
+        .tab-navigation {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            background: #e2e8f0;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .tab-btn.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎮 Java Aplicado: Tu Proyecto Liga Pokémon</h1>
+            <p>Aprende Java construyendo un sistema de batallas Pokémon paso a paso</p>
+        </div>
+
+        <div class="progress-container">
+            <h3>Tu Progreso de Aprendizaje</h3>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill">0%</div>
+            </div>
+            <p id="progressText">0 de 9 temas completados</p>
+        </div>
+
+        <div class="nav">
+            <button class="nav-btn active" onclick="showSection('intro')">🏠 Introducción</button>
+            <button class="nav-btn" onclick="showSection('vectores')">1️⃣ Vectores</button>
+            <button class="nav-btn" onclick="showSection('ordenamiento')">2️⃣ Ordenamiento</button>
+            <button class="nav-btn" onclick="showSection('busqueda')">3️⃣ Búsqueda</button>
+            <button class="nav-btn" onclick="showSection('matrices')">4️⃣ Matrices</button>
+            <button class="nav-btn" onclick="showSection('cadenas')">5️⃣ Cadenas</button>
+            <button class="nav-btn" onclick="showSection('clases')">6️⃣ Clases POO</button>
+            <button class="nav-btn" onclick="showSection('metodos')">7️⃣ Métodos</button>
+            <button class="nav-btn" onclick="showSection('parametros')">8️⃣ Parámetros</button>
+            <button class="nav-btn" onclick="showSection('objetuales')">9️⃣ Arreglos Objetuales</button>
+            <button class="nav-btn" onclick="showSection('proyecto')">🎯 Resumen Proyecto</button>
+        </div>
+
+        <div class="content">
+            <!-- SECCIÓN INTRO -->
+            <div id="intro" class="section active">
+                <h2>🎯 Bienvenido a tu Guía de Aprendizaje</h2>
+                
+                <div class="card">
+                    <h3>¿Qué vas a aprender?</h3>
+                    <p style="font-size: 1.1em; line-height: 1.8;">
+                        Esta guía te enseñará Java de manera <span class="highlight">práctica y aplicada</span>. 
+                        Cada concepto que aprendas lo aplicarás directamente a tu proyecto de la Liga Pokémon.
+                    </p>
+                </div>
+
+                <div class="pokemon-connection">
+                    <h3>🎮 Tu Proyecto: Sistema de Liga Pokémon</h3>
+                    <p style="font-size: 1.1em; line-height: 1.8;">
+                        Vas a construir un sistema completo que permita:
+                    </p>
+                    <ul style="font-size: 1.05em; margin: 15px 0 15px 30px; line-height: 1.8;">
+                        <li>📝 Registrar hasta 40 Pokémon con sus características</li>
+                        <li>🔍 Buscar Pokémon por nombre o ID</li>
+                        <li>📊 Ordenar Pokémon por ataque, defensa o ID</li>
+                        <li>⚔️ Simular batallas 1 vs 1 con fórmulas de daño reales</li>
+                        <li>👥 Gestionar equipos de entrenadores</li>
+                        <li>🏆 Organizar un campeonato Round Robin</li>
+                        <li>📈 Mostrar estadísticas y tablas de posiciones</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3>📚 Cómo usar esta guía</h3>
+                    <ol style="font-size: 1.05em; margin: 15px 0 15px 30px; line-height: 1.8;">
+                        <li><strong>Lee la teoría:</strong> Cada tema comienza con explicaciones claras</li>
+                        <li><strong>Ve la conexión con Pokémon:</strong> Cajas amarillas muestran cómo aplicar el concepto</li>
+                        <li><strong>Practica con ejemplos:</strong> Ejercicios interactivos para experimentar</li>
+                        <li><strong>Toma el quiz:</strong> 5 preguntas para verificar tu comprensión</li>
+                        <li><strong>Avanza al siguiente tema:</strong> Solo cuando te sientas seguro</li>
+                    </ol>
+                </div>
+
+                <div class="warning">
+                    <strong>Importante:</strong> No saltes temas. Cada uno construye sobre el anterior. 
+                    Es como construir una casa: necesitas los cimientos antes de poner el techo.
+                </div>
+
+                <div class="tip">
+                    <strong>Consejo:</strong> Ten un editor de Java abierto (Eclipse, IntelliJ, VS Code) para que 
+                    pruebes el código mientras aprendes. ¡La práctica es esencial!
+                </div>
+            </div>
+
+            <!-- SECCIÓN 1: VECTORES -->
+            <div id="vectores" class="section">
+                <h2>📊 Tema 1: Arreglos de Una Dimensión (Vectores)</h2>
+                
+                <div class="card">
+                    <h3>¿Qué es un Vector?</h3>
+                    <p style="font-size: 1.1em; line-height: 1.8;">
+                        Un <span class="highlight">vector o arreglo</span> es una estructura de datos que almacena 
+                        múltiples valores del mismo tipo en una única variable. Imagina una fila de casilleros numerados.
+                    </p>
+                </div>
+
+                <div class="pokemon-connection">
+                    <h3>🎮 Aplicación en tu Proyecto Pokémon</h3>
+                    <p style="font-size: 1.1em; line-height: 1.8; margin-bottom: 15px;">
+                        <strong>¿Dónde usarás vectores?</strong>
+                    </p>
+                    <ul style="font-size: 1.05em; margin-left: 30px; line-height: 1.8;">
+                        <li>📦 <strong>Arreglo principal:</strong> Almacenar hasta 40 Pokémon</li>
+                        <li>🎒 <strong>Equipo de entrenador:</strong> Cada entrenador tiene un arreglo de 6 Pokémon</li>
+                        <li>📊 <strong>Estadísticas:</strong> Guardar victorias de cada entrenador</li>
+                    </ul>
+                </div>
+
+                <div class="code-block">
+<span class="comment">// Declaración de vectores</span>
+<span class="keyword">int</span>[] numeros = <span class="keyword">new int</span>[5];  <span class="comment">// Vector de 5 enteros</span>
+<span class="keyword">String</span>[] nombres = {<span class="string">"Ana"</span>, <span class="string">"Luis"</span>, <span class="string">"María"</span>};
+
+<span class="comment">// Acceder a elementos (índice comienza en 0)</span>
+numeros[0] = 10;  <span class="comment">// Primera posición</span>
+numeros[1] = 20;  <span class="comment">// Segunda posición</span>
+
+<span class="comment">// Obtener la longitud</span>
+<span class="keyword">int</span> tamanio = numeros.length;  <span class="comment">// 5</span>
+
+<span class="comment">// Recorrer un vector</span>
+<span class="keyword">for</span>(<span class="keyword">int</span> i = 0; i < numeros.length; i++) {
+    System.out.println(<span class="string">"Posición "</span> + i + <span class="string">": "</span> + numeros[i]);
+}
+                </div>
+
+                <div class="pokemon-example">
+                    <h4>Ejemplo Pokémon: Arreglo de Nombres</h4>
+                    <div class="code-block">
+<span class="comment">// Crear un arreglo para almacenar nombres de Pokémon</span>
+<span class="keyword">String</span>[] nombresPokemon = <span class="keyword">new String</span>[40];  <span class="comment">// Capacidad máxima</span>
+<span class="keyword">int</span> cantidadPokemon = 0;  <span class="comment">// Contador de cuántos hay realmente</span>
+
+<span class="comment">// Agregar Pokémon al arreglo</span>
+<span class="keyword">if</span>(cantidadPokemon < nombresPokemon.length) {
+    nombresPokemon[cantidadPokemon] = <span class="string">"Pikachu"</span>;
+    cantidadPokemon++;
+}
+
+<span class="comment">// Mostrar todos los Pokémon registrados</span>
+<span class="keyword">for</span>(<span class="keyword">int</span> i = 0; i < cantidadPokemon; i++) {
+    System.out.println((i+1) + <span class="string">". "</span> + nombresPokemon[i]);
+}
+                    </div>
+                </div>
+
+                <div class="visual-demo">
+                    <h3>Práctica Interactiva: Tu Primer Arreglo Pokémon</h3>
+                    <div id="vectorVisual" class="array-visual"></div>
+                    <div style="margin: 20px 0;">
+                        <input type="number" id="vectorIndex" placeholder="Índice (0-4)" min="0" max="4">
+                        <input type="number" id="vectorValue" placeholder="Valor">
+                        <button class="interactive-btn" onclick="updateVector()">Actualizar</button>
+                        <button class="interactive-btn" onclick="resetVector()">Reiniciar</button>
+                    </div>
+                    <div id="vectorOutput" class="output"></div>
+                </div>
+
+                <div class="practice-exercise">
+                    <h3>🏋️ Ejercicio de Práctica</h3>
+                    <p><strong>Desafío:</strong> Declara un arreglo de 6 posiciones para almacenar los niveles de ataque de 6 Pokémon. 
+                    Llena las primeras 3 posiciones con valores entre 1 y 100.</p>
+                    <textarea class="exercise-input" id="vectorPractice" placeholder="Escribe tu código aquí..."></textarea>
+                    <button class="interactive-btn" onclick="checkVectorPractice()">Verificar Concepto</button>
+                    <div id="vectorPracticeOutput" class="output" style="display: none;"></div>
+                </div>
+
+                <div class="quiz-container">
+                    <div class="quiz-header">📝 Quiz: Vectores</div>
+                    
+                    <div class="quiz-question">
+                        <h4>Pregunta 1: ¿Cuál es el índice del primer elemento en un arreglo de Java?</h4>
+                        <div class="quiz-options">
+                            <div class="quiz-option" onclick="selectOption(this, 'vectores', 1, 'b')">a) 1</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'vectores', 1, 'b')">b) 0</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'vectores', 1, 'b')">c) -1</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'vectores', 1, 'b')">d) Depende del tamaño</div>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>Pregunta 2: Si declaras <code>int[] pokemon = new int[40];</code>, ¿cuántos Pokémon puedes almacenar?</h4>
+                        <div class="quiz-options">
+                            <div class="quiz-option" onclick="selectOption(this, 'vectores', 2, 'b')">a) 39</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'vectores', 2, 'b')">b) 40</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'vectores', 2, 'b')">c) 41</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'vectores', 2, 'b')">d) Ilimitados</div>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>Pregunta 3: ¿Qué pasa si intentas acceder a <code>pokemon[40]</code> en un arreglo de tamaño 40?</h4>
+                        <div class="quiz-options">
+                            <div class="quiz-option" onclick="selectOption(this, 'vectores', 3, 'c')">a) Funciona correctamente</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'vectores', 3, 'c')">b) Retorna null</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'vectores', 3, 'c')">c) Lanza ArrayIndexOutOfBoundsException</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'vectores', 3, 'c')">d) Retorna 0</div>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>Pregunta 4: En tu proyecto, ¿por qué necesitas una variable contador además del arreglo?</h4>
+                        <div class="quiz-options">
+                            <div class="quiz-option" onclick="selectOption(this, 'vectores', 4, 'a')">a) Para saber cuántas posiciones están ocupadas</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'vectores', 4, 'a')">b) Para aumentar la capacidad del arreglo</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'vectores', 4, 'a')">c) Es obligatorio en Java</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'vectores', 4, 'a')">d) Para ordenar el arreglo</div>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>Pregunta 5: ¿Cuál es la forma correcta de recorrer SOLO los elementos ocupados de un arreglo?</h4>
+                        <div class="quiz-options">
+                            <div class="quiz-option" onclick="selectOption(this, 'vectores', 5, 'd')">a) for(i = 0; i < arreglo.length; i++)</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'vectores', 5, 'd')">b) for(i = 0; i < 40; i++)</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'vectores', 5, 'd')">c) for(i = 1; i <= cantidad; i++)</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'vectores', 5, 'd')">d) for(i = 0; i < cantidadOcupados; i++)</div>
+                        </div>
+                    </div>
+
+                    <button class="quiz-submit" onclick="submitQuiz('vectores', 5)">Enviar Respuestas</button>
+                    <div id="vectores-result" class="quiz-result"></div>
+                </div>
+            </div>
+
+            <!-- SECCIÓN 2: ORDENAMIENTO -->
+            <div id="ordenamiento" class="section">
+                <h2>🔢 Tema 2: Ordenamiento de Vectores</h2>
+                
+                <div class="card">
+                    <h3>¿Qué es Ordenar?</h3>
+                    <p style="font-size: 1.1em; line-height: 1.8;">
+                        Ordenar es organizar los elementos de un vector en un orden específico (ascendente o descendente) 
+                        según un criterio determinado.
+                    </p>
+                </div>
+
+                <div class="pokemon-connection">
+                    <h3>🎮 Aplicación en tu Proyecto Pokémon</h3>
+                    <p style="font-size: 1.1em; line-height: 1.8; margin-bottom: 15px;">
+                        <strong>¿Por qué necesitas ordenar?</strong>
+                    </p>
+                    <ul style="font-size: 1.05em; margin-left: 30px; line-height: 1.8;">
+                        <li>⚔️ <strong>Por Ataque:</strong> Mostrar los Pokémon más fuertes primero (Selección)</li>
+                        <li>🛡️ <strong>Por Defensa:</strong> Organizar por resistencia (Inserción)</li>
+                        <li>🔢 <strong>Por ID:</strong> Preparar para búsqueda binaria (Inserción)</li>
+                        <li>🏆 <strong>Tabla de posiciones:</strong> Ordenar entrenadores por victorias</li>
+                    </ul>
+                </div>
+
+                <div class="tab-navigation">
+                    <button class="tab-btn active" onclick="showTab('seleccion')">Ordenamiento por Selección</button>
+                    <button class="tab-btn" onclick="showTab('insercion')">Ordenamiento por Inserción</button>
+                </div>
+
+                <div id="seleccion" class="tab-content active">
+                    <h3>Ordenamiento por Selección</h3>
+                    <div class="code-block">
+<span class="comment">// Ordenar por ATAQUE (de mayor a menor)</span>
+<span class="keyword">public static void</span> ordenarPorAtaqueSeleccion(<span class="keyword">int</span>[] ataques, <span class="keyword">int</span> cantidad) {
+    <span class="keyword">for</span>(<span class="keyword">int</span> i = 0; i < cantidad - 1; i++) {
+        <span class="comment">// Encontrar el Pokémon con mayor ataque desde la posición i</span>
+        <span class="keyword">int</span> indiceMayor = i;
+        <span class="keyword">for</span>(<span class="keyword">int</span> j = i + 1; j < cantidad; j++) {
+            <span class="keyword">if</span>(ataques[j] > ataques[indiceMayor]) {
+                indiceMayor = j;
+            }
+        }
+        
+        <span class="comment">// Intercambiar el mayor con la posición actual</span>
+        <span class="keyword">int</span> temp = ataques[i];
+        ataques[i] = ataques[indiceMayor];
+        ataques[indiceMayor] = temp;
+    }
+}
+                    </div>
+
+                    <div class="pokemon-example">
+                        <h4>Ejemplo Pokémon: Ordenar por Ataque</h4>
+                        <p><strong>Antes:</strong> [Squirtle:70, Pikachu:85, Charmander:80, Bulbasaur:75]</p>
+                        <p><strong>Después:</strong> [Pikachu:85, Charmander:80, Bulbasaur:75, Squirtle:70]</p>
+                    </div>
+                </div>
+
+                <div id="insercion" class="tab-content">
+                    <h3>Ordenamiento por Inserción</h3>
+                    <div class="code-block">
+<span class="comment">// Ordenar por DEFENSA o ID (ascendente)</span>
+<span class="keyword">public static void</span> ordenarPorDefensaInsercion(<span class="keyword">int</span>[] defensas, <span class="keyword">int</span> cantidad) {
+    <span class="keyword">for</span>(<span class="keyword">int</span> i = 1; i < cantidad; i++) {
+        <span class="comment">// Tomar el elemento actual</span>
+        <span class="keyword">int</span> valorActual = defensas[i];
+        <span class="keyword">int</span> j = i - 1;
+        
+        <span class="comment">// Desplazar elementos mayores hacia la derecha</span>
+        <span class="keyword">while</span>(j >= 0 && defensas[j] > valorActual) {
+            defensas[j + 1] = defensas[j];
+            j--;
+        }
+        
+        <span class="comment">// Insertar el valor en su posición correcta</span>
+        defensas[j + 1] = valorActual;
+    }
+}
+                    </div>
+
+                    <div class="pokemon-example">
+                        <h4>Ejemplo Pokémon: Ordenar por ID</h4>
+                        <p><strong>Antes:</strong> [ID:15, ID:3, ID:8, ID:1, ID:12]</p>
+                        <p><strong>Después:</strong> [ID:1, ID:3, ID:8, ID:12, ID:15]</p>
+                    </div>
+                </div>
+
+                <div class="visual-demo">
+                    <h3>Simulación de Ordenamiento</h3>
+                    <div id="sortVisual" class="array-visual"></div>
+                    <button class="interactive-btn" onclick="generateRandomArray()">Generar Ataques Aleatorios</button>
+                    <button class="interactive-btn" onclick="sortStepByStep()">Ordenar Paso a Paso</button>
+                    <button class="interactive-btn" onclick="sortInstant()">Ordenar Instantáneo</button>
+                    <div id="sortOutput" class="output"></div>
+                </div>
+
+                <div class="practice-exercise">
+                    <h3>🏋️ Ejercicio de Práctica</h3>
+                    <p><strong>Desafío:</strong> Imagina que tienes 5 Pokémon con defensas: [60, 80, 55, 90, 70]. 
+                    Describe con tus palabras cómo el algoritmo de inserción los ordenaría paso a paso.</p>
+                    <textarea class="exercise-input" id="sortPractice" placeholder="Escribe tu explicación aquí..."></textarea>
+                    <button class="interactive-btn" onclick="checkSortPractice()">Ver Explicación</button>
+                    <div id="sortPracticeOutput" class="output" style="display: none;"></div>
+                </div>
+
+                <div class="quiz-container">
+                    <div class="quiz-header">📝 Quiz: Ordenamiento</div>
+                    
+                    <div class="quiz-question">
+                        <h4>Pregunta 1: ¿Qué algoritmo debes usar para ordenar Pokémon por ataque en tu proyecto?</h4>
+                        <div class="quiz-options">
+                            <div class="quiz-option" onclick="selectOption(this, 'ordenamiento', 1, 'a')">a) Selección</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'ordenamiento', 1, 'a')">b) Inserción</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'ordenamiento', 1, 'a')">c) Burbuja</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'ordenamiento', 1, 'a')">d) QuickSort</div>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>Pregunta 2: ¿Cuántas comparaciones hace el algoritmo de selección con 10 elementos?</h4>
+                        <div class="quiz-options">
+                            <div class="quiz-option" onclick="selectOption(this, 'ordenamiento', 2, 'c')">a) 10</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'ordenamiento', 2, 'c')">b) 20</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'ordenamiento', 2, 'c')">c) 45</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'ordenamiento', 2, 'c')">d) 100</div>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>Pregunta 3: ¿Por qué el ordenamiento por ID debe hacerse con inserción según el proyecto?</h4>
+                        <div class="quiz-options">
+                            <div class="quiz-option" onclick="selectOption(this, 'ordenamiento', 3, 'b')">a) Es más rápido que selección</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'ordenamiento', 3, 'b')">b) Es el requisito del proyecto</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'ordenamiento', 3, 'b')">c) Usa menos memoria</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'ordenamiento', 3, 'b')">d) No funciona con números</div>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>Pregunta 4: Si ordenas objetos Pokémon completos, ¿qué debes intercambiar?</h4>
+                        <div class="quiz-options">
+                            <div class="quiz-option" onclick="selectOption(this, 'ordenamiento', 4, 'c')">a) Solo el atributo que comparas</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'ordenamiento', 4, 'c')">b) Solo el ID del Pokémon</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'ordenamiento', 4, 'c')">c) El objeto completo con todos sus atributos</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'ordenamiento', 4, 'c')">d) Solo el nombre</div>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>Pregunta 5: ¿Qué debes hacer ANTES de ordenar para mostrar el "antes y después"?</h4>
+                        <div class="quiz-options">
+                            <div class="quiz-option" onclick="selectOption(this, 'ordenamiento', 5, 'a')">a) Guardar una copia del estado original</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'ordenamiento', 5, 'a')">b) Nada, Java lo hace automáticamente</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'ordenamiento', 5, 'a')">c) Crear un nuevo arreglo vacío</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'ordenamiento', 5, 'a')">d) Ordenar dos veces</div>
+                        </div>
+                    </div>
+
+                    <button class="quiz-submit" onclick="submitQuiz('ordenamiento', 5)">Enviar Respuestas</button>
+                    <div id="ordenamiento-result" class="quiz-result"></div>
+                </div>
+            </div>
+
+            <!-- SECCIÓN 3: BÚSQUEDA -->
+            <div id="busqueda" class="section">
+                <h2>🔍 Tema 3: Búsqueda en Vectores</h2>
+                
+                <div class="card">
+                    <h3>¿Qué es Buscar?</h3>
+                    <p style="font-size: 1.1em; line-height: 1.8;">
+                        Buscar es encontrar la posición de un elemento específico dentro de un arreglo. 
+                        Existen diferentes algoritmos según si el arreglo está ordenado o no.
+                    </p>
+                </div>
+
+                <div class="pokemon-connection">
+                    <h3>🎮 Aplicación en tu Proyecto Pokémon</h3>
+                    <p style="font-size: 1.1em; line-height: 1.8; margin-bottom: 15px;">
+                        <strong>¿Cuándo necesitas buscar?</strong>
+                    </p>
+                    <ul style="font-size: 1.05em; margin-left: 30px; line-height: 1.8;">
+                        <li>📛 <strong>Búsqueda Lineal por nombre:</strong> Encontrar "Pikachu" en tu colección</li>
+                        <li>🔢 <strong>Búsqueda Binaria por ID:</strong> Encontrar rápidamente el Pokémon con ID 15</li>
+                        <li>⚔️ <strong>Seleccionar para batalla:</strong> Buscar un Pokémon específico del equipo</li>
+                        <li>🏅 <strong>Ver estadísticas:</strong> Encontrar un entrenador por nombre</li>
+                    </ul>
+                </div>
+
+                <div class="tab-navigation">
+                    <button class="tab-btn active" onclick="showTab('lineal')">Búsqueda Lineal</button>
+                    <button class="tab-btn" onclick="showTab('binaria')">Búsqueda Binaria</button>
+                </div>
+
+                <div id="lineal" class="tab-content active">
+                    <h3>Búsqueda Lineal (por nombre)</h3>
+                    <div class="code-block">
+<span class="comment">// Buscar un Pokémon por nombre</span>
+<span class="keyword">public static int</span> buscarPorNombre(<span class="keyword">String</span>[] nombres, <span class="keyword">int</span> cantidad, <span class="keyword">String</span> nombreBuscado) {
+    <span class="keyword">for</span>(<span class="keyword">int</span> i = 0; i < cantidad; i++) {
+        <span class="comment">// Comparar ignorando mayúsculas/minúsculas</span>
+        <span class="keyword">if</span>(nombres[i].equalsIgnoreCase(nombreBuscado)) {
+            <span class="keyword">return</span> i;  <span class="comment">// Retorna el índice donde se encontró</span>
+        }
+    }
+    <span class="keyword">return</span> -1;  <span class="comment">// No encontrado</span>
+}
+                    </div>
+
+                    <div class="pokemon-example">
+                        <h4>Ejemplo Pokémon: Buscar "Charmander"</h4>
+                        <div class="code-block">
+<span class="keyword">String</span>[] pokemon = {<span class="string">"Pikachu"</span>, <span class="string">"Squirtle"</span>, <span class="string">"Charmander"</span>, <span class="string">"Bulbasaur"</span>};
+<span class="keyword">int</span> posicion = buscarPorNombre(pokemon, 4, <span class="string">"Charmander"</span>);
+
+<span class="keyword">if</span>(posicion != -1) {
+    System.out.println(<span class="string">"Encontrado en posición: "</span> + posicion);  <span class="comment">// 2</span>
+} <span class="keyword">else</span> {
+    System.out.println(<span class="string">"Pokémon no encontrado"</span>);
+}
+                        </div>
+                    </div>
+                </div>
+
+                <div id="binaria" class="tab-content">
+                    <h3>Búsqueda Binaria (por ID)</h3>
+                    <div class="warning">
+                        <strong>REQUISITO:</strong> El arreglo DEBE estar ordenado por ID antes de usar búsqueda binaria.
+                    </div>
+                    <div class="code-block">
+<span class="comment">// Buscar un Pokémon por ID (arreglo ordenado)</span>
+<span class="keyword">public static int</span> buscarPorIdBinario(<span class="keyword">int</span>[] ids, <span class="keyword">int</span> cantidad, <span class="keyword">int</span> idBuscado) {
+    <span class="keyword">int</span> izquierda = 0;
+    <span class="keyword">int</span> derecha = cantidad - 1;
+    
+    <span class="keyword">while</span>(izquierda <= derecha) {
+        <span class="keyword">int</span> medio = (izquierda + derecha) / 2;
+        
+        <span class="keyword">if</span>(ids[medio] == idBuscado) {
+            <span class="keyword">return</span> medio;  <span class="comment">// Encontrado!</span>
+        }
+        
+        <span class="keyword">if</span>(ids[medio] < idBuscado) {
+            izquierda = medio + 1;  <span class="comment">// Buscar en mitad derecha</span>
+        } <span class="keyword">else</span> {
+            derecha = medio - 1;  <span class="comment">// Buscar en mitad izquierda</span>
+        }
+    }
+    
+    <span class="keyword">return</span> -1;  <span class="comment">// No encontrado</span>
+}
+                    </div>
+
+                    <div class="pokemon-example">
+                        <h4>Ejemplo Pokémon: Buscar ID 15</h4>
+                        <p><strong>Arreglo ordenado:</strong> [1, 3, 8, 12, 15, 18, 23, 28]</p>
+                        <p><strong>Proceso:</strong></p>
+                        <ol style="margin-left: 30px;">
+                            <li>Medio: posición 3 (ID: 12) → 12 < 15, buscar derecha</li>
+                            <li>Medio: posición 5 (ID: 18) → 18 > 15, buscar izquierda</li>
+                            <li>Medio: posición 4 (ID: 15) → ¡Encontrado!</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <div class="visual-demo">
+                    <h3>Simulación de Búsqueda</h3>
+                    <div id="searchVisual" class="array-visual"></div>
+                    <div style="margin: 20px 0;">
+                        <input type="number" id="searchValue" placeholder="ID a buscar">
+                        <button class="interactive-btn" onclick="linearSearch()">Búsqueda Lineal</button>
+                        <button class="interactive-btn" onclick="binarySearch()">Búsqueda Binaria</button>
+                    </div>
+                    <div id="searchOutput" class="output"></div>
+                </div>
+
+                <div class="practice-exercise">
+                    <h3>🏋️ Ejercicio de Práctica</h3>
+                    <p><strong>Desafío:</strong> En un arreglo de 40 Pokémon, ¿cuántas comparaciones máximo haría 
+                    la búsqueda lineal? ¿Y la búsqueda binaria?</p>
+                    <textarea class="exercise-input" id="searchPractice" placeholder="Escribe tu respuesta..."></textarea>
+                    <button class="interactive-btn" onclick="checkSearchPractice()">Ver Respuesta</button>
+                    <div id="searchPracticeOutput" class="output" style="display: none;"></div>
+                </div>
+
+                <div class="quiz-container">
+                    <div class="quiz-header">📝 Quiz: Búsqueda</div>
+                    
+                    <div class="quiz-question">
+                        <h4>Pregunta 1: ¿Qué método de String debes usar para comparar nombres ignorando mayúsculas?</h4>
+                        <div class="quiz-options">
+                            <div class="quiz-option" onclick="selectOption(this, 'busqueda', 1, 'c')">a) equals()</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'busqueda', 1, 'c')">b) compare()</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'busqueda', 1, 'c')">c) equalsIgnoreCase()</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'busqueda', 1, 'c')">d) ==</div>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>Pregunta 2: ¿Qué valor retornas cuando NO encuentras el elemento buscado?</h4>
+                        <div class="quiz-options">
+                            <div class="quiz-option" onclick="selectOption(this, 'busqueda', 2, 'b')">a) 0</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'busqueda', 2, 'b')">b) -1</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'busqueda', 2, 'b')">c) null</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'busqueda', 2, 'b')">d) false</div>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>Pregunta 3: ¿Por qué la búsqueda binaria requiere un arreglo ordenado?</h4>
+                        <div class="quiz-options">
+                            <div class="quiz-option" onclick="selectOption(this, 'busqueda', 3, 'a')">a) Para poder descartar la mitad en cada paso</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'busqueda', 3, 'a')">b) Es más rápida en arreglos desordenados</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'busqueda', 3, 'a')">c) Java lo requiere obligatoriamente</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'busqueda', 3, 'a')">d) Para usar menos memoria</div>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>Pregunta 4: En tu proyecto, ¿cuándo debes usar búsqueda lineal en vez de binaria?</h4>
+                        <div class="quiz-options">
+                            <div class="quiz-option" onclick="selectOption(this, 'busqueda', 4, 'b')">a) Siempre que sea posible</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'busqueda', 4, 'b')">b) Cuando buscas por nombre</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'busqueda', 4, 'b')">c) Solo con más de 100 elementos</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'busqueda', 4, 'b')">d) Nunca, binaria es siempre mejor</div>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>Pregunta 5: Si buscas un Pokémon para una batalla, ¿qué debes retornar?</h4>
+                        <div class="quiz-options">
+                            <div class="quiz-option" onclick="selectOption(this, 'busqueda', 5, 'd')">a) Solo el nombre</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'busqueda', 5, 'd')">b) Solo el ataque</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'busqueda', 5, 'd')">c) Un booleano true/false</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'busqueda', 5, 'd')">d) El índice o el objeto completo</div>
+                        </div>
+                    </div>
+
+                    <button class="quiz-submit" onclick="submitQuiz('busqueda', 5)">Enviar Respuestas</button>
+                    <div id="busqueda-result" class="quiz-result"></div>
+                </div>
+            </div>
+
+            <!-- Las demás secciones seguirán en el siguiente mensaje debido a límites de longitud -->
+
+            <!-- SECCIÓN 4: MATRICES -->
+            <div id="matrices" class="section">
+                <h2>4️⃣ Matrices (Arreglos Bidimensionales)</h2>
+                
+                <div class="card">
+                    <h3>¿Qué es una Matriz?</h3>
+                    <p>Una matriz es un arreglo de arreglos, una estructura bidimensional con filas y columnas. Piensa en una tabla o cuadrícula.</p>
+                    
+                    <div class="code-block">// Declaración de matriz
+int[][] matriz = new int[3][4];  // 3 filas, 4 columnas
+
+// Declaración con valores iniciales
+int[][] numeros = {
+    {1, 2, 3, 4},
+    {5, 6, 7, 8},
+    {9, 10, 11, 12}
+};
+
+// Acceder a elementos
+int valor = numeros[1][2];  // Fila 1, Columna 2 = 7</div>
+                </div>
+
+                <div class="pokemon-connection">
+                    <h3>🎮 Aplicación en tu Proyecto Pokemon</h3>
+                    <p><strong>Tabla de Efectividades de Tipos:</strong></p>
+                    <ul>
+                        <li>Filas: Tipo atacante (Fuego, Agua, Planta, etc.)</li>
+                        <li>Columnas: Tipo defensor</li>
+                        <li>Valores: Multiplicador de daño (0.5, 1.0, 2.0)</li>
+                    </ul>
+                    
+                    <div class="code-block">// Tipos: 0=Fuego, 1=Agua, 2=Planta, 3=Eléctrico, 4=Normal
+double[][] efectividad = {
+    //    F    A    P    E    N
+    {1.0, 0.5, 2.0, 1.0, 1.0},  // Fuego
+    {2.0, 1.0, 0.5, 0.5, 1.0},  // Agua
+    {0.5, 2.0, 1.0, 0.5, 1.0},  // Planta
+    {1.0, 2.0, 0.5, 1.0, 1.0},  // Eléctrico
+    {1.0, 1.0, 1.0, 1.0, 1.0}   // Normal
+};
+
+// Calcular daño: Charizard (Fuego=0) vs Blastoise (Agua=1)
+double multiplicador = efectividad[0][1];  // 0.5 (no muy efectivo)</div>
+                </div>
+
+                <div class="video-resource">
+                    <h3>🎥 Videos Recomendados</h3>
+                    <a href="https://www.youtube.com/results?search_query=matrices+java+español+todocode" class="video-link" target="_blank">🔍 Matrices Java - TodoCode</a>
+                    <a href="https://www.youtube.com/results?search_query=arrays+bidimensionales+java" class="video-link" target="_blank">🔍 Arrays Bidimensionales</a>
+                </div>
+
+                <div class="pokemon-example">
+                    <h4>💡 Ejemplo Completo: Campeonato 4x4</h4>
+                    <div class="code-block">// Matriz de resultados: 4 entrenadores
+// resultados[i][j] = puntos que i sacó contra j
+int[][] campeonato = new int[4][4];
+
+// Batalla: Entrenador 0 vs Entrenador 1
+campeonato[0][1] = 3;  // Entrenador 0 ganó (3 puntos)
+campeonato[1][0] = 0;  // Entrenador 1 perdió (0 puntos)
+
+// Calcular puntos totales de un entrenador
+int puntosEntrenador0 = 0;
+for(int j = 0; j < 4; j++) {
+    puntosEntrenador0 += campeonato[0][j];
+}
+System.out.println("Total: " + puntosEntrenador0);</div>
+                </div>
+
+                <div class="exercise">
+                    <h3>📝 Ejercicio de Práctica</h3>
+                    <p><strong>Desafío:</strong> ¿Cómo recorrerías toda la matriz de efectividad para encontrar el multiplicador más alto?</p>
+                    <button onclick="checkMatrixPractice()">Ver Solución</button>
+                    <div id="matrixPracticeOutput" class="output"></div>
+                </div>
+
+                <div class="quiz-container">
+                    <div class="quiz-header">📝 Quiz: Matrices</div>
+                    
+                    <div class="quiz-question">
+                        <h4>Pregunta 1: ¿Cuántos elementos tiene una matriz de 5 filas x 3 columnas?</h4>
+                        <div class="quiz-options">
+                            <div class="quiz-option" onclick="selectOption(this, 'matrices', 1, 'c')">a) 8</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'matrices', 1, 'c')">b) 5</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'matrices', 1, 'c')">c) 15</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'matrices', 1, 'c')">d) 3</div>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>Pregunta 2: En efectividad[2][3], ¿qué representa el 2?</h4>
+                        <div class="quiz-options">
+                            <div class="quiz-option" onclick="selectOption(this, 'matrices', 2, 'a')">a) La fila (tipo atacante)</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'matrices', 2, 'a')">b) La columna (tipo defensor)</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'matrices', 2, 'a')">c) El valor almacenado</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'matrices', 2, 'a')">d) El tamaño de la matriz</div>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>Pregunta 3: Para recorrer toda una matriz, ¿cuántos for necesitas?</h4>
+                        <div class="quiz-options">
+                            <div class="quiz-option" onclick="selectOption(this, 'matrices', 3, 'b')">a) 1 for</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'matrices', 3, 'b')">b) 2 for anidados</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'matrices', 3, 'b')">c) 3 for</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'matrices', 3, 'b')">d) Depende del contenido</div>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>Pregunta 4: En tu proyecto, ¿por qué es útil una matriz de efectividad?</h4>
+                        <div class="quiz-options">
+                            <div class="quiz-option" onclick="selectOption(this, 'matrices', 4, 'c')">a) Para guardar nombres de Pokémon</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'matrices', 4, 'c')">b) Para ordenar por nivel</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'matrices', 4, 'c')">c) Para calcular daño según tipos</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'matrices', 4, 'c')">d) Para almacenar 40 Pokémon</div>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>Pregunta 5: ¿Qué valor debería estar en efectividad[1][2] (Agua ataca Planta)?</h4>
+                        <div class="quiz-options">
+                            <div class="quiz-option" onclick="selectOption(this, 'matrices', 5, 'a')">a) 0.5 (no muy efectivo)</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'matrices', 5, 'a')">b) 1.0 (normal)</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'matrices', 5, 'a')">c) 2.0 (súper efectivo)</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'matrices', 5, 'a')">d) 0.0 (inmune)</div>
+                        </div>
+                    </div>
+
+                    <button class="quiz-submit" onclick="submitQuiz('matrices', 5)">Enviar Respuestas</button>
+                    <div id="matrices-result" class="quiz-result"></div>
+                </div>
+            </div>
+
+            <!-- SECCIÓN 5: CADENAS -->
+            <div id="cadenas" class="section">
+                <h2>5️⃣ Cadenas de Caracteres (String)</h2>
+                
+                <div class="card">
+                    <h3>¿Qué es un String?</h3>
+                    <p>Un String es una secuencia de caracteres. En Java, los String son objetos inmutables con muchos métodos útiles.</p>
+                    
+                    <div class="code-block">// Declaración de Strings
+String nombre = "Pikachu";
+String tipo = "Eléctrico";
+
+// Métodos principales
+int longitud = nombre.length();           // 7
+char primerLetra = nombre.charAt(0);      // 'P'
+String mayusculas = nombre.toUpperCase(); // "PIKACHU"
+String minusculas = nombre.toLowerCase(); // "pikachu"
+
+// Comparación (¡NUNCA uses ==!)
+boolean iguales = nombre.equals("Pikachu");        // true
+boolean igualIgnoreCase = tipo.equalsIgnoreCase("eléctrico"); // true
+
+// Subcadenas y búsqueda
+String sub = nombre.substring(0, 4);  // "Pika"
+boolean contiene = nombre.contains("ka");  // true
+int posicion = nombre.indexOf("ka");  // 2</div>
+                </div>
+
+                <div class="pokemon-connection">
+                    <h3>🎮 Aplicación en tu Proyecto Pokemon</h3>
+                    <p><strong>Uso de Strings:</strong></p>
+                    <ul>
+                        <li>Nombres de Pokémon y entrenadores</li>
+                        <li>Tipos (Fuego, Agua, Planta, etc.)</li>
+                        <li>Validación de datos ingresados</li>
+                        <li>Búsqueda por nombre</li>
+                        <li>Comparación de tipos para efectividad</li>
+                    </ul>
+                    
+                    <div class="code-block">// Validar tipo de Pokémon
+public static boolean esTipoValido(String tipo) {
+    String[] tiposValidos = {"Fuego", "Agua", "Planta", "Eléctrico", "Normal"};
+    
+    for(int i = 0; i < tiposValidos.length; i++) {
+        if(tiposValidos[i].equalsIgnoreCase(tipo)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+// Buscar Pokémon por nombre
+public static int buscarPorNombre(String[] nombres, String buscar) {
+    for(int i = 0; i < nombres.length; i++) {
+        if(nombres[i].equalsIgnoreCase(buscar)) {
+            return i;
+        }
+    }
+    return -1;  // No encontrado
+}</div>
+                </div>
+
+                <div class="video-resource">
+                    <h3>🎥 Videos Recomendados</h3>
+                    <a href="https://www.youtube.com/results?search_query=strings+java+español+pildoras+informaticas" class="video-link" target="_blank">🔍 Strings Java - Píldoras</a>
+                    <a href="https://www.youtube.com/results?search_query=metodos+string+java" class="video-link" target="_blank">🔍 Métodos String</a>
+                </div>
+
+                <div class="pokemon-example">
+                    <h4>💡 Ejemplo: Calcular Efectividad por Tipo</h4>
+                    <div class="code-block">public static double calcularEfectividad(String tipoAtaque, String tipoDefensa) {
+    // Convertir a minúsculas para comparación
+    tipoAtaque = tipoAtaque.toLowerCase();
+    tipoDefensa = tipoDefensa.toLowerCase();
+    
+    // Fuego ataca
+    if(tipoAtaque.equals("fuego")) {
+        if(tipoDefensa.equals("planta")) return 2.0;  // Súper efectivo
+        if(tipoDefensa.equals("agua")) return 0.5;    // No muy efectivo
+    }
+    
+    // Agua ataca
+    if(tipoAtaque.equals("agua")) {
+        if(tipoDefensa.equals("fuego")) return 2.0;
+        if(tipoDefensa.equals("planta")) return 0.5;
+    }
+    
+    // Planta ataca
+    if(tipoAtaque.equals("planta")) {
+        if(tipoDefensa.equals("agua")) return 2.0;
+        if(tipoDefensa.equals("fuego")) return 0.5;
+    }
+    
+    return 1.0;  // Daño normal
+}
+
+// Uso
+double mult = calcularEfectividad("Fuego", "PLANTA");
+System.out.println("Multiplicador: " + mult);  // 2.0</div>
+                </div>
+
+                <div class="interactive-demo">
+                    <h3>🎮 Demo Interactiva: Métodos String</h3>
+                    <input type="text" id="stringInput" placeholder="Escribe un nombre Pokemon" value="Charizard">
+                    <button onclick="testStringMethods()">Probar Métodos</button>
+                    <div id="stringOutput" class="output"></div>
+                </div>
+
+                <div class="quiz-container">
+                    <div class="quiz-header">📝 Quiz: Cadenas</div>
+                    
+                    <div class="quiz-question">
+                        <h4>Pregunta 1: ¿Cuál es la forma correcta de comparar Strings?</h4>
+                        <div class="quiz-options">
+                            <div class="quiz-option" onclick="selectOption(this, 'cadenas', 1, 'b')">a) if(nombre == "Pikachu")</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'cadenas', 1, 'b')">b) if(nombre.equals("Pikachu"))</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'cadenas', 1, 'b')">c) if(nombre = "Pikachu")</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'cadenas', 1, 'b')">d) if(equals(nombre, "Pikachu"))</div>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>Pregunta 2: ¿Qué retorna "Pikachu".length()?</h4>
+                        <div class="quiz-options">
+                            <div class="quiz-option" onclick="selectOption(this, 'cadenas', 2, 'c')">a) 6</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'cadenas', 2, 'c')">b) 8</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'cadenas', 2, 'c')">c) 7</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'cadenas', 2, 'c')">d) Error</div>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>Pregunta 3: Para ignorar mayúsculas/minúsculas al comparar, ¿qué usas?</h4>
+                        <div class="quiz-options">
+                            <div class="quiz-option" onclick="selectOption(this, 'cadenas', 3, 'a')">a) equalsIgnoreCase()</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'cadenas', 3, 'a')">b) equals()</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'cadenas', 3, 'a')">c) toLowerCase() primero</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'cadenas', 3, 'a')">d) compareTo()</div>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>Pregunta 4: En tu proyecto, ¿por qué necesitas validar el tipo ingresado?</h4>
+                        <div class="quiz-options">
+                            <div class="quiz-option" onclick="selectOption(this, 'cadenas', 4, 'c')">a) Para ordenar por tipo</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'cadenas', 4, 'c')">b) Para contar Pokémon</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'cadenas', 4, 'c')">c) Para evitar tipos inválidos en efectividad</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'cadenas', 4, 'c')">d) Para buscar más rápido</div>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>Pregunta 5: ¿Qué método usas para obtener "PIKA" de "Pikachu"?</h4>
+                        <div class="quiz-options">
+                            <div class="quiz-option" onclick="selectOption(this, 'cadenas', 5, 'b')">a) charAt(0, 4)</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'cadenas', 5, 'b')">b) substring(0, 4).toUpperCase()</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'cadenas', 5, 'b')">c) indexOf("PIKA")</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'cadenas', 5, 'b')">d) split(4)</div>
+                        </div>
+                    </div>
+
+                    <button class="quiz-submit" onclick="submitQuiz('cadenas', 5)">Enviar Respuestas</button>
+                    <div id="cadenas-result" class="quiz-result"></div>
+                </div>
+            </div>
+
+            <!-- SECCIÓN 6: CLASES Y POO -->
+            <div id="clases" class="section">
+                <h2>6️⃣ Clases y Programación Orientada a Objetos</h2>
+                
+                <div class="card">
+                    <h3>¿Qué es una Clase?</h3>
+                    <p>Una clase es un molde o plantilla para crear objetos. Define los atributos (características) y métodos (comportamientos) que tendrán los objetos.</p>
+                    
+                    <div class="code-block">// Definición de una clase
+public class Pokemon {
+    // ATRIBUTOS (características)
+    private String nombre;
+    private String tipo;
+    private int nivel;
+    private int puntosVida;
+    private int ataque;
+    private int defensa;
+    
+    // CONSTRUCTOR (crea el objeto)
+    public Pokemon(String nombre, String tipo, int nivel) {
+        this.nombre = nombre;
+        this.tipo = tipo;
+        this.nivel = nivel;
+        this.puntosVida = nivel * 10;
+        this.ataque = nivel * 5;
+        this.defensa = nivel * 3;
+    }
+    
+    // MÉTODOS (acciones)
+    public void atacar(Pokemon enemigo) {
+        int danio = this.ataque - enemigo.defensa;
+        enemigo.puntosVida -= danio;
+    }
+}
+
+// Crear objetos (instanciar)
+Pokemon pikachu = new Pokemon("Pikachu", "Eléctrico", 25);
+Pokemon charizard = new Pokemon("Charizard", "Fuego", 36);</div>
+                </div>
+
+                <div class="pokemon-connection">
+                    <h3>🎮 Tu Proyecto Necesita 3 Clases Principales</h3>
+                    
+                    <h4>1️⃣ Clase Pokemon</h4>
+                    <div class="code-block">public class Pokemon {
+    private int id;
+    private String nombre;
+    private String tipo;
+    private int nivel;
+    private int puntosVida;
+    private int ataque;
+    private int defensa;
+    
+    // Constructor, getters, setters, métodos de batalla
+}</div>
+
+                    <h4>2️⃣ Clase Entrenador</h4>
+                    <div class="code-block">public class Entrenador {
+    private String nombre;
+    private Pokemon[] equipo;
+    private int cantidadPokemon;
+    private int victorias;
+    private int derrotas;
+    
+    // Métodos para agregar Pokemon, batalla, etc.
+}</div>
+
+                    <h4>3️⃣ Clase Batalla (o Campeonato)</h4>
+                    <div class="code-block">public class Batalla {
+    public static int simularBatalla(Pokemon p1, Pokemon p2) {
+        // Lógica de batalla
+        // Retorna 1 si gana p1, 2 si gana p2
+    }
+}</div>
+                </div>
+
+                <div class="video-resource">
+                    <h3>🎥 Videos Recomendados</h3>
+                    <a href="https://www.youtube.com/results?search_query=programacion+orientada+objetos+java+español" class="video-link" target="_blank">🔍 POO Java Básico</a>
+                    <a href="https://www.youtube.com/results?search_query=clases+objetos+java+mouredev" class="video-link" target="_blank">🔍 Clases y Objetos - MoureDev</a>
+                </div>
+
+                <div class="card">
+                    <h3>🔐 Modificadores de Acceso</h3>
+                    <ul>
+                        <li><strong>private:</strong> Solo accesible dentro de la misma clase</li>
+                        <li><strong>public:</strong> Accesible desde cualquier parte</li>
+                        <li><strong>protected:</strong> Accesible en la clase y subclases</li>
+                    </ul>
+                    <p><strong>Buena práctica:</strong> Atributos private + métodos getters/setters public</p>
+                </div>
+
+                <div class="pokemon-example">
+                    <h4>💡 Ejemplo Completo: Clase Pokemon</h4>
+                    <div class="code-block">public class Pokemon {
+    // Atributos privados
+    private int id;
+    private String nombre;
+    private String tipo;
+    private int nivel;
+    private int puntosVida;
+    private int ataque;
+    private int defensa;
+    
+    // Constructor
+    public Pokemon(int id, String nombre, String tipo, int nivel) {
+        this.id = id;
+        this.nombre = nombre;
+        this.tipo = tipo;
+        this.nivel = nivel;
+        this.puntosVida = calcularVida(nivel);
+        this.ataque = calcularAtaque(nivel);
+        this.defensa = calcularDefensa(nivel);
+    }
+    
+    // Getters
+    public String getNombre() { return nombre; }
+    public String getTipo() { return tipo; }
+    public int getNivel() { return nivel; }
+    public int getAtaque() { return ataque; }
+    public int getDefensa() { return defensa; }
+    
+    // Setters
+    public void setNivel(int nivel) { 
+        this.nivel = nivel;
+        this.puntosVida = calcularVida(nivel);
+        this.ataque = calcularAtaque(nivel);
+        this.defensa = calcularDefensa(nivel);
+    }
+    
+    // Métodos privados auxiliares
+    private int calcularVida(int nivel) {
+        return 50 + (nivel * 10);
+    }
+    
+    private int calcularAtaque(int nivel) {
+        return 10 + (nivel * 5);
+    }
+    
+    private int calcularDefensa(int nivel) {
+        return 10 + (nivel * 3);
+    }
+    
+    // Método para mostrar información
+    public void mostrarInfo() {
+        System.out.println("=== " + nombre + " ===");
+        System.out.println("Tipo: " + tipo);
+        System.out.println("Nivel: " + nivel);
+        System.out.println("Ataque: " + ataque);
+        System.out.println("Defensa: " + defensa);
+    }
+}
+
+// USO:
+Pokemon pikachu = new Pokemon(25, "Pikachu", "Eléctrico", 30);
+pikachu.mostrarInfo();</div>
+                </div>
+
+                <div class="quiz-container">
+                    <div class="quiz-header">📝 Quiz: Clases y POO</div>
+                    
+                    <div class="quiz-question">
+                        <h4>Pregunta 1: ¿Qué es un objeto?</h4>
+                        <div class="quiz-options">
+                            <div class="quiz-option" onclick="selectOption(this, 'clases', 1, 'c')">a) Una variable</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'clases', 1, 'c')">b) Un método</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'clases', 1, 'c')">c) Una instancia de una clase</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'clases', 1, 'c')">d) Un tipo de dato</div>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>Pregunta 2: ¿Por qué los atributos deben ser private?</h4>
+                        <div class="quiz-options">
+                            <div class="quiz-option" onclick="selectOption(this, 'clases', 2, 'a')">a) Para encapsulamiento y control de acceso</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'clases', 2, 'a')">b) Para que ocupen menos memoria</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'clases', 2, 'a')">c) Para que sean más rápidos</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'clases', 2, 'a')">d) Es obligatorio en Java</div>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>Pregunta 3: ¿Qué palabra clave crea un objeto?</h4>
+                        <div class="quiz-options">
+                            <div class="quiz-option" onclick="selectOption(this, 'clases', 3, 'd')">a) create</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'clases', 3, 'd')">b) class</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'clases', 3, 'd')">c) object</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'clases', 3, 'd')">d) new</div>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>Pregunta 4: ¿Cuántas clases necesitas mínimo para tu proyecto Pokemon?</h4>
+                        <div class="quiz-options">
+                            <div class="quiz-option" onclick="selectOption(this, 'clases', 4, 'b')">a) 1 (solo Pokemon)</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'clases', 4, 'b')">b) 3 (Pokemon, Entrenador, Batalla)</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'clases', 4, 'b')">c) 10</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'clases', 4, 'b')">d) No necesitas clases</div>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>Pregunta 5: ¿Qué hace el constructor?</h4>
+                        <div class="quiz-options">
+                            <div class="quiz-option" onclick="selectOption(this, 'clases', 5, 'a')">a) Inicializa el objeto cuando se crea</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'clases', 5, 'a')">b) Destruye el objeto</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'clases', 5, 'a')">c) Imprime información</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'clases', 5, 'a')">d) Compara objetos</div>
+                        </div>
+                    </div>
+
+                    <button class="quiz-submit" onclick="submitQuiz('clases', 5)">Enviar Respuestas</button>
+                    <div id="clases-result" class="quiz-result"></div>
+                </div>
+            </div>
+
+            <!-- SECCIÓN 7: MÉTODOS -->
+            <div id="metodos" class="section">
+                <h2>7️⃣ Métodos (Getters, Setters, Analizadores)</h2>
+                
+                <div class="card">
+                    <h3>Tipos de Métodos</h3>
+                    <p>Los métodos son funciones que definen el comportamiento de una clase. Hay varios tipos:</p>
+                    
+                    <h4>1️⃣ Constructor</h4>
+                    <p>Inicializa el objeto cuando se crea con <code>new</code></p>
+                    <div class="code-block">public Pokemon(String nombre, int nivel) {
+    this.nombre = nombre;
+    this.nivel = nivel;
+}</div>
+
+                    <h4>2️⃣ Getters (Accesores)</h4>
+                    <p>Retornan el valor de un atributo privado</p>
+                    <div class="code-block">public String getNombre() {
+    return nombre;
+}
+
+public int getNivel() {
+    return nivel;
+}</div>
+
+                    <h4>3️⃣ Setters (Mutadores)</h4>
+                    <p>Modifican el valor de un atributo privado</p>
+                    <div class="code-block">public void setNombre(String nombre) {
+    this.nombre = nombre;
+}
+
+public void setNivel(int nivel) {
+    if(nivel > 0 && nivel <= 100) {
+        this.nivel = nivel;
+    }
+}</div>
+
+                    <h4>4️⃣ Métodos Analizadores</h4>
+                    <p>Realizan operaciones y retornan un resultado</p>
+                    <div class="code-block">public int calcularDanio(Pokemon enemigo) {
+    int danioBase = this.ataque - enemigo.getDefensa();
+    return Math.max(1, danioBase);  // Mínimo 1 de daño
+}
+
+public boolean estaDebil() {
+    return this.puntosVida < (this.nivel * 3);
+}</div>
+                </div>
+
+                <div class="pokemon-connection">
+                    <h3>🎮 Métodos Esenciales para tu Proyecto</h3>
+                    
+                    <div class="code-block">public class Pokemon {
+    // Atributos...
+    
+    // GETTERS (necesarios para acceder a atributos private)
+    public String getNombre() { return nombre; }
+    public String getTipo() { return tipo; }
+    public int getNivel() { return nivel; }
+    public int getPuntosVida() { return puntosVida; }
+    public int getAtaque() { return ataque; }
+    public int getDefensa() { return defensa; }
+    
+    // SETTERS (para modificar con validación)
+    public void setNivel(int nivel) {
+        if(nivel >= 1 && nivel <= 100) {
+            this.nivel = nivel;
+            recalcularEstadisticas();
+        }
+    }
+    
+    public void recibirDanio(int danio) {
+        this.puntosVida = Math.max(0, this.puntosVida - danio);
+    }
+    
+    // MÉTODOS ANALIZADORES
+    public int calcularDanio(Pokemon enemigo, double efectividad) {
+        int danioBase = this.ataque - enemigo.getDefensa();
+        int danioFinal = (int)(danioBase * efectividad);
+        return Math.max(1, danioFinal);
+    }
+    
+    public boolean estaDebilitado() {
+        return this.puntosVida <= 0;
+    }
+    
+    public void curar() {
+        this.puntosVida = this.nivel * 10;
+    }
+    
+    // MÉTODO PRIVADO (ayuda interna)
+    private void recalcularEstadisticas() {
+        this.puntosVida = nivel * 10;
+        this.ataque = 10 + (nivel * 5);
+        this.defensa = 10 + (nivel * 3);
+    }
+}</div>
+                </div>
+
+                <div class="video-resource">
+                    <h3>🎥 Videos Recomendados</h3>
+                    <a href="https://www.youtube.com/results?search_query=metodos+java+getters+setters+español" class="video-link" target="_blank">🔍 Getters y Setters</a>
+                    <a href="https://www.youtube.com/results?search_query=metodos+java+poo" class="video-link" target="_blank">🔍 Métodos en POO</a>
+                </div>
+
+                <div class="pokemon-example">
+                    <h4>💡 Ejemplo: Clase Completa con Todos los Métodos</h4>
+                    <div class="code-block">public class CuentaBancaria {
+    // Atributos
+    private String titular;
+    private double saldo;
+    private int numeroCuenta;
+    
+    // Constructor
+    public CuentaBancaria(String titular, int numeroCuenta) {
+        this.titular = titular;
+        this.numeroCuenta = numeroCuenta;
+        this.saldo = 0.0;
+    }
+    
+    // Getters
+    public String getTitular() { return titular; }
+    public double getSaldo() { return saldo; }
+    public int getNumeroCuenta() { return numeroCuenta; }
+    
+    // Setters (con validación)
+    public void setTitular(String titular) {
+        if(titular != null && !titular.isEmpty()) {
+            this.titular = titular;
+        }
+    }
+    
+    // Métodos Analizadores
+    public void depositar(double cantidad) {
+        if(cantidad > 0) {
+            saldo += cantidad;
+            System.out.println("Depósito exitoso. Nuevo saldo: $" + saldo);
+        }
+    }
+    
+    public boolean retirar(double cantidad) {
+        if(cantidad > 0 && cantidad <= saldo) {
+            saldo -= cantidad;
+            System.out.println("Retiro exitoso. Nuevo saldo: $" + saldo);
+            return true;
+        }
+        System.out.println("Fondos insuficientes");
+        return false;
+    }
+    
+    public void consultarSaldo() {
+        System.out.println("Titular: " + titular);
+        System.out.println("Cuenta: " + numeroCuenta);
+        System.out.println("Saldo: $" + saldo);
+    }
+}
+
+// USO:
+CuentaBancaria cuenta = new CuentaBancaria("Ash Ketchum", 12345);
+cuenta.depositar(1000);
+cuenta.retirar(300);
+cuenta.consultarSaldo();</div>
+                </div>
+
+                <div class="quiz-container">
+                    <div class="quiz-header">📝 Quiz: Métodos</div>
+                    
+                    <div class="quiz-question">
+                        <h4>Pregunta 1: ¿Qué tipo de método NO retorna valor?</h4>
+                        <div class="quiz-options">
+                            <div class="quiz-option" onclick="selectOption(this, 'metodos', 1, 'c')">a) Getter</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'metodos', 1, 'c')">b) Analizador</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'metodos', 1, 'c')">c) Setter (void)</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'metodos', 1, 'c')">d) Constructor</div>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>Pregunta 2: ¿Qué hace un getter?</h4>
+                        <div class="quiz-options">
+                            <div class="quiz-option" onclick="selectOption(this, 'metodos', 2, 'a')">a) Retorna el valor de un atributo</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'metodos', 2, 'a')">b) Modifica un atributo</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'metodos', 2, 'a')">c) Crea un objeto</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'metodos', 2, 'a')">d) Elimina un objeto</div>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>Pregunta 3: ¿Por qué es importante validar en los setters?</h4>
+                        <div class="quiz-options">
+                            <div class="quiz-option" onclick="selectOption(this, 'metodos', 3, 'd')">a) Para que el código sea más largo</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'metodos', 3, 'd')">b) Es obligatorio en Java</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'metodos', 3, 'd')">c) Para que compile</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'metodos', 3, 'd')">d) Para evitar valores inválidos</div>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>Pregunta 4: En calcularDanio(Pokemon enemigo), ¿qué tipo de método es?</h4>
+                        <div class="quiz-options">
+                            <div class="quiz-option" onclick="selectOption(this, 'metodos', 4, 'b')">a) Constructor</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'metodos', 4, 'b')">b) Analizador (retorna un cálculo)</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'metodos', 4, 'b')">c) Getter</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'metodos', 4, 'b')">d) Setter</div>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>Pregunta 5: ¿Qué palabra indica que un método no retorna valor?</h4>
+                        <div class="quiz-options">
+                            <div class="quiz-option" onclick="selectOption(this, 'metodos', 5, 'b')">a) null</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'metodos', 5, 'b')">b) void</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'metodos', 5, 'b')">c) return</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'metodos', 5, 'b')">d) int</div>
+                        </div>
+                    </div>
+
+                    <button class="quiz-submit" onclick="submitQuiz('metodos', 5)">Enviar Respuestas</button>
+                    <div id="metodos-result" class="quiz-result"></div>
+                </div>
+            </div>
+
+            <!-- SECCIÓN 8: PARÁMETROS -->
+            <div id="parametros" class="section">
+                <h2>8️⃣ Paso de Parámetros (Valor vs Referencia)</h2>
+                
+                <div class="card">
+                    <h3>¿Cómo se pasan los parámetros en Java?</h3>
+                    <p>En Java existen dos conceptos importantes:</p>
+                    
+                    <h4>📦 Paso por Valor (Tipos Primitivos)</h4>
+                    <p>Se pasa una COPIA del valor. Cambios dentro del método NO afectan la variable original.</p>
+                    <div class="code-block">public static void modificarNumero(int num) {
+    num = 100;  // Modifica la copia, no el original
+}
+
+int nivel = 25;
+modificarNumero(nivel);
+System.out.println(nivel);  // Sigue siendo 25</div>
+
+                    <h4>🔗 Paso por Referencia (Objetos)</h4>
+                    <p>Se pasa la REFERENCIA al objeto. Cambios dentro del método SÍ afectan el objeto original.</p>
+                    <div class="code-block">public static void modificarPokemon(Pokemon p) {
+    p.setNivel(100);  // Modifica el objeto original
+}
+
+Pokemon pikachu = new Pokemon("Pikachu", 25);
+modificarPokemon(pikachu);
+System.out.println(pikachu.getNivel());  // Ahora es 100</div>
+                </div>
+
+                <div class="pokemon-connection">
+                    <h3>🎮 Aplicación en Batallas Pokemon</h3>
+                    <p>Este concepto es CRÍTICO para tu proyecto porque:</p>
+                    
+                    <div class="code-block">// ❌ INCORRECTO: Pasar atributos primitivos
+public static void atacar(int ataqueP1, int defensaP2, int vidaP2) {
+    int danio = ataqueP1 - defensaP2;
+    vidaP2 -= danio;  // ¡Esto NO modifica el Pokemon original!
+}
+
+// ✅ CORRECTO: Pasar objetos Pokemon
+public static void atacar(Pokemon atacante, Pokemon defensor) {
+    int danio = atacante.getAtaque() - defensor.getDefensa();
+    defensor.recibirDanio(danio);  // Esto SÍ modifica el objeto
+}
+
+// Uso en batalla
+Pokemon pikachu = new Pokemon("Pikachu", "Eléctrico", 30);
+Pokemon charizard = new Pokemon("Charizard", "Fuego", 36);
+
+atacar(pikachu, charizard);  // Charizard pierde vida REALMENTE
+System.out.println(charizard.getPuntosVida());  // Vida reducida</div>
+                </div>
+
+                <div class="video-resource">
+                    <h3>🎥 Videos Recomendados</h3>
+                    <a href="https://www.youtube.com/results?search_query=paso+parametros+java+valor+referencia" class="video-link" target="_blank">🔍 Parámetros en Java</a>
+                    <a href="https://www.youtube.com/results?search_query=objetos+parametros+java" class="video-link" target="_blank">🔍 Objetos como Parámetros</a>
+                </div>
+
+                <div class="card">
+                    <h3>⚡ Diferencia Clave</h3>
+                    <table style="width:100%; border-collapse: collapse;">
+                        <tr style="background:#667eea; color:white;">
+                            <th style="padding:10px; border:1px solid #ddd;">Aspecto</th>
+                            <th style="padding:10px; border:1px solid #ddd;">Primitivos (int, double, boolean)</th>
+                            <th style="padding:10px; border:1px solid #ddd;">Objetos (Pokemon, String, etc.)</th>
+                        </tr>
+                        <tr>
+                            <td style="padding:10px; border:1px solid #ddd;"><strong>Qué se pasa</strong></td>
+                            <td style="padding:10px; border:1px solid #ddd;">Copia del valor</td>
+                            <td style="padding:10px; border:1px solid #ddd;">Referencia al objeto</td>
+                        </tr>
+                        <tr style="background:#f7fafc;">
+                            <td style="padding:10px; border:1px solid #ddd;"><strong>Cambios afectan original</strong></td>
+                            <td style="padding:10px; border:1px solid #ddd;">❌ NO</td>
+                            <td style="padding:10px; border:1px solid #ddd;">✅ SÍ</td>
+                        </tr>
+                        <tr>
+                            <td style="padding:10px; border:1px solid #ddd;"><strong>Ejemplo</strong></td>
+                            <td style="padding:10px; border:1px solid #ddd;">int nivel = 25</td>
+                            <td style="padding:10px; border:1px solid #ddd;">Pokemon pikachu</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="pokemon-example">
+                    <h4>💡 Ejemplo Completo: Sistema de Batalla</h4>
+                    <div class="code-block">public class Batalla {
+    
+    // Método que simula un turno de batalla
+    public static void turno(Pokemon atacante, Pokemon defensor, double efectividad) {
+        // Calcular daño
+        int danioBase = atacante.getAtaque() - defensor.getDefensa();
+        int danioFinal = (int)(danioBase * efectividad);
+        danioFinal = Math.max(1, danioFinal);  // Mínimo 1
+        
+        // Aplicar daño al defensor (modifica el objeto)
+        defensor.recibirDanio(danioFinal);
+        
+        // Mostrar resultado
+        System.out.println(atacante.getNombre() + " ataca a " + defensor.getNombre());
+        System.out.println("Daño causado: " + danioFinal);
+        System.out.println("Vida restante: " + defensor.getPuntosVida());
+    }
+    
+    // Método que simula batalla completa
+    public static int batallar(Pokemon p1, Pokemon p2, double[][] efectividad) {
+        System.out.println("=== BATALLA: " + p1.getNombre() + " vs " + p2.getNombre() + " ===");
+        
+        int turnos = 0;
+        while(!p1.estaDebilitado() && !p2.estaDebilitado()) {
+            turnos++;
+            
+            // Turno de p1
+            int tipo1 = obtenerIndiceTipo(p1.getTipo());
+            int tipo2 = obtenerIndiceTipo(p2.getTipo());
+            double mult = efectividad[tipo1][tipo2];
+            
+            turno(p1, p2, mult);
+            
+            if(p2.estaDebilitado()) {
+                System.out.println(p1.getNombre() + " gana!");
+                return 1;
+            }
+            
+            // Turno de p2
+            mult = efectividad[tipo2][tipo1];
+            turno(p2, p1, mult);
+            
+            if(p1.estaDebilitado()) {
+                System.out.println(p2.getNombre() + " gana!");
+                return 2;
+            }
+        }
+        
+        return 0;  // Empate (no debería pasar)
+    }
+}
+
+// USO:
+Pokemon pikachu = new Pokemon(25, "Pikachu", "Eléctrico", 30);
+Pokemon charizard = new Pokemon(6, "Charizard", "Fuego", 36);
+
+int ganador = Batalla.batallar(pikachu, charizard, efectividad);
+// Los Pokemon han sido modificados (perdieron vida)</div>
+                </div>
+
+                <div class="quiz-container">
+                    <div class="quiz-header">📝 Quiz: Parámetros</div>
+                    
+                    <div class="quiz-question">
+                        <h4>Pregunta 1: ¿Qué pasa cuando pasas un int a un método y lo modificas?</h4>
+                        <div class="quiz-options">
+                            <div class="quiz-option" onclick="selectOption(this, 'parametros', 1, 'a')">a) La variable original NO cambia</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'parametros', 1, 'a')">b) La variable original SÍ cambia</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'parametros', 1, 'a')">c) Depende del método</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'parametros', 1, 'a')">d) Causa un error</div>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>Pregunta 2: ¿Qué pasa cuando pasas un Pokemon a un método y modificas sus atributos?</h4>
+                        <div class="quiz-options">
+                            <div class="quiz-option" onclick="selectOption(this, 'parametros', 2, 'b')">a) El Pokemon original NO cambia</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'parametros', 2, 'b')">b) El Pokemon original SÍ cambia</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'parametros', 2, 'b')">c) Se crea una copia</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'parametros', 2, 'b')">d) Causa error</div>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>Pregunta 3: ¿Por qué es importante entender esto en batallas Pokemon?</h4>
+                        <div class="quiz-options">
+                            <div class="quiz-option" onclick="selectOption(this, 'parametros', 3, 'a')">a) Para que los Pokemon pierdan vida realmente</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'parametros', 3, 'a')">b) Para que compile más rápido</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'parametros', 3, 'a')">c) No es importante</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'parametros', 3, 'a')">d) Para usar menos memoria</div>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>Pregunta 4: ¿Qué tipo de dato se pasa por valor?</h4>
+                        <div class="quiz-options">
+                            <div class="quiz-option" onclick="selectOption(this, 'parametros', 4, 'c')">a) Pokemon</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'parametros', 4, 'c')">b) String</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'parametros', 4, 'c')">c) int, double, boolean</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'parametros', 4, 'c')">d) Arrays</div>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>Pregunta 5: En atacar(Pokemon p1, Pokemon p2), ¿qué se pasa realmente?</h4>
+                        <div class="quiz-options">
+                            <div class="quiz-option" onclick="selectOption(this, 'parametros', 5, 'a')">a) Referencias a los objetos</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'parametros', 5, 'a')">b) Copias de los Pokemon</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'parametros', 5, 'a')">c) Solo los nombres</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'parametros', 5, 'a')">d) Los valores int</div>
+                        </div>
+                    </div>
+
+                    <button class="quiz-submit" onclick="submitQuiz('parametros', 5)">Enviar Respuestas</button>
+                    <div id="parametros-result" class="quiz-result"></div>
+                </div>
+            </div>
+
+            <!-- SECCIÓN 9: ARREGLOS OBJETUALES -->
+            <div id="objetuales" class="section">
+                <h2>9️⃣ Arreglos de Objetos</h2>
+                
+                <div class="card">
+                    <h3>¿Qué es un Arreglo de Objetos?</h3>
+                    <p>Es un arreglo donde cada elemento es un objeto (no un primitivo). Esto te permite almacenar colecciones de entidades complejas.</p>
+                    
+                    <div class="code-block">// Declaración de arreglo de objetos Pokemon
+Pokemon[] equipo = new Pokemon[6];
+
+// Crear y agregar Pokemon al equipo
+equipo[0] = new Pokemon(25, "Pikachu", "Eléctrico", 30);
+equipo[1] = new Pokemon(6, "Charizard", "Fuego", 36);
+equipo[2] = new Pokemon(9, "Blastoise", "Agua", 36);
+
+// Acceder a métodos de los objetos
+System.out.println(equipo[0].getNombre());  // "Pikachu"
+int ataque = equipo[1].getAtaque();         // Ataque de Charizard</div>
+                </div>
+
+                <div class="pokemon-connection">
+                    <h3>🎮 Estructura de Datos en tu Proyecto</h3>
+                    
+                    <h4>1️⃣ Equipo de Pokemon (dentro de Entrenador)</h4>
+                    <div class="code-block">public class Entrenador {
+    private String nombre;
+    private Pokemon[] equipo;
+    private int cantidadPokemon;
+    
+    public Entrenador(String nombre) {
+        this.nombre = nombre;
+        this.equipo = new Pokemon[6];  // Máximo 6 Pokemon
+        this.cantidadPokemon = 0;
+    }
+    
+    public boolean agregarPokemon(Pokemon p) {
+        if(cantidadPokemon < 6) {
+            equipo[cantidadPokemon] = p;
+            cantidadPokemon++;
+            return true;
+        }
+        return false;  // Equipo lleno
+    }
+    
+    public void mostrarEquipo() {
+        System.out.println("=== Equipo de " + nombre + " ===");
+        for(int i = 0; i < cantidadPokemon; i++) {
+            System.out.println((i+1) + ". " + equipo[i].getNombre() + 
+                             " (Nivel " + equipo[i].getNivel() + ")");
+        }
+    }
+}</div>
+
+                    <h4>2️⃣ Liga de Entrenadores</h4>
+                    <div class="code-block">// Array de entrenadores para el campeonato
+Entrenador[] liga = new Entrenador[8];
+
+liga[0] = new Entrenador("Ash");
+liga[1] = new Entrenador("Misty");
+liga[2] = new Entrenador("Brock");
+// ... más entrenadores
+
+// Agregar Pokemon a cada entrenador
+liga[0].agregarPokemon(new Pokemon(25, "Pikachu", "Eléctrico", 30));</div>
+
+                    <h4>3️⃣ Registros Pokédex (40 Pokemon)</h4>
+                    <div class="code-block">Pokemon[] pokedex = new Pokemon[40];
+int totalRegistrados = 0;
+
+// Registrar Pokemon
+public static void registrar(Pokemon[] pokedex, int[] total, Pokemon nuevo) {
+    if(total[0] < 40) {
+        pokedex[total[0]] = nuevo;
+        total[0]++;
+    }
+}</div>
+                </div>
+
+                <div class="video-resource">
+                    <h3>🎥 Videos Recomendados</h3>
+                    <a href="https://www.youtube.com/results?search_query=arreglos+objetos+java+español" class="video-link" target="_blank">🔍 Arreglos de Objetos</a>
+                    <a href="https://www.youtube.com/results?search_query=arrays+clases+java" class="video-link" target="_blank">🔍 Arrays con Clases</a>
+                </div>
+
+                <div class="pokemon-example">
+                    <h4>💡 Ejemplo: Tienda con Arreglo de Productos</h4>
+                    <div class="code-block">class Producto {
+    private String nombre;
+    private double precio;
+    private int stock;
+    
+    public Producto(String nombre, double precio, int stock) {
+        this.nombre = nombre;
+        this.precio = precio;
+        this.stock = stock;
+    }
+    
+    public String getNombre() { return nombre; }
+    public double getPrecio() { return precio; }
+    public int getStock() { return stock; }
+    
+    public void vender(int cantidad) {
+        if(cantidad <= stock) {
+            stock -= cantidad;
+        }
+    }
+}
+
+// Crear tienda con arreglo de productos
+Producto[] tienda = new Producto[5];
+tienda[0] = new Producto("Poción", 300, 10);
+tienda[1] = new Producto("Superpoción", 700, 5);
+tienda[2] = new Producto("Pokébola", 200, 20);
+tienda[3] = new Producto("Revivir", 2000, 3);
+tienda[4] = new Producto("Antídoto", 200, 8);
+
+// Mostrar inventario
+for(int i = 0; i < 5; i++) {
+    System.out.println(tienda[i].getNombre() + " - $" + 
+                      tienda[i].getPrecio() + " (Stock: " + 
+                      tienda[i].getStock() + ")");
+}
+
+// Vender producto
+tienda[0].vender(3);  // Vender 3 pociones</div>
+                </div>
+
+                <div class="card">
+                    <h3>🔍 Operaciones Comunes con Arreglos de Objetos</h3>
+                    
+                    <h4>Buscar Pokemon por Nombre</h4>
+                    <div class="code-block">public static int buscarPorNombre(Pokemon[] equipo, int cantidad, String nombre) {
+    for(int i = 0; i < cantidad; i++) {
+        if(equipo[i].getNombre().equalsIgnoreCase(nombre)) {
+            return i;
+        }
+    }
+    return -1;
+}</div>
+
+                    <h4>Ordenar Pokemon por Nivel</h4>
+                    <div class="code-block">public static void ordenarPorNivel(Pokemon[] equipo, int cantidad) {
+    for(int i = 0; i < cantidad - 1; i++) {
+        for(int j = i + 1; j < cantidad; j++) {
+            if(equipo[j].getNivel() > equipo[i].getNivel()) {
+                // Intercambiar
+                Pokemon temp = equipo[i];
+                equipo[i] = equipo[j];
+                equipo[j] = temp;
+            }
+        }
+    }
+}</div>
+
+                    <h4>Pokemon con Mayor Ataque</h4>
+                    <div class="code-block">public static Pokemon encontrarMasFuerte(Pokemon[] equipo, int cantidad) {
+    Pokemon masFuerte = equipo[0];
+    for(int i = 1; i < cantidad; i++) {
+        if(equipo[i].getAtaque() > masFuerte.getAtaque()) {
+            masFuerte = equipo[i];
+        }
+    }
+    return masFuerte;
+}</div>
+                </div>
+
+                <div class="quiz-container">
+                    <div class="quiz-header">📝 Quiz: Arreglos de Objetos</div>
+                    
+                    <div class="quiz-question">
+                        <h4>Pregunta 1: ¿Cómo accedes al nombre del Pokemon en equipo[2]?</h4>
+                        <div class="quiz-options">
+                            <div class="quiz-option" onclick="selectOption(this, 'objetuales', 1, 'c')">a) equipo[2].nombre</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'objetuales', 1, 'c')">b) equipo.getNombre(2)</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'objetuales', 1, 'c')">c) equipo[2].getNombre()</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'objetuales', 1, 'c')">d) equipo(2, "nombre")</div>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>Pregunta 2: ¿Qué debes hacer DESPUÉS de declarar Pokemon[] equipo = new Pokemon[6]?</h4>
+                        <div class="quiz-options">
+                            <div class="quiz-option" onclick="selectOption(this, 'objetuales', 2, 'a')">a) Crear objetos Pokemon y asignarlos</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'objetuales', 2, 'a')">b) Nada, ya están creados</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'objetuales', 2, 'a')">c) Compilar de nuevo</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'objetuales', 2, 'a')">d) Usar Scanner</div>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>Pregunta 3: Para ordenar Pokemon por nivel, ¿qué comparas?</h4>
+                        <div class="quiz-options">
+                            <div class="quiz-option" onclick="selectOption(this, 'objetuales', 3, 'b')">a) Los índices</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'objetuales', 3, 'b')">b) equipo[i].getNivel() con equipo[j].getNivel()</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'objetuales', 3, 'b')">c) Los nombres</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'objetuales', 3, 'b')">d) Las referencias</div>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>Pregunta 4: En tu proyecto, ¿por qué usar Entrenador[] liga en vez de variables separadas?</h4>
+                        <div class="quiz-options">
+                            <div class="quiz-option" onclick="selectOption(this, 'objetuales', 4, 'd')">a) Es más lento pero más bonito</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'objetuales', 4, 'd')">b) Es obligatorio</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'objetuales', 4, 'd')">c) Para usar menos memoria</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'objetuales', 4, 'd')">d) Para recorrer, buscar y organizar fácilmente</div>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h4>Pregunta 5: ¿Qué pasa si haces equipo[3] = equipo[5]?</h4>
+                        <div class="quiz-options">
+                            <div class="quiz-option" onclick="selectOption(this, 'objetuales', 5, 'c')">a) Se crea una copia del Pokemon</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'objetuales', 5, 'c')">b) Causa error</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'objetuales', 5, 'c')">c) Ambos índices apuntan al mismo objeto</div>
+                            <div class="quiz-option" onclick="selectOption(this, 'objetuales', 5, 'c')">d) Se borran ambos</div>
+                        </div>
+                    </div>
+
+                    <button class="quiz-submit" onclick="submitQuiz('objetuales', 5)">Enviar Respuestas</button>
+                    <div id="objetuales-result" class="quiz-result"></div>
+                </div>
+            </div>
+
+            <!-- SECCIÓN FINAL: RESUMEN DEL PROYECTO -->
+            <div id="proyecto" class="section">
+                <h2>🎯 Resumen: Tu Proyecto Liga Pokémon Completo</h2>
+                
+                <div class="card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+                    <h3>🎉 ¡Felicitaciones! Has aprendido todos los conceptos necesarios</h3>
+                    <p style="font-size: 1.1em;">Ahora tienes todas las herramientas para construir tu proyecto de Liga Pokémon. Veamos cómo se conecta todo:</p>
+                </div>
+
+                <div class="pokemon-connection">
+                    <h3>📚 Resumen de Conceptos y su Aplicación</h3>
+                    
+                    <table style="width:100%; border-collapse: collapse; margin: 20px 0;">
+                        <tr style="background:#667eea; color:white;">
+                            <th style="padding:12px; border:1px solid #ddd;">Concepto</th>
+                            <th style="padding:12px; border:1px solid #ddd;">Uso en el Proyecto</th>
+                        </tr>
+                        <tr>
+                            <td style="padding:10px; border:1px solid #ddd;"><strong>1. Vectores</strong></td>
+                            <td style="padding:10px; border:1px solid #ddd;">Almacenar 40 Pokemon, equipos de 6, IDs</td>
+                        </tr>
+                        <tr style="background:#f7fafc;">
+                            <td style="padding:10px; border:1px solid #ddd;"><strong>2. Ordenamiento</strong></td>
+                            <td style="padding:10px; border:1px solid #ddd;">Ordenar por ataque, defensa, nivel, ranking</td>
+                        </tr>
+                        <tr>
+                            <td style="padding:10px; border:1px solid #ddd;"><strong>3. Búsqueda</strong></td>
+                            <td style="padding:10px; border:1px solid #ddd;">Buscar Pokemon por ID o nombre</td>
+                        </tr>
+                        <tr style="background:#f7fafc;">
+                            <td style="padding:10px; border:1px solid #ddd;"><strong>4. Matrices</strong></td>
+                            <td style="padding:10px; border:1px solid #ddd;">Tabla de efectividad de tipos, resultados Round Robin</td>
+                        </tr>
+                        <tr>
+                            <td style="padding:10px; border:1px solid #ddd;"><strong>5. Cadenas</strong></td>
+                            <td style="padding:10px; border:1px solid #ddd;">Nombres, tipos, validaciones, búsquedas</td>
+                        </tr>
+                        <tr style="background:#f7fafc;">
+                            <td style="padding:10px; border:1px solid #ddd;"><strong>6. Clases</strong></td>
+                            <td style="padding:10px; border:1px solid #ddd;">Pokemon, Entrenador, Batalla</td>
+                        </tr>
+                        <tr>
+                            <td style="padding:10px; border:1px solid #ddd;"><strong>7. Métodos</strong></td>
+                            <td style="padding:10px; border:1px solid #ddd;">Getters, setters, calcularDanio(), atacar()</td>
+                        </tr>
+                        <tr style="background:#f7fafc;">
+                            <td style="padding:10px; border:1px solid #ddd;"><strong>8. Parámetros</strong></td>
+                            <td style="padding:10px; border:1px solid #ddd;">Pasar Pokemon a batallas para modificar vida</td>
+                        </tr>
+                        <tr>
+                            <td style="padding:10px; border:1px solid #ddd;"><strong>9. Arreglos Objetuales</strong></td>
+                            <td style="padding:10px; border:1px solid #ddd;">Liga de entrenadores, equipos Pokemon</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="card">
+                    <h3>🏗️ Arquitectura del Proyecto</h3>
+                    <pre style="background:#2d3748; color:#e2e8f0; padding:20px; border-radius:8px; overflow-x:auto;">
+Proyecto Liga Pokémon
+│
+├── Clase Pokemon
+│   ├── Atributos: id, nombre, tipo, nivel, vida, ataque, defensa
+│   ├── Constructor
+│   ├── Getters y Setters
+│   └── Métodos: calcularDanio(), recibirDanio(), estaDebilitado()
+│
+├── Clase Entrenador
+│   ├── Atributos: nombre, Pokemon[] equipo, victorias, derrotas
+│   ├── Constructor
+│   └── Métodos: agregarPokemon(), mostrarEquipo()
+│
+├── Clase Batalla
+│   ├── Método: turno(Pokemon, Pokemon, efectividad)
+│   ├── Método: simularBatalla(Pokemon, Pokemon)
+│   └── Método: campeonatoRoundRobin(Entrenador[])
+│
+└── Clase Main (Principal)
+    ├── Menú principal
+    ├── Pokemon[] pokedex (40 Pokemon)
+    ├── Entrenador[] liga (8 entrenadores)
+    └── double[][] efectividad (matriz 5x5)
+    </pre>
+                </div>
+
+                <div class="pokemon-connection">
+                    <h3>⚔️ Fórmula de Daño</h3>
+                    <div class="code-block">Daño = (Ataque del Atacante - Defensa del Defensor) × Efectividad
+
+Donde:
+- Ataque: 10 + (nivel × 5)
+- Defensa: 10 + (nivel × 3)
+- Efectividad:
+    • 2.0 = Súper efectivo
+    • 1.0 = Daño normal
+    • 0.5 = No muy efectivo
+    • 0.0 = Inmune
+
+Mínimo: 1 punto de daño siempre</div>
+                </div>
+
+                <div class="card">
+                    <h3>🏆 Sistema Round Robin (Todos contra Todos)</h3>
+                    <p>Con 8 entrenadores, cada uno enfrenta a los otros 7:</p>
+                    <ul>
+                        <li>Total de batallas: 8 × 7 / 2 = <strong>28 batallas</strong></li>
+                        <li>Victoria = 3 puntos</li>
+                        <li>Empate = 1 punto</li>
+                        <li>Derrota = 0 puntos</li>
+                        <li>Ganador: El entrenador con más puntos</li>
+                    </ul>
+                    
+                    <div class="code-block">// Ejemplo de emparejamientos
+Ronda 1: E1 vs E2, E3 vs E4, E5 vs E6, E7 vs E8
+Ronda 2: E1 vs E3, E2 vs E4, E5 vs E7, E6 vs E8
+Ronda 3: E1 vs E4, E2 vs E3, E5 vs E8, E6 vs E7
+// ... continuar hasta completar 28 batallas</div>
+                </div>
+
+                <div class="card">
+                    <h3>✅ Lista de Verificación del Proyecto</h3>
+                    <div style="background:#f7fafc; padding:20px; border-radius:8px;">
+                        <h4>Fase 1: Estructura Básica</h4>
+                        <label><input type="checkbox"> Clase Pokemon con todos sus atributos</label><br>
+                        <label><input type="checkbox"> Clase Entrenador con equipo de Pokemon</label><br>
+                        <label><input type="checkbox"> Clase Batalla o Campeonato</label><br>
+                        <label><input type="checkbox"> Matriz de efectividad 5×5</label><br><br>
+                        
+                        <h4>Fase 2: Funcionalidades Core</h4>
+                        <label><input type="checkbox"> Registrar Pokemon (hasta 40)</label><br>
+                        <label><input type="checkbox"> Buscar Pokemon por ID (binaria)</label><br>
+                        <label><input type="checkbox"> Buscar Pokemon por nombre (lineal)</label><br>
+                        <label><input type="checkbox"> Ordenar Pokemon por ataque</label><br>
+                        <label><input type="checkbox"> Calcular daño con efectividad</label><br><br>
+                        
+                        <h4>Fase 3: Sistema de Batallas</h4>
+                        <label><input type="checkbox"> Simular batalla 1 vs 1</label><br>
+                        <label><input type="checkbox"> Sistema de turnos</label><br>
+                        <label><input type="checkbox"> Determinar ganador</label><br>
+                        <label><input type="checkbox"> Actualizar estadísticas (victorias/derrotas)</label><br><br>
+                        
+                        <h4>Fase 4: Campeonato</h4>
+                        <label><input type="checkbox"> Registrar 8 entrenadores</label><br>
+                        <label><input type="checkbox"> Sistema Round Robin (28 batallas)</label><br>
+                        <label><input type="checkbox"> Tabla de posiciones</label><br>
+                        <label><input type="checkbox"> Declarar campeón</label><br><br>
+                        
+                        <h4>Fase 5: Extras (Opcionales)</h4>
+                        <label><input type="checkbox"> Guardar/cargar datos en archivos</label><br>
+                        <label><input type="checkbox"> Interfaz gráfica</label><br>
+                        <label><input type="checkbox"> Más tipos de Pokemon</label><br>
+                        <label><input type="checkbox"> Movimientos especiales</label><br>
+                    </div>
+                </div>
+
+                <div class="video-resource">
+                    <h3>🎥 Recursos Finales Recomendados</h3>
+                    <a href="https://www.youtube.com/results?search_query=proyecto+completo+java+poo" class="video-link" target="_blank">🔍 Proyectos Java Completos</a>
+                    <a href="https://www.youtube.com/results?search_query=como+estructurar+proyecto+java" class="video-link" target="_blank">🔍 Estructura de Proyectos</a>
+                    <a href="https://www.youtube.com/results?search_query=buenas+practicas+java" class="video-link" target="_blank">🔍 Buenas Prácticas Java</a>
+                </div>
+
+                <div class="card" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white;">
+                    <h3>💪 Mensaje Final</h3>
+                    <p style="font-size: 1.15em; line-height: 1.8;">
+                        Has completado una guía completa de Java enfocada en tu proyecto real. No intentes hacerlo todo de una vez:
+                    </p>
+                    <ul style="font-size: 1.05em; line-height: 1.8;">
+                        <li><strong>Paso 1:</strong> Crea las clases básicas (Pokemon, Entrenador)</li>
+                        <li><strong>Paso 2:</strong> Implementa el sistema de batalla simple</li>
+                        <li><strong>Paso 3:</strong> Agrega la matriz de efectividad</li>
+                        <li><strong>Paso 4:</strong> Implementa búsqueda y ordenamiento</li>
+                        <li><strong>Paso 5:</strong> Construye el campeonato Round Robin</li>
+                    </ul>
+                    <p style="font-size: 1.1em; margin-top: 20px;">
+                        <strong>Recuerda:</strong> La programación se aprende practicando. ¡Cada error es una oportunidad de aprender! 🚀
+                    </p>
+                </div>
+            </div>
+            
+        </div>
+
+        <div class="footer">
+            <p>💻 Java Aplicado: Proyecto Liga Pokémon</p>
+            <p>Aprende programando - Cada concepto con su aplicación práctica</p>
+        </div>
+    </div>
+
+    <script>
+        // Variables globales
+        let completedTopics = [];
+        let quizResults = {};
+        let vectorData = [0, 0, 0, 0, 0];
+        let sortArray = [];
+        let searchArray = [2, 5, 8, 12, 15, 18, 23, 28];
+
+        // Navegación
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.section');
+            const buttons = document.querySelectorAll('.nav-btn');
+            
+            sections.forEach(section => section.classList.remove('active'));
+            buttons.forEach(btn => btn.classList.remove('active'));
+            
+            document.getElementById(sectionId).classList.add('active');
+            event.target.classList.add('active');
+            
+            window.scrollTo(0, 0);
+        }
+
+        // Tabs
+        function showTab(tabId) {
+            const tabContents = document.querySelectorAll('.tab-content');
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            
+            tabContents.forEach(content => content.classList.remove('active'));
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            
+            document.getElementById(tabId).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // Progreso
+        function updateProgress() {
+            const total = 9;
+            const completed = completedTopics.length;
+            const percentage = Math.round((completed / total) * 100);
+            
+            document.getElementById('progressFill').style.width = percentage + '%';
+            document.getElementById('progressFill').textContent = percentage + '%';
+            document.getElementById('progressText').textContent = `${completed} de ${total} temas completados`;
+            
+            // Marcar botones completados
+            completedTopics.forEach(topic => {
+                const btn = document.querySelector(`[onclick="showSection('${topic}')"]`);
+                if(btn) btn.classList.add('completed');
+            });
+        }
+
+        // Sistema de Quiz
+        function selectOption(element, topic, questionNum, correctAnswer) {
+            const options = element.parentElement.querySelectorAll('.quiz-option');
+            options.forEach(opt => opt.classList.remove('selected'));
+            element.classList.add('selected');
+            
+            // Guardar respuesta
+            if(!quizResults[topic]) quizResults[topic] = {};
+            quizResults[topic][questionNum] = element.textContent.charAt(0);
+        }
+
+        function submitQuiz(topic, totalQuestions) {
+            const answers = quizResults[topic];
+            if(!answers || Object.keys(answers).length < totalQuestions) {
+                alert('Por favor responde todas las preguntas antes de enviar.');
+                return;
+            }
+            
+            // Respuestas correctas (hardcoded para verificación)
+            const correctAnswers = {
+                'vectores': ['b', 'b', 'c', 'a', 'd'],
+                'ordenamiento': ['a', 'c', 'b', 'c', 'a'],
+                'busqueda': ['c', 'b', 'a', 'b', 'd'],
+                'matrices': ['c', 'a', 'b', 'c', 'a'],
+                'cadenas': ['b', 'c', 'a', 'c', 'b'],
+                'clases': ['c', 'a', 'd', 'b', 'a'],
+                'metodos': ['c', 'a', 'd', 'b', 'b'],
+                'parametros': ['a', 'b', 'a', 'c', 'a'],
+                'objetuales': ['c', 'a', 'b', 'd', 'c']
+            };
+            
+            let correct = 0;
+            const correctAns = correctAnswers[topic];
+            
+            // Colorear respuestas
+            const questions = document.querySelectorAll(`#${topic} .quiz-question`);
+            questions.forEach((q, index) => {
+                const options = q.querySelectorAll('.quiz-option');
+                options.forEach(opt => {
+                    const letter = opt.textContent.charAt(0);
+                    if(letter === correctAns[index]) {
+                        opt.classList.add('correct');
+                        if(answers[index + 1] === letter) correct++;
+                    } else if(answers[index + 1] === letter) {
+                        opt.classList.add('incorrect');
+                    }
+                });
+            });
+            
+            const percentage = Math.round((correct / totalQuestions) * 100);
+            const resultDiv = document.getElementById(`${topic}-result`);
+            resultDiv.classList.add('show');
+            
+            if(percentage >= 80) {
+                resultDiv.className = 'quiz-result show pass';
+                resultDiv.innerHTML = `🎉 ¡Excelente! ${correct}/${totalQuestions} correctas (${percentage}%)<br>Has dominado este tema. ¡Puedes continuar!`;
+                
+                if(!completedTopics.includes(topic)) {
+                    completedTopics.push(topic);
+                    updateProgress();
+                }
+            } else {
+                resultDiv.className = 'quiz-result show fail';
+                resultDiv.innerHTML = `📚 ${correct}/${totalQuestions} correctas (${percentage}%)<br>Revisa el material y vuelve a intentarlo. Necesitas 80% para continuar.`;
+            }
+        }
+
+        // VECTORES - Funciones interactivas
+        function renderVector() {
+            const container = document.getElementById('vectorVisual');
+            container.innerHTML = '';
+            vectorData.forEach((value, index) => {
+                const cell = document.createElement('div');
+                cell.className = 'array-cell';
+                cell.innerHTML = `<div class="array-index">[${index}]</div><div class="array-value">${value}</div>`;
+                container.appendChild(cell);
+            });
+        }
+
+        function updateVector() {
+            const index = parseInt(document.getElementById('vectorIndex').value);
+            const value = parseInt(document.getElementById('vectorValue').value);
+            
+            if(index >= 0 && index < vectorData.length && !isNaN(value)) {
+                vectorData[index] = value;
+                renderVector();
+                document.getElementById('vectorOutput').innerHTML = 
+                    `✅ Array actualizado en posición [${index}] = ${value}<br>Array completo: [${vectorData.join(', ')}]`;
+            } else {
+                document.getElementById('vectorOutput').innerHTML = 
+                    '❌ Error: Índice fuera de rango (0-4) o valor inválido';
+            }
+        }
+
+        function resetVector() {
+            vectorData = [0, 0, 0, 0, 0];
+            renderVector();
+            document.getElementById('vectorOutput').innerHTML = '🔄 Vector reiniciado';
+        }
+
+        function checkVectorPractice() {
+            document.getElementById('vectorPracticeOutput').style.display = 'block';
+            document.getElementById('vectorPracticeOutput').innerHTML = `
+<strong>Solución sugerida:</strong>
+
+int[] ataque = new int[6];  // Array de 6 posiciones
+ataque[0] = 85;  // Primer Pokémon
+ataque[1] = 70;  // Segundo Pokémon
+ataque[2] = 92;  // Tercer Pokémon
+// Las posiciones [3], [4], [5] quedan en 0 (valor por defecto)
+
+Recuerda: Los valores de ataque deben estar entre 1 y 100 según tu proyecto.
+            `;
+        }
+
+        // ORDENAMIENTO - Funciones
+        function renderSortArray() {
+            const container = document.getElementById('sortVisual');
+            container.innerHTML = '';
+            sortArray.forEach((value, index) => {
+                const cell = document.createElement('div');
+                cell.className = 'array-cell';
+                cell.innerHTML = `<div class="array-index">[${index}]</div><div class="array-value">${value}</div>`;
+                container.appendChild(cell);
+            });
+        }
+
+        function generateRandomArray() {
+            sortArray = [];
+            for(let i = 0; i < 6; i++) {
+                sortArray.push(Math.floor(Math.random() * 50) + 50); // 50-100
+            }
+            renderSortArray();
+            document.getElementById('sortOutput').innerHTML = 
+                `🎲 Valores de ataque generados: [${sortArray.join(', ')}]`;
+        }
+
+        function sortStepByStep() {
+            const arr = [...sortArray];
+            let output = '📊 Ordenamiento por Selección (mayor a menor):<br><br>';
+            
+            for(let i = 0; i < arr.length-1; i++) {
+                let maxIdx = i;
+                for(let j = i+1; j < arr.length; j++) {
+                    if(arr[j] > arr[maxIdx]) maxIdx = j;
+                }
+                if(maxIdx !== i) {
+                    output += `Paso ${i+1}: Intercambiar ${arr[i]} con ${arr[maxIdx]}<br>`;
+                    [arr[i], arr[maxIdx]] = [arr[maxIdx], arr[i]];
+                    output += `Resultado: [${arr.join(', ')}]<br><br>`;
+                }
+            }
+            
+            sortArray = arr;
+            renderSortArray();
+            document.getElementById('sortOutput').innerHTML = output + 
+                `✅ Ordenado de mayor a menor por ataque`;
+        }
+
+        function sortInstant() {
+            sortArray.sort((a, b) => b - a);
+            renderSortArray();
+            document.getElementById('sortOutput').innerHTML = 
+                `⚡ Ordenado: [${sortArray.join(', ')}]`;
+        }
+
+        function checkSortPractice() {
+            document.getElementById('sortPracticeOutput').style.display = 'block';
+            document.getElementById('sortPracticeOutput').innerHTML = `
+<strong>Explicación paso a paso del ordenamiento por inserción:</strong>
+
+Inicio: [60, 80, 55, 90, 70]
+
+Paso 1: Tomar 80, comparar con 60 → 80 > 60, queda en su lugar
+[60, 80, 55, 90, 70]
+
+Paso 2: Tomar 55, comparar con 80 y 60 → insertar al principio
+[55, 60, 80, 90, 70]
+
+Paso 3: Tomar 90, ya es el mayor → queda al final
+[55, 60, 80, 90, 70]
+
+Paso 4: Tomar 70, insertar entre 60 y 80
+[55, 60, 70, 80, 90] ✅ Ordenado!
+            `;
+        }
+
+        // BÚSQUEDA - Funciones
+        function renderSearchArray() {
+            const container = document.getElementById('searchVisual');
+            container.innerHTML = '';
+            searchArray.forEach((value, index) => {
+                const cell = document.createElement('div');
+                cell.className = 'array-cell';
+                cell.innerHTML = `<div class="array-index">[${index}]</div><div class="array-value">${value}</div>`;
+                container.appendChild(cell);
+            });
+        }
+
+        function linearSearch() {
+            const target = parseInt(document.getElementById('searchValue').value);
+            let output = `🔍 Búsqueda Lineal del ID ${target}:<br><br>`;
+            
+            for(let i = 0; i < searchArray.length; i++) {
+                output += `Paso ${i+1}: Revisar posición [${i}] = ${searchArray[i]}`;
+                if(searchArray[i] === target) {
+                    output += ` ✅ ¡Encontrado!<br><br>`;
+                    output += `ID ${target} encontrado en el índice ${i}<br>`;
+                    output += `Total de comparaciones: ${i+1}`;
+                    document.getElementById('searchOutput').innerHTML = output;
+                    return;
+                }
+                output += `<br>`;
+            }
+            
+            output += `<br>❌ ID ${target} no encontrado<br>Total de comparaciones: ${searchArray.length}`;
+            document.getElementById('searchOutput').innerHTML = output;
+        }
+
+        function binarySearch() {
+            const target = parseInt(document.getElementById('searchValue').value);
+            let output = `🔍 Búsqueda Binaria del ID ${target}:<br><br>`;
+            let left = 0, right = searchArray.length - 1;
+            let step = 1;
+            
+            while(left <= right) {
+                let mid = Math.floor((left + right) / 2);
+                output += `Paso ${step}: Revisar medio [${mid}] = ${searchArray[mid]}<br>`;
+                
+                if(searchArray[mid] === target) {
+                    output += `✅ ¡Encontrado en ${step} comparaciones!`;
+                    document.getElementById('searchOutput').innerHTML = output;
+                    return;
+                }
+                
+                if(searchArray[mid] < target) {
+                    output += `${searchArray[mid]} < ${target}, buscar derecha<br><br>`;
+                    left = mid + 1;
+                } else {
+                    output += `${searchArray[mid]} > ${target}, buscar izquierda<br><br>`;
+                    right = mid - 1;
+                }
+                step++;
+            }
+            
+            output += `❌ ID ${target} no encontrado`;
+            document.getElementById('searchOutput').innerHTML = output;
+        }
+
+        function checkSearchPractice() {
+            document.getElementById('searchPracticeOutput').style.display = 'block';
+            document.getElementById('searchPracticeOutput').innerHTML = `
+<strong>Respuesta:</strong>
+
+Con 40 Pokémon:
+
+<strong>Búsqueda Lineal:</strong>
+- Peor caso: 40 comparaciones (si está al final o no existe)
+- Mejor caso: 1 comparación (si está al inicio)
+- Promedio: 20 comparaciones
+
+<strong>Búsqueda Binaria:</strong>
+- Máximo: 6 comparaciones (log₂(40) ≈ 5.32, redondeado a 6)
+- Siempre: entre 1 y 6 comparaciones
+
+¡La búsqueda binaria es MUCHO más eficiente para arreglos grandes!
+Por eso es importante ordenar por ID antes de buscar.
+            `;
+        }
+
+        // FUNCIONES PARA MATRICES
+        function checkMatrixPractice() {
+            document.getElementById('matrixPracticeOutput').innerHTML = `
+<strong>Solución: Encontrar el mayor multiplicador</strong>
+
+<div class="code-block">double[][] efectividad = {
+    {1.0, 0.5, 2.0, 1.0, 1.0},
+    {2.0, 1.0, 0.5, 0.5, 1.0},
+    {0.5, 2.0, 1.0, 0.5, 1.0},
+    {1.0, 2.0, 0.5, 1.0, 1.0},
+    {1.0, 1.0, 1.0, 1.0, 1.0}
+};
+
+double maximo = efectividad[0][0];
+int filaMax = 0, colMax = 0;
+
+for(int i = 0; i < 5; i++) {
+    for(int j = 0; j < 5; j++) {
+        if(efectividad[i][j] > maximo) {
+            maximo = efectividad[i][j];
+            filaMax = i;
+            colMax = j;
+        }
+    }
+}
+
+System.out.println("Multiplicador más alto: " + maximo);
+System.out.println("Tipo atacante índice: " + filaMax);
+System.out.println("Tipo defensor índice: " + colMax);</div>
+
+<strong>Resultado:</strong> El multiplicador más alto es 2.0 (súper efectivo).
+Aparece varias veces: Fuego→Planta, Agua→Fuego, Planta→Agua, Eléctrico→Agua.
+            `;
+        }
+
+        // FUNCIONES PARA CADENAS
+        function testStringMethods() {
+            const input = document.getElementById('stringInput').value;
+            
+            if(!input) {
+                document.getElementById('stringOutput').innerHTML = '⚠️ Por favor ingresa un nombre';
+                return;
+            }
+            
+            const output = `
+<strong>Pruebas con "${input}":</strong>
+
+📏 Length: ${input.length} caracteres
+🔤 Mayúsculas: ${input.toUpperCase()}
+🔡 Minúsculas: ${input.toLowerCase()}
+📍 Primera letra: ${input.charAt(0)}
+✂️ Primeros 4: ${input.substring(0, 4)}
+🔍 Contiene "char": ${input.toLowerCase().includes('char') ? 'Sí' : 'No'}
+📊 Posición de "a": ${input.toLowerCase().indexOf('a')}
+
+<strong>Validación de tipo:</strong>
+${input.toLowerCase() === 'charizard' ? '🔥 ¡Pokemon de tipo Fuego detectado!' : ''}
+${input.toLowerCase() === 'pikachu' ? '⚡ ¡Pokemon de tipo Eléctrico detectado!' : ''}
+${input.toLowerCase() === 'blastoise' ? '💧 ¡Pokemon de tipo Agua detectado!' : ''}
+            `;
+            
+            document.getElementById('stringOutput').innerHTML = output;
+        }
+
+        // Inicialización
+        document.addEventListener('DOMContentLoaded', function() {
+            renderVector();
+            generateRandomArray();
+            renderSearchArray();
+            updateProgress();
+        });
+    </script>
+</body>
+</html>

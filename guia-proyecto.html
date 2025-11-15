@@ -1,0 +1,1522 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía del Proyecto: Liga Pokémon</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.8em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.3em;
+            opacity: 0.95;
+        }
+
+        .nav {
+            background: #2d3748;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 15px;
+            gap: 10px;
+        }
+
+        .nav-btn {
+            background: #4a5568;
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+
+        .nav-btn:hover {
+            background: #667eea;
+            transform: translateY(-2px);
+        }
+
+        .nav-btn.active {
+            background: #667eea;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card {
+            background: #f7fafc;
+            border-left: 5px solid #667eea;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .uml-container {
+            background: white;
+            border: 3px solid #2d3748;
+            border-radius: 10px;
+            padding: 30px;
+            margin: 30px 0;
+            overflow-x: auto;
+        }
+
+        .uml-class {
+            background: #fff;
+            border: 2px solid #2d3748;
+            border-radius: 8px;
+            margin: 20px auto;
+            max-width: 500px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .uml-class-header {
+            background: #667eea;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.3em;
+            border-radius: 6px 6px 0 0;
+        }
+
+        .uml-section {
+            padding: 20px;
+            border-top: 2px solid #2d3748;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95em;
+            line-height: 1.8;
+        }
+
+        .uml-section-title {
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .uml-attribute {
+            color: #2d3748;
+            margin: 5px 0;
+            padding-left: 10px;
+        }
+
+        .uml-method {
+            color: #2d3748;
+            margin: 5px 0;
+            padding-left: 10px;
+        }
+
+        .symbol {
+            color: #f5576c;
+            font-weight: bold;
+            margin-right: 5px;
+        }
+
+        .highlight {
+            background: #fef5e7;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+            color: #d35400;
+        }
+
+        .tip {
+            background: #e6fffa;
+            border-left: 5px solid #38b2ac;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+
+        .tip::before {
+            content: "💡 ";
+            font-size: 1.5em;
+        }
+
+        .warning {
+            background: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+
+        .warning::before {
+            content: "⚠️ ";
+            font-size: 1.5em;
+        }
+
+        h2 {
+            color: #2d3748;
+            margin: 30px 0 20px 0;
+            font-size: 2em;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        h3 {
+            color: #4a5568;
+            margin: 20px 0 15px 0;
+            font-size: 1.5em;
+        }
+
+        .step-container {
+            display: flex;
+            align-items: flex-start;
+            margin: 25px 0;
+            gap: 20px;
+        }
+
+        .step-number {
+            background: #667eea;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .interactive-demo {
+            background: #f0f4f8;
+            border: 2px solid #667eea;
+            border-radius: 10px;
+            padding: 25px;
+            margin: 25px 0;
+        }
+
+        .demo-button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            margin: 10px 5px;
+            transition: all 0.3s;
+        }
+
+        .demo-button:hover {
+            background: #5a67d8;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .demo-output {
+            background: white;
+            border: 2px solid #cbd5e0;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+            min-height: 100px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .flow-diagram {
+            background: white;
+            border: 2px solid #667eea;
+            border-radius: 10px;
+            padding: 30px;
+            margin: 25px 0;
+            text-align: center;
+        }
+
+        .flow-box {
+            background: #e6fffa;
+            border: 2px solid #38b2ac;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px auto;
+            max-width: 400px;
+            font-weight: bold;
+        }
+
+        .flow-arrow {
+            color: #667eea;
+            font-size: 2em;
+            margin: 10px 0;
+        }
+
+        ul, ol {
+            margin-left: 30px;
+            margin-top: 15px;
+            line-height: 1.8;
+        }
+
+        li {
+            margin: 10px 0;
+        }
+
+        .code-concept {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+        }
+
+        .formula {
+            background: #fff;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        th, td {
+            border: 2px solid #cbd5e0;
+            padding: 15px;
+            text-align: left;
+        }
+
+        th {
+            background: #667eea;
+            color: white;
+            font-weight: bold;
+        }
+
+        tr:nth-child(even) {
+            background: #f7fafc;
+        }
+
+        .relationship-diagram {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-wrap: wrap;
+            margin: 30px 0;
+            gap: 20px;
+        }
+
+        .relationship-box {
+            background: #e6fffa;
+            border: 3px solid #38b2ac;
+            border-radius: 10px;
+            padding: 20px;
+            min-width: 200px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .relationship-arrow {
+            font-size: 2em;
+            color: #667eea;
+        }
+
+        .footer {
+            background: #2d3748;
+            color: white;
+            text-align: center;
+            padding: 30px;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎮 Proyecto Final: Liga Pokémon</h1>
+            <p>Guía Completa de Diseño y Arquitectura</p>
+        </div>
+
+        <div class="nav">
+            <button class="nav-btn active" onclick="showSection('vision')">Visión General</button>
+            <button class="nav-btn" onclick="showSection('uml')">Diagramas UML</button>
+            <button class="nav-btn" onclick="showSection('estructura')">Estructura de Datos</button>
+            <button class="nav-btn" onclick="showSection('algoritmos')">Algoritmos</button>
+            <button class="nav-btn" onclick="showSection('batalla')">Sistema de Batalla</button>
+            <button class="nav-btn" onclick="showSection('campeonato')">Campeonato</button>
+            <button class="nav-btn" onclick="showSection('pasos')">Plan de Implementación</button>
+        </div>
+
+        <div class="content">
+            <!-- SECCIÓN 1: VISIÓN GENERAL -->
+            <div id="vision" class="section active">
+                <h2>🎯 Visión General del Proyecto</h2>
+                
+                <div class="card">
+                    <h3>¿Qué vas a construir?</h3>
+                    <p style="font-size: 1.1em; line-height: 1.8;">
+                        Vas a crear un <span class="highlight">sistema de gestión de batallas Pokémon</span> que permita:
+                    </p>
+                    <ul style="font-size: 1.05em;">
+                        <li>📝 Registrar Pokémon con sus características</li>
+                        <li>🔍 Buscar Pokémon por nombre o ID</li>
+                        <li>📊 Ordenar Pokémon por ataque, defensa o ID</li>
+                        <li>⚔️ Simular batallas 1 vs 1 con fórmulas de daño</li>
+                        <li>🏆 Organizar un campeonato Round Robin</li>
+                        <li>📈 Mostrar estadísticas y tablas de posiciones</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3>Componentes Principales</h3>
+                    <div class="flow-diagram">
+                        <div class="flow-box">CLASE POKÉMON<br>(Datos de cada Pokémon)</div>
+                        <div class="flow-arrow">↓</div>
+                        <div class="flow-box">CLASE ENTRENADOR<br>(Maneja equipo de Pokémon)</div>
+                        <div class="flow-arrow">↓</div>
+                        <div class="flow-box">CLASE BATALLA<br>(Simula combates)</div>
+                        <div class="flow-arrow">↓</div>
+                        <div class="flow-box">CLASE CAMPEONATO<br>(Organiza torneo)</div>
+                        <div class="flow-arrow">↓</div>
+                        <div class="flow-box">CLASE PRINCIPAL<br>(Menú y coordinación)</div>
+                    </div>
+                </div>
+
+                <div class="tip">
+                    <strong>Consejo:</strong> Piensa en este proyecto como construir bloques de LEGO. Cada clase es un bloque que hace algo específico, y al final los conectas todos para formar el sistema completo.
+                </div>
+
+                <div class="warning">
+                    <strong>Restricciones Importantes:</strong>
+                    <ul>
+                        <li>Solo usar <strong>arreglos estáticos</strong> (tamaño fijo definido al inicio)</li>
+                        <li>Máximo 40 Pokémon, 4 entrenadores, 6 Pokémon por equipo</li>
+                        <li>Implementar búsqueda y ordenamiento <strong>manualmente</strong> (no usar Arrays.sort())</li>
+                        <li>Usar solo ciclos iterativos (for, while) - NO recursión</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- SECCIÓN 2: DIAGRAMAS UML -->
+            <div id="uml" class="section">
+                <h2>📐 Diagramas UML del Sistema</h2>
+
+                <div class="card">
+                    <h3>¿Qué es UML y por qué lo necesitas?</h3>
+                    <p style="font-size: 1.1em; line-height: 1.8;">
+                        UML (Unified Modeling Language) es como el <span class="highlight">plano de una casa</span> antes de construirla. 
+                        Te ayuda a visualizar qué clases necesitas, qué datos tendrán y qué métodos podrán ejecutar.
+                    </p>
+                </div>
+
+                <h3>Clase 1: Pokemon</h3>
+                <div class="uml-container">
+                    <div class="uml-class">
+                        <div class="uml-class-header">Pokemon</div>
+                        <div class="uml-section">
+                            <div class="uml-section-title">Atributos:</div>
+                            <div class="uml-attribute"><span class="symbol">-</span> id: int</div>
+                            <div class="uml-attribute"><span class="symbol">-</span> nombre: String</div>
+                            <div class="uml-attribute"><span class="symbol">-</span> tipo: String</div>
+                            <div class="uml-attribute"><span class="symbol">-</span> ataque: int</div>
+                            <div class="uml-attribute"><span class="symbol">-</span> defensa: int</div>
+                            <div class="uml-attribute"><span class="symbol">-</span> hp: int</div>
+                        </div>
+                        <div class="uml-section">
+                            <div class="uml-section-title">Métodos:</div>
+                            <div class="uml-method"><span class="symbol">+</span> Pokemon(id, nombre, tipo, ataque, defensa)</div>
+                            <div class="uml-method"><span class="symbol">+</span> getId(): int</div>
+                            <div class="uml-method"><span class="symbol">+</span> getNombre(): String</div>
+                            <div class="uml-method"><span class="symbol">+</span> getTipo(): String</div>
+                            <div class="uml-method"><span class="symbol">+</span> getAtaque(): int</div>
+                            <div class="uml-method"><span class="symbol">+</span> getDefensa(): int</div>
+                            <div class="uml-method"><span class="symbol">+</span> getHp(): int</div>
+                            <div class="uml-method"><span class="symbol">+</span> setHp(nuevoHp): void</div>
+                            <div class="uml-method"><span class="symbol">+</span> reiniciarHp(): void</div>
+                            <div class="uml-method"><span class="symbol">+</span> mostrarInfo(): void</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tip">
+                    <strong>Explicación:</strong> El Pokémon tiene datos básicos (id, nombre, tipo, ataque, defensa, hp) y métodos para acceder y modificar estos datos. El símbolo <strong>-</strong> significa privado y <strong>+</strong> significa público.
+                </div>
+
+                <h3>Clase 2: Entrenador</h3>
+                <div class="uml-container">
+                    <div class="uml-class">
+                        <div class="uml-class-header">Entrenador</div>
+                        <div class="uml-section">
+                            <div class="uml-section-title">Atributos:</div>
+                            <div class="uml-attribute"><span class="symbol">-</span> id: int</div>
+                            <div class="uml-attribute"><span class="symbol">-</span> nombre: String</div>
+                            <div class="uml-attribute"><span class="symbol">-</span> equipo: Pokemon[]</div>
+                            <div class="uml-attribute"><span class="symbol">-</span> cantidadPokemon: int</div>
+                            <div class="uml-attribute"><span class="symbol">-</span> partidasJugadas: int</div>
+                            <div class="uml-attribute"><span class="symbol">-</span> partidasGanadas: int</div>
+                            <div class="uml-attribute"><span class="symbol">-</span> partidasPerdidas: int</div>
+                        </div>
+                        <div class="uml-section">
+                            <div class="uml-section-title">Métodos:</div>
+                            <div class="uml-method"><span class="symbol">+</span> Entrenador(id, nombre)</div>
+                            <div class="uml-method"><span class="symbol">+</span> agregarPokemon(pokemon): boolean</div>
+                            <div class="uml-method"><span class="symbol">+</span> getEquipo(): Pokemon[]</div>
+                            <div class="uml-method"><span class="symbol">+</span> getCantidadPokemon(): int</div>
+                            <div class="uml-method"><span class="symbol">+</span> registrarVictoria(): void</div>
+                            <div class="uml-method"><span class="symbol">+</span> registrarDerrota(): void</div>
+                            <div class="uml-method"><span class="symbol">+</span> getPorcentajeVictorias(): double</div>
+                            <div class="uml-method"><span class="symbol">+</span> mostrarEstadisticas(): void</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tip">
+                    <strong>Nota importante:</strong> El atributo <strong>equipo</strong> es un arreglo de objetos Pokémon. Esto es un ejemplo de <span class="highlight">arreglo objetual</span> - cada posición del arreglo contiene un objeto completo, no solo un número o texto.
+                </div>
+
+                <h3>Clase 3: Batalla</h3>
+                <div class="uml-container">
+                    <div class="uml-class">
+                        <div class="uml-class-header">Batalla</div>
+                        <div class="uml-section">
+                            <div class="uml-section-title">Atributos:</div>
+                            <div class="uml-attribute"><span class="symbol">-</span> pokemon1: Pokemon</div>
+                            <div class="uml-attribute"><span class="symbol">-</span> pokemon2: Pokemon</div>
+                            <div class="uml-attribute"><span class="symbol">-</span> turno: int</div>
+                        </div>
+                        <div class="uml-section">
+                            <div class="uml-section-title">Métodos:</div>
+                            <div class="uml-method"><span class="symbol">+</span> Batalla(pokemon1, pokemon2)</div>
+                            <div class="uml-method"><span class="symbol">+</span> calcularEfectividad(tipoAtacante, tipoDefensor): double</div>
+                            <div class="uml-method"><span class="symbol">+</span> calcularDanio(atacante, defensor): int</div>
+                            <div class="uml-method"><span class="symbol">+</span> simular(): Pokemon</div>
+                            <div class="uml-method"><span class="symbol">+</span> mostrarLog(): void</div>
+                        </div>
+                    </div>
+                </div>
+
+                <h3>Clase 4: Campeonato</h3>
+                <div class="uml-container">
+                    <div class="uml-class">
+                        <div class="uml-class-header">Campeonato</div>
+                        <div class="uml-section">
+                            <div class="uml-section-title">Atributos:</div>
+                            <div class="uml-attribute"><span class="symbol">-</span> entrenadores: Entrenador[]</div>
+                            <div class="uml-attribute"><span class="symbol">-</span> cantidadEntrenadores: int</div>
+                        </div>
+                        <div class="uml-section">
+                            <div class="uml-section-title">Métodos:</div>
+                            <div class="uml-method"><span class="symbol">+</span> Campeonato()</div>
+                            <div class="uml-method"><span class="symbol">+</span> agregarEntrenador(entrenador): void</div>
+                            <div class="uml-method"><span class="symbol">+</span> iniciarRoundRobin(): void</div>
+                            <div class="uml-method"><span class="symbol">+</span> mostrarTablaPosiciones(): void</div>
+                            <div class="uml-method"><span class="symbol">+</span> ordenarPorVictorias(): void</div>
+                        </div>
+                    </div>
+                </div>
+
+                <h3>Relaciones entre Clases</h3>
+                <div class="relationship-diagram">
+                    <div class="relationship-box">Entrenador</div>
+                    <span class="relationship-arrow">◆──→</span>
+                    <div class="relationship-box">Pokemon<br>(tiene varios)</div>
+                </div>
+                <div class="relationship-diagram">
+                    <div class="relationship-box">Batalla</div>
+                    <span class="relationship-arrow">◇──→</span>
+                    <div class="relationship-box">Pokemon<br>(usa dos)</div>
+                </div>
+                <div class="relationship-diagram">
+                    <div class="relationship-box">Campeonato</div>
+                    <span class="relationship-arrow">◆──→</span>
+                    <div class="relationship-box">Entrenador<br>(gestiona varios)</div>
+                </div>
+
+                <div class="card">
+                    <h3>Símbolos UML - Guía Rápida</h3>
+                    <table>
+                        <tr>
+                            <th>Símbolo</th>
+                            <th>Significado</th>
+                            <th>Ejemplo</th>
+                        </tr>
+                        <tr>
+                            <td><strong>-</strong></td>
+                            <td>Privado (private)</td>
+                            <td>Solo la clase puede acceder</td>
+                        </tr>
+                        <tr>
+                            <td><strong>+</strong></td>
+                            <td>Público (public)</td>
+                            <td>Cualquiera puede acceder</td>
+                        </tr>
+                        <tr>
+                            <td><strong>#</strong></td>
+                            <td>Protegido (protected)</td>
+                            <td>La clase y subclases pueden acceder</td>
+                        </tr>
+                        <tr>
+                            <td><strong>◆──→</strong></td>
+                            <td>Composición</td>
+                            <td>Una clase "contiene" a otra</td>
+                        </tr>
+                        <tr>
+                            <td><strong>◇──→</strong></td>
+                            <td>Agregación</td>
+                            <td>Una clase "usa" a otra</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- SECCIÓN 3: ESTRUCTURA DE DATOS -->
+            <div id="estructura" class="section">
+                <h2>🗂️ Estructura de Datos</h2>
+
+                <div class="card">
+                    <h3>Arreglos Estáticos que Necesitas</h3>
+                    <p style="font-size: 1.1em; line-height: 1.8;">
+                        Todo el proyecto se basa en <span class="highlight">arreglos estáticos</span>, es decir, arreglos con tamaño fijo que defines al inicio.
+                    </p>
+                </div>
+
+                <div class="step-container">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>Arreglo Principal de Pokémon</h3>
+                        <div class="code-concept">
+// Conceptualmente, necesitas algo como:
+Arreglo de Pokemon con capacidad para 40 elementos
+Variable para contar cuántos Pokemon realmente tienes
+                        </div>
+                        <div class="tip">
+                            <strong>Piensa así:</strong> Es como tener 40 cajas vacías al inicio. Vas llenando las cajas con Pokémon según los vayas registrando. Necesitas llevar el conteo de cuántas cajas están ocupadas.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step-container">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>Arreglo de Pokémon por Entrenador</h3>
+                        <div class="code-concept">
+// Dentro de cada Entrenador:
+Arreglo de Pokemon con capacidad para 6 elementos (el equipo)
+Variable para contar cuántos Pokemon tiene en su equipo
+                        </div>
+                        <div class="tip">
+                            <strong>Esto es un arreglo objetual:</strong> Cada posición no guarda un número o texto, sino un objeto Pokemon completo con todos sus atributos y métodos.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step-container">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>Arreglo de Entrenadores</h3>
+                        <div class="code-concept">
+// En el Campeonato:
+Arreglo de Entrenador con capacidad para 4 elementos
+Variable para contar cuántos Entrenadores hay
+                        </div>
+                        <div class="warning">
+                            <strong>¡Ojo!</strong> Este también es un arreglo objetual. Cada posición contiene un objeto Entrenador completo, y cada Entrenador a su vez tiene su propio arreglo de Pokémon. Es como una "matriz" de objetos.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>Validaciones Importantes</h3>
+                    <p style="font-size: 1.05em; line-height: 1.8;">Antes de agregar elementos a tus arreglos, debes validar:</p>
+                    <ul style="font-size: 1.05em;">
+                        <li>✅ Que el arreglo no esté lleno (capacidad no superada)</li>
+                        <li>✅ Que los valores de ataque estén entre 1 y 100</li>
+                        <li>✅ Que los valores de defensa estén entre 1 y 100</li>
+                        <li>✅ Que el tipo sea válido (Agua, Fuego, Planta, Eléctrico)</li>
+                        <li>✅ Que no haya IDs duplicados</li>
+                    </ul>
+                </div>
+
+                <div class="interactive-demo">
+                    <h3>Visualización: Estructura de Memoria</h3>
+                    <button class="demo-button" onclick="mostrarMemoria()">Ver Estructura en Memoria</button>
+                    <div id="memoryOutput" class="demo-output"></div>
+                </div>
+            </div>
+
+            <!-- SECCIÓN 4: ALGORITMOS -->
+            <div id="algoritmos" class="section">
+                <h2>🔍 Algoritmos de Búsqueda y Ordenamiento</h2>
+
+                <div class="card">
+                    <h3>Búsqueda Lineal (por nombre)</h3>
+                    <p style="font-size: 1.1em; line-height: 1.8;">
+                        Recorre el arreglo de principio a fin comparando el nombre de cada Pokémon con el nombre buscado.
+                    </p>
+                    <div class="flow-diagram">
+                        <div class="flow-box">Inicio en posición 0</div>
+                        <div class="flow-arrow">↓</div>
+                        <div class="flow-box">¿Este Pokémon tiene el nombre buscado?</div>
+                        <div class="flow-arrow">↓</div>
+                        <div class="flow-box">Si SÍ → Retornar posición<br>Si NO → Siguiente posición</div>
+                        <div class="flow-arrow">↓</div>
+                        <div class="flow-box">Si llegaste al final → No encontrado</div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>Búsqueda Binaria (por ID)</h3>
+                    <p style="font-size: 1.1em; line-height: 1.8;">
+                        <span class="highlight">REQUISITO PREVIO:</span> El arreglo debe estar ordenado por ID.
+                    </p>
+                    <div class="flow-diagram">
+                        <div class="flow-box">Definir inicio y fin del arreglo</div>
+                        <div class="flow-arrow">↓</div>
+                        <div class="flow-box">Calcular posición del medio</div>
+                        <div class="flow-arrow">↓</div>
+                        <div class="flow-box">¿El ID del medio es el buscado?</div>
+                        <div class="flow-arrow">↓</div>
+                        <div class="flow-box">Si SÍ → Encontrado<br>Si es menor → Buscar en mitad derecha<br>Si es mayor → Buscar en mitad izquierda</div>
+                        <div class="flow-arrow">↓</div>
+                        <div class="flow-box">Repetir hasta encontrar o agotar opciones</div>
+                    </div>
+                </div>
+
+                <div class="tip">
+                    <strong>Ventaja de búsqueda binaria:</strong> En un arreglo de 40 Pokémon, la búsqueda lineal puede hacer hasta 40 comparaciones. La búsqueda binaria hace máximo 6 comparaciones. ¡Es mucho más rápida!
+                </div>
+
+                <div class="card">
+                    <h3>Ordenamiento por Selección (para ordenar por ataque)</h3>
+                    <p style="font-size: 1.1em; line-height: 1.8;">
+                        En cada iteración, encuentra el elemento con mayor ataque y lo coloca en su posición correcta.
+                    </p>
+                    <div class="flow-diagram">
+                        <div class="flow-box">Para cada posición i del arreglo</div>
+                        <div class="flow-arrow">↓</div>
+                        <div class="flow-box">Buscar el Pokémon con mayor ataque desde i hasta el final</div>
+                        <div class="flow-arrow">↓</div>
+                        <div class="flow-box">Intercambiar ese Pokémon con el de la posición i</div>
+                        <div class="flow-arrow">↓</div>
+                        <div class="flow-box">Continuar con la siguiente posición</div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>Ordenamiento por Inserción (para ordenar por defensa o ID)</h3>
+                    <p style="font-size: 1.1em; line-height: 1.8;">
+                        Toma cada elemento y lo inserta en su posición correcta en la parte ya ordenada del arreglo.
+                    </p>
+                    <div class="flow-diagram">
+                        <div class="flow-box">Comenzar desde la posición 1</div>
+                        <div class="flow-arrow">↓</div>
+                        <div class="flow-box">Tomar el Pokémon actual</div>
+                        <div class="flow-arrow">↓</div>
+                        <div class="flow-box">Comparar con los anteriores (ya ordenados)</div>
+                        <div class="flow-arrow">↓</div>
+                        <div class="flow-box">Desplazar los mayores hacia la derecha</div>
+                        <div class="flow-arrow">↓</div>
+                        <div class="flow-box">Insertar el Pokémon en su posición correcta</div>
+                    </div>
+                </div>
+
+                <div class="warning">
+                    <strong>Recuerda:</strong> Cuando ordenas un arreglo de objetos, estás intercambiando objetos completos, no solo números. Debes mover todos los atributos del Pokémon juntos.
+                </div>
+
+                <div class="interactive-demo">
+                    <h3>Demo: Visualiza los Algoritmos</h3>
+                    <button class="demo-button" onclick="demoSeleccion()">Ordenamiento por Selección</button>
+                    <button class="demo-button" onclick="demoInsercion()">Ordenamiento por Inserción</button>
+                    <button class="demo-button" onclick="demoBinaria()">Búsqueda Binaria</button>
+                    <div id="algoOutput" class="demo-output"></div>
+                </div>
+            </div>
+
+            <!-- SECCIÓN 5: SISTEMA DE BATALLA -->
+            <div id="batalla" class="section">
+                <h2>⚔️ Sistema de Batalla</h2>
+
+                <div class="card">
+                    <h3>Fórmula de Daño</h3>
+                    <div class="formula">
+                        daño = 50 × (ataque / defensa) × efectividad
+                        <br><br>
+                        <span style="font-size: 0.9em; color: #666;">Mínimo: 1 punto de daño</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>Tabla de Efectividades</h3>
+                    <table>
+                        <tr>
+                            <th>Atacante</th>
+                            <th>Defensor</th>
+                            <th>Efectividad</th>
+                        </tr>
+                        <tr>
+                            <td>Agua</td>
+                            <td>Fuego</td>
+                            <td>2.0 (Súper efectivo)</td>
+                        </tr>
+                        <tr>
+                            <td>Agua</td>
+                            <td>Planta</td>
+                            <td>0.5 (Poco efectivo)</td>
+                        </tr>
+                        <tr>
+                            <td>Fuego</td>
+                            <td>Planta</td>
+                            <td>2.0 (Súper efectivo)</td>
+                        </tr>
+                        <tr>
+                            <td>Fuego</td>
+                            <td>Agua</td>
+                            <td>0.5 (Poco efectivo)</td>
+                        </tr>
+                        <tr>
+                            <td>Planta</td>
+                            <td>Agua</td>
+                            <td>2.0 (Súper efectivo)</td>
+                        </tr>
+                        <tr>
+                            <td>Planta</td>
+                            <td>Fuego</td>
+                            <td>0.5 (Poco efectivo)</td>
+                        </tr>
+                        <tr>
+                            <td>Eléctrico</td>
+                            <td>Agua</td>
+                            <td>2.0 (Súper efectivo)</td>
+                        </tr>
+                        <tr>
+                            <td>Eléctrico</td>
+                            <td>Otros</td>
+                            <td>1.0 (Neutral)</td>
+                        </tr>
+                        <tr>
+                            <td>Cualquiera</td>
+                            <td>Eléctrico</td>
+                            <td>1.0 (Neutral)</td>
+                        </tr>
+                        <tr>
+                            <td>Mismo tipo</td>
+                            <td>Mismo tipo</td>
+                            <td>1.0 (Neutral)</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="card">
+                    <h3>Mecánica de Batalla</h3>
+                    <div class="step-container">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h3>Inicialización</h3>
+                            <ul>
+                                <li>Ambos Pokémon inician con 100 HP</li>
+                                <li>Se determina quién ataca primero (puede ser aleatorio o siempre el primero)</li>
+                                <li>El turno comienza en 1</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="step-container">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h3>Bucle de Batalla</h3>
+                            <ul>
+                                <li>Mientras ambos Pokémon tengan HP > 0:</li>
+                                <li>El atacante calcula el daño usando la fórmula</li>
+                                <li>Se resta el daño al HP del defensor</li>
+                                <li>Se registra el turno en el log</li>
+                                <li>Se intercambian roles (atacante → defensor)</li>
+                                <li>Se incrementa el contador de turno</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="step-container">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h3>Finalización</h3>
+                            <ul>
+                                <li>Cuando un Pokémon llega a HP ≤ 0, pierde</li>
+                                <li>Se declara al ganador</li>
+                                <li>Se muestra el log completo de la batalla</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>Log de Batalla - Ejemplo</h3>
+                    <div class="code-concept">
+=== BATALLA: Pikachu vs Squirtle ===
+
+Turno 1: Pikachu ataca
+- Daño calculado: 35
+- HP restante de Squirtle: 65
+
+Turno 2: Squirtle ataca
+- Daño calculado: 22
+- HP restante de Pikachu: 78
+
+Turno 3: Pikachu ataca
+- Daño calculado: 40
+- HP restante de Squirtle: 25
+
+...
+
+¡Pikachu gana la batalla!
+                    </div>
+                </div>
+
+                <div class="tip">
+                    <strong>Consejo de implementación:</strong> Crea un método separado para calcular la efectividad. Usa una estructura if-else anidada o switch para comparar los tipos. Esto hace el código más limpio y fácil de entender.
+                </div>
+
+                <div class="interactive-demo">
+                    <h3>Simulador de Cálculo de Daño</h3>
+                    <div style="margin: 20px 0;">
+                        <label>Ataque: <input type="number" id="ataqueInput" value="80" min="1" max="100"></label><br><br>
+                        <label>Defensa: <input type="number" id="defensaInput" value="60" min="1" max="100"></label><br><br>
+                        <label>Tipo Atacante: 
+                            <select id="tipoAtacante">
+                                <option>Agua</option>
+                                <option>Fuego</option>
+                                <option>Planta</option>
+                                <option>Eléctrico</option>
+                            </select>
+                        </label><br><br>
+                        <label>Tipo Defensor: 
+                            <select id="tipoDefensor">
+                                <option>Agua</option>
+                                <option>Fuego</option>
+                                <option>Planta</option>
+                                <option>Eléctrico</option>
+                            </select>
+                        </label>
+                    </div>
+                    <button class="demo-button" onclick="calcularDanioDemo()">Calcular Daño</button>
+                    <div id="danioOutput" class="demo-output"></div>
+                </div>
+            </div>
+
+            <!-- SECCIÓN 6: CAMPEONATO -->
+            <div id="campeonato" class="section">
+                <h2>🏆 Sistema de Campeonato Round Robin</h2>
+
+                <div class="card">
+                    <h3>¿Qué es Round Robin?</h3>
+                    <p style="font-size: 1.1em; line-height: 1.8;">
+                        Es un formato de torneo donde <span class="highlight">todos juegan contra todos</span>. 
+                        Si hay 4 entrenadores, cada uno jugará 3 partidas (contra los otros 3).
+                    </p>
+                </div>
+
+                <div class="card">
+                    <h3>Estructura del Campeonato</h3>
+                    <div class="step-container">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h3>Emparejamientos</h3>
+                            <p>Con 4 entrenadores (E1, E2, E3, E4), las partidas serían:</p>
+                            <ul>
+                                <li>E1 vs E2</li>
+                                <li>E1 vs E3</li>
+                                <li>E1 vs E4</li>
+                                <li>E2 vs E3</li>
+                                <li>E2 vs E4</li>
+                                <li>E3 vs E4</li>
+                            </ul>
+                            <div class="tip">
+                                <strong>Algoritmo:</strong> Usa dos ciclos anidados. El ciclo externo va de 0 a n-1, el ciclo interno va de i+1 a n. Así evitas repetir enfrentamientos.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step-container">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h3>Selección de Pokémon</h3>
+                            <ul>
+                                <li>Cada entrenador elige un Pokémon de su equipo para la batalla</li>
+                                <li>Puede ser el primero, aleatorio, o el más fuerte</li>
+                                <li>Se crea una batalla entre los dos Pokémon seleccionados</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="step-container">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h3>Registro de Estadísticas</h3>
+                            <ul>
+                                <li>Ambos entrenadores incrementan sus <strong>Partidas Jugadas (PJ)</strong></li>
+                                <li>El ganador incrementa sus <strong>Partidas Ganadas (PG)</strong></li>
+                                <li>El perdedor incrementa sus <strong>Partidas Perdidas (PP)</strong></li>
+                                <li>Se calcula el <strong>Porcentaje de Victorias</strong> = (PG / PJ) × 100</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>Tabla de Posiciones</h3>
+                    <table>
+                        <tr>
+                            <th>Posición</th>
+                            <th>Entrenador</th>
+                            <th>PJ</th>
+                            <th>PG</th>
+                            <th>PP</th>
+                            <th>% Victorias</th>
+                        </tr>
+                        <tr>
+                            <td>1°</td>
+                            <td>Ash</td>
+                            <td>3</td>
+                            <td>3</td>
+                            <td>0</td>
+                            <td>100.00%</td>
+                        </tr>
+                        <tr>
+                            <td>2°</td>
+                            <td>Gary</td>
+                            <td>3</td>
+                            <td>2</td>
+                            <td>1</td>
+                            <td>66.67%</td>
+                        </tr>
+                        <tr>
+                            <td>3°</td>
+                            <td>Misty</td>
+                            <td>3</td>
+                            <td>1</td>
+                            <td>2</td>
+                            <td>33.33%</td>
+                        </tr>
+                        <tr>
+                            <td>4°</td>
+                            <td>Brock</td>
+                            <td>3</td>
+                            <td>0</td>
+                            <td>3</td>
+                            <td>0.00%</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="warning">
+                    <strong>Validación importante:</strong> Al final del campeonato, verifica que para cada entrenador se cumpla: <strong>PG + PP = PJ</strong>
+                </div>
+
+                <div class="card">
+                    <h3>Ordenar Tabla de Posiciones</h3>
+                    <p style="font-size: 1.1em; line-height: 1.8;">
+                        Después de todas las batallas, debes ordenar el arreglo de entrenadores por su porcentaje de victorias (de mayor a menor). Puedes usar cualquiera de los algoritmos de ordenamiento que implementaste.
+                    </p>
+                    <div class="tip">
+                        <strong>Sugerencia:</strong> Usa el algoritmo de inserción para ordenar por porcentaje de victorias. Es eficiente para arreglos pequeños (máximo 4 entrenadores) y mantiene estable el orden de empates.
+                    </div>
+                </div>
+
+                <div class="interactive-demo">
+                    <h3>Simulador de Emparejamientos</h3>
+                    <label>Número de entrenadores: 
+                        <select id="numEntrenadores">
+                            <option>2</option>
+                            <option>3</option>
+                            <option selected>4</option>
+                        </select>
+                    </label>
+                    <br><br>
+                    <button class="demo-button" onclick="mostrarEmparejamientos()">Generar Emparejamientos</button>
+                    <div id="emparejamientosOutput" class="demo-output"></div>
+                </div>
+            </div>
+
+            <!-- SECCIÓN 7: PLAN DE IMPLEMENTACIÓN -->
+            <div id="pasos" class="section">
+                <h2>📝 Plan de Implementación Paso a Paso</h2>
+
+                <div class="card">
+                    <h3>Orden Recomendado para Programar</h3>
+                    <p style="font-size: 1.1em; line-height: 1.8;">
+                        Sigue este orden para construir tu proyecto de manera organizada y sin complicaciones:
+                    </p>
+                </div>
+
+                <div class="step-container">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>Clase Pokemon</h3>
+                        <ul style="font-size: 1.05em;">
+                            <li>Define los atributos privados</li>
+                            <li>Crea el constructor que reciba id, nombre, tipo, ataque, defensa</li>
+                            <li>Implementa los métodos get para cada atributo</li>
+                            <li>Implementa los métodos set necesarios (especialmente setHp)</li>
+                            <li>Crea el método reiniciarHp() que ponga HP en 100</li>
+                            <li>Crea el método mostrarInfo() para imprimir los datos del Pokémon</li>
+                            <li><strong>PRUEBA</strong> esta clase creando objetos y verificando que funciona</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="step-container">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>Arreglo de Pokémon y Búsquedas</h3>
+                        <ul style="font-size: 1.05em;">
+                            <li>Crea un arreglo estático de Pokemon con capacidad 40</li>
+                            <li>Crea una variable contador para saber cuántos Pokémon hay</li>
+                            <li>Implementa una función para agregar Pokémon (con validaciones)</li>
+                            <li>Implementa búsqueda lineal por nombre</li>
+                            <li>Implementa búsqueda binaria por id</li>
+                            <li><strong>PRUEBA</strong> registrando varios Pokémon y buscándolos</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="step-container">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>Algoritmos de Ordenamiento</h3>
+                        <ul style="font-size: 1.05em;">
+                            <li>Implementa ordenamiento por selección (ordena por ataque)</li>
+                            <li>Implementa ordenamiento por inserción (ordena por defensa o id)</li>
+                            <li>Crea funciones para mostrar el arreglo antes y después de ordenar</li>
+                            <li><strong>PRUEBA</strong> con varios Pokémon desordenados</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="step-container">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h3>Clase Batalla</h3>
+                        <ul style="font-size: 1.05em;">
+                            <li>Define los atributos (pokemon1, pokemon2, turno)</li>
+                            <li>Crea el constructor que reciba dos Pokémon</li>
+                            <li>Implementa el método calcularEfectividad()</li>
+                            <li>Implementa el método calcularDanio()</li>
+                            <li>Implementa el método simular() con el bucle de batalla</li>
+                            <li>Implementa mostrarLog() para el registro de turnos</li>
+                            <li><strong>PRUEBA</strong> simulando varias batallas</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="step-container">
+                    <div class="step-number">5</div>
+                    <div class="step-content">
+                        <h3>Clase Entrenador</h3>
+                        <ul style="font-size: 1.05em;">
+                            <li>Define los atributos (id, nombre, equipo[], estadísticas)</li>
+                            <li>Crea el constructor</li>
+                            <li>Implementa agregarPokemon() con validación de máximo 6</li>
+                            <li>Implementa registrarVictoria() y registrarDerrota()</li>
+                            <li>Implementa getPorcentajeVictorias()</li>
+                            <li>Implementa mostrarEstadisticas()</li>
+                            <li><strong>PRUEBA</strong> creando entrenadores y agregando Pokémon</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="step-container">
+                    <div class="step-number">6</div>
+                    <div class="step-content">
+                        <h3>Clase Campeonato</h3>
+                        <ul style="font-size: 1.05em;">
+                            <li>Define el arreglo de Entrenadores (máx. 4)</li>
+                            <li>Implementa agregarEntrenador()</li>
+                            <li>Implementa iniciarRoundRobin() con ciclos anidados</li>
+                            <li>Dentro del Round Robin, selecciona Pokémon y crea batallas</li>
+                            <li>Actualiza estadísticas después de cada batalla</li>
+                            <li>Implementa ordenarPorVictorias()</li>
+                            <li>Implementa mostrarTablaPosiciones()</li>
+                            <li><strong>PRUEBA</strong> con 3 o 4 entrenadores</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="step-container">
+                    <div class="step-number">7</div>
+                    <div class="step-content">
+                        <h3>Clase Principal con Menú</h3>
+                        <ul style="font-size: 1.05em;">
+                            <li>Crea un menú con opciones:</li>
+                            <li>1. Registrar Pokémon</li>
+                            <li>2. Buscar Pokémon</li>
+                            <li>3. Ordenar Pokémon</li>
+                            <li>4. Registrar Entrenadores</li>
+                            <li>5. Iniciar Campeonato</li>
+                            <li>6. Ver Tabla de Posiciones</li>
+                            <li>0. Salir</li>
+                            <li>Usa un bucle while con switch para el menú</li>
+                            <li><strong>PRUEBA COMPLETA</strong> del sistema</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="warning">
+                    <strong>Estrategia clave:</strong> No intentes programar todo de una vez. Programa una clase, pruébala bien, y solo entonces pasa a la siguiente. Esto te ahorrará muchos dolores de cabeza buscando errores.
+                </div>
+
+                <div class="card">
+                    <h3>Lista de Verificación Final</h3>
+                    <table>
+                        <tr>
+                            <th>Requisito</th>
+                            <th>¿Implementado?</th>
+                        </tr>
+                        <tr>
+                            <td>Clase Pokemon con todos sus atributos y métodos</td>
+                            <td style="text-align: center;">☐</td>
+                        </tr>
+                        <tr>
+                            <td>Arreglo estático de máximo 40 Pokémon</td>
+                            <td style="text-align: center;">☐</td>
+                        </tr>
+                        <tr>
+                            <td>Búsqueda lineal por nombre</td>
+                            <td style="text-align: center;">☐</td>
+                        </tr>
+                        <tr>
+                            <td>Búsqueda binaria por ID</td>
+                            <td style="text-align: center;">☐</td>
+                        </tr>
+                        <tr>
+                            <td>Ordenamiento por selección (ataque)</td>
+                            <td style="text-align: center;">☐</td>
+                        </tr>
+                        <tr>
+                            <td>Ordenamiento por inserción (defensa o ID)</td>
+                            <td style="text-align: center;">☐</td>
+                        </tr>
+                        <tr>
+                            <td>Fórmula de daño implementada correctamente</td>
+                            <td style="text-align: center;">☐</td>
+                        </tr>
+                        <tr>
+                            <td>Tabla de efectividades completa</td>
+                            <td style="text-align: center;">☐</td>
+                        </tr>
+                        <tr>
+                            <td>Sistema de turnos alternados en batalla</td>
+                            <td style="text-align: center;">☐</td>
+                        </tr>
+                        <tr>
+                            <td>Log de batalla con todos los turnos</td>
+                            <td style="text-align: center;">☐</td>
+                        </tr>
+                        <tr>
+                            <td>Clase Entrenador con arreglo de Pokémon</td>
+                            <td style="text-align: center;">☐</td>
+                        </tr>
+                        <tr>
+                            <td>Estadísticas de entrenador (PJ, PG, PP)</td>
+                            <td style="text-align: center;">☐</td>
+                        </tr>
+                        <tr>
+                            <td>Campeonato Round Robin funcional</td>
+                            <td style="text-align: center;">☐</td>
+                        </tr>
+                        <tr>
+                            <td>Tabla de posiciones ordenada</td>
+                            <td style="text-align: center;">☐</td>
+                        </tr>
+                        <tr>
+                            <td>Validaciones de rangos (ataque, defensa, límites)</td>
+                            <td style="text-align: center;">☐</td>
+                        </tr>
+                        <tr>
+                            <td>Código bien comentado</td>
+                            <td style="text-align: center;">☐</td>
+                        </tr>
+                        <tr>
+                            <td>Menú principal funcional</td>
+                            <td style="text-align: center;">☐</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="tip">
+                    <strong>Consejo final:</strong> Este proyecto es grande, pero totalmente alcanzable. Tómate tu tiempo, programa con calma, y prueba cada parte antes de continuar. ¡Puedes hacerlo! 💪
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>🎮 Guía de Diseño - Proyecto Liga Pokémon</p>
+            <p>Herramienta educativa para comprender la arquitectura sin ver código</p>
+        </div>
+    </div>
+
+    <script>
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.section');
+            const buttons = document.querySelectorAll('.nav-btn');
+            
+            sections.forEach(section => section.classList.remove('active'));
+            buttons.forEach(btn => btn.classList.remove('active'));
+            
+            document.getElementById(sectionId).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        function mostrarMemoria() {
+            const output = document.getElementById('memoryOutput');
+            output.innerHTML = `
+<strong>ESTRUCTURA EN MEMORIA:</strong>
+
+<span style="color: #667eea;">┌─ ArregloPrincipalPokemon [40 espacios]</span>
+│
+├─ [0] → Pokemon { id:1, nombre:"Pikachu", tipo:"Eléctrico", ataque:85, defensa:60, hp:100 }
+├─ [1] → Pokemon { id:2, nombre:"Squirtle", tipo:"Agua", ataque:70, defensa:80, hp:100 }
+├─ [2] → Pokemon { id:3, nombre:"Charmander", tipo:"Fuego", ataque:80, defensa:55, hp:100 }
+├─ [3] → null (vacío)
+├─ [4] → null (vacío)
+└─ ... [hasta índice 39]
+
+<span style="color: #667eea;">┌─ ArregloEntrenadores [4 espacios]</span>
+│
+├─ [0] → Entrenador {
+│         id: 1,
+│         nombre: "Ash",
+│         <span style="color: #f5576c;">equipo: [Pokemon, Pokemon, Pokemon, null, null, null]</span> ← Arreglo de objetos
+│         PJ: 0, PG: 0, PP: 0
+│       }
+├─ [1] → Entrenador {
+│         id: 2,
+│         nombre: "Gary",
+│         <span style="color: #f5576c;">equipo: [Pokemon, Pokemon, null, null, null, null]</span>
+│         PJ: 0, PG: 0, PP: 0
+│       }
+└─ [2] → null (vacío)
+
+<span style="color: #38b2ac;">💡 Nota: Los arreglos de objetos contienen referencias a objetos completos,
+   no solo valores simples. Cada posición "apunta" a un objeto en memoria.</span>
+            `;
+        }
+
+        function demoSeleccion() {
+            const output = document.getElementById('algoOutput');
+            output.innerHTML = `
+<strong>ORDENAMIENTO POR SELECCIÓN - Ordenar por Ataque (descendente)</strong>
+
+<span style="color: #667eea;">Array inicial:</span>
+[Pikachu:85, Charmander:80, Squirtle:70, Bulbasaur:75, Jigglypuff:60]
+
+<span style="color: #f5576c;">Paso 1:</span> Buscar el mayor desde posición 0
+→ Mayor encontrado: Pikachu (85) en posición 0
+→ Ya está en su lugar, no intercambiar
+[<strong>Pikachu:85</strong>, Charmander:80, Squirtle:70, Bulbasaur:75, Jigglypuff:60]
+
+<span style="color: #f5576c;">Paso 2:</span> Buscar el mayor desde posición 1
+→ Mayor encontrado: Charmander (80) en posición 1
+→ Ya está en su lugar, no intercambiar
+[<strong>Pikachu:85, Charmander:80</strong>, Squirtle:70, Bulbasaur:75, Jigglypuff:60]
+
+<span style="color: #f5576c;">Paso 3:</span> Buscar el mayor desde posición 2
+→ Mayor encontrado: Bulbasaur (75) en posición 3
+→ Intercambiar con posición 2
+[<strong>Pikachu:85, Charmander:80, Bulbasaur:75</strong>, Squirtle:70, Jigglypuff:60]
+
+<span style="color: #f5576c;">Paso 4:</span> Buscar el mayor desde posición 3
+→ Mayor encontrado: Squirtle (70) en posición 3
+→ Ya está en su lugar, no intercambiar
+[<strong>Pikachu:85, Charmander:80, Bulbasaur:75, Squirtle:70</strong>, Jigglypuff:60]
+
+<span style="color: #38b2ac;">✅ Array ordenado por ataque (descendente)!</span>
+[Pikachu:85, Charmander:80, Bulbasaur:75, Squirtle:70, Jigglypuff:60]
+            `;
+        }
+
+        function demoInsercion() {
+            const output = document.getElementById('algoOutput');
+            output.innerHTML = `
+<strong>ORDENAMIENTO POR INSERCIÓN - Ordenar por Defensa (ascendente)</strong>
+
+<span style="color: #667eea;">Array inicial:</span>
+[Pikachu:60, Charmander:55, Squirtle:80, Bulbasaur:70, Jigglypuff:50]
+
+<span style="color: #f5576c;">Paso 1:</span> Tomar Charmander:55 (posición 1)
+→ Comparar con Pikachu:60 → Es menor, insertar antes
+[<strong>Charmander:55, Pikachu:60</strong>, Squirtle:80, Bulbasaur:70, Jigglypuff:50]
+
+<span style="color: #f5576c;">Paso 2:</span> Tomar Squirtle:80 (posición 2)
+→ Comparar con anteriores → Es mayor, queda en su lugar
+[<strong>Charmander:55, Pikachu:60, Squirtle:80</strong>, Bulbasaur:70, Jigglypuff:50]
+
+<span style="color: #f5576c;">Paso 3:</span> Tomar Bulbasaur:70 (posición 3)
+→ Comparar: 70 < 80, desplazar Squirtle
+→ Comparar: 70 > 60, insertar aquí
+[<strong>Charmander:55, Pikachu:60, Bulbasaur:70, Squirtle:80</strong>, Jigglypuff:50]
+
+<span style="color: #f5576c;">Paso 4:</span> Tomar Jigglypuff:50 (posición 4)
+→ Es el menor, desplazar todos e insertar al inicio
+[<strong>Jigglypuff:50, Charmander:55, Pikachu:60, Bulbasaur:70, Squirtle:80</strong>]
+
+<span style="color: #38b2ac;">✅ Array ordenado por defensa (ascendente)!</span>
+[Jigglypuff:50, Charmander:55, Pikachu:60, Bulbasaur:70, Squirtle:80]
+            `;
+        }
+
+        function demoBinaria() {
+            const output = document.getElementById('algoOutput');
+            output.innerHTML = `
+<strong>BÚSQUEDA BINARIA - Buscar ID: 15</strong>
+
+<span style="color: #667eea;">Array ordenado por ID:</span>
+[5, 8, 12, 15, 18, 23, 28, 35, 42]
+
+<span style="color: #f5576c;">Iteración 1:</span>
+→ Inicio: 0, Fin: 8
+→ Medio: 4 (valor: 18)
+→ 18 > 15, buscar en mitad izquierda
+[5, 8, 12, <strong>15</strong>, <span style="background: #fef5e7;">18</span>, 23, 28, 35, 42]
+
+<span style="color: #f5576c;">Iteración 2:</span>
+→ Inicio: 0, Fin: 3
+→ Medio: 1 (valor: 8)
+→ 8 < 15, buscar en mitad derecha
+[5, <span style="background: #fef5e7;">8</span>, 12, <strong>15</strong>]
+
+<span style="color: #f5576c;">Iteración 3:</span>
+→ Inicio: 2, Fin: 3
+→ Medio: 2 (valor: 12)
+→ 12 < 15, buscar en mitad derecha
+[12, <strong>15</strong>]
+
+<span style="color: #f5576c;">Iteración 4:</span>
+→ Inicio: 3, Fin: 3
+→ Medio: 3 (valor: 15)
+→ <span style="color: #38b2ac;">15 == 15, ¡ENCONTRADO!</span>
+
+<span style="color: #38b2ac;">✅ ID 15 encontrado en la posición 3</span>
+<span style="color: #666;">Total de comparaciones: 4 (vs 4 en búsqueda lineal para este caso)</span>
+            `;
+        }
+
+        function calcularDanioDemo() {
+            const ataque = parseInt(document.getElementById('ataqueInput').value);
+            const defensa = parseInt(document.getElementById('defensaInput').value);
+            const tipoAtac = document.getElementById('tipoAtacante').value;
+            const tipoDef = document.getElementById('tipoDefensor').value;
+
+            let efectividad = 1.0;
+            let mensaje = "Neutral";
+
+            // Calcular efectividad
+            if (tipoAtac === "Agua" && tipoDef === "Fuego") { efectividad = 2.0; mensaje = "¡Súper efectivo!"; }
+            else if (tipoAtac === "Agua" && tipoDef === "Planta") { efectividad = 0.5; mensaje = "Poco efectivo"; }
+            else if (tipoAtac === "Fuego" && tipoDef === "Planta") { efectividad = 2.0; mensaje = "¡Súper efectivo!"; }
+            else if (tipoAtac === "Fuego" && tipoDef === "Agua") { efectividad = 0.5; mensaje = "Poco efectivo"; }
+            else if (tipoAtac === "Planta" && tipoDef === "Agua") { efectividad = 2.0; mensaje = "¡Súper efectivo!"; }
+            else if (tipoAtac === "Planta" && tipoDef === "Fuego") { efectividad = 0.5; mensaje = "Poco efectivo"; }
+            else if (tipoAtac === "Eléctrico" && tipoDef === "Agua") { efectividad = 2.0; mensaje = "¡Súper efectivo!"; }
+
+            const danio = Math.max(1, Math.floor(50 * (ataque / defensa) * efectividad));
+
+            const output = document.getElementById('danioOutput');
+            output.innerHTML = `
+<strong>CÁLCULO DE DAÑO:</strong>
+
+<span style="color: #667eea;">Fórmula:</span> daño = 50 × (ataque / defensa) × efectividad
+
+<span style="color: #f5576c;">Valores:</span>
+- Ataque: ${ataque}
+- Defensa: ${defensa}
+- Tipo Atacante: ${tipoAtac}
+- Tipo Defensor: ${tipoDef}
+- Efectividad: ${efectividad} (${mensaje})
+
+<span style="color: #38b2ac;">Cálculo:</span>
+daño = 50 × (${ataque} / ${defensa}) × ${efectividad}
+daño = 50 × ${(ataque/defensa).toFixed(2)} × ${efectividad}
+daño = ${(50 * (ataque/defensa) * efectividad).toFixed(2)}
+
+<strong style="color: #667eea; font-size: 1.2em;">DAÑO FINAL: ${danio} puntos</strong>
+            `;
+        }
+
+        function mostrarEmparejamientos() {
+            const num = parseInt(document.getElementById('numEntrenadores').value);
+            const nombres = ["Ash", "Gary", "Misty", "Brock"];
+            
+            let output = `<strong>EMPAREJAMIENTOS ROUND ROBIN (${num} entrenadores)</strong>\n\n`;
+            let contador = 1;
+
+            for (let i = 0; i < num; i++) {
+                for (let j = i + 1; j < num; j++) {
+                    output += `<span style="color: #667eea;">Partida ${contador}:</span> ${nombres[i]} vs ${nombres[j]}\n`;
+                    contador++;
+                }
+            }
+
+            output += `\n<span style="color: #38b2ac;">Total de partidas: ${contador - 1}</span>`;
+            output += `\n<span style="color: #666;">Cada entrenador jugará: ${num - 1} partidas</span>`;
+
+            document.getElementById('emparejamientosOutput').innerHTML = output;
+        }
+
+        // Inicialización
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Guía del Proyecto Liga Pokémon cargada');
+        });
+    </script>
+</body>
+</html>

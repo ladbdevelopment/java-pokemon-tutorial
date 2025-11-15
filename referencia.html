@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aprende Java Interactivamente</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .nav {
+            background: #2d3748;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 10px;
+            gap: 10px;
+        }
+
+        .nav-btn {
+            background: #4a5568;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: all 0.3s;
+        }
+
+        .nav-btn:hover {
+            background: #667eea;
+            transform: translateY(-2px);
+        }
+
+        .nav-btn.active {
+            background: #667eea;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card {
+            background: #f7fafc;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            line-height: 1.6;
+        }
+
+        .code-block .comment {
+            color: #68d391;
+        }
+
+        .code-block .keyword {
+            color: #f687b3;
+        }
+
+        .code-block .string {
+            color: #fbb6ce;
+        }
+
+        .visual-demo {
+            background: white;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .array-visual {
+            display: flex;
+            gap: 5px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
+
+        .array-cell {
+            width: 60px;
+            height: 60px;
+            border: 2px solid #667eea;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            background: #edf2f7;
+            transition: all 0.3s;
+        }
+
+        .array-cell:hover {
+            transform: scale(1.1);
+            background: #bee3f8;
+        }
+
+        .array-index {
+            font-size: 0.7em;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .array-value {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #2d3748;
+        }
+
+        .matrix-visual {
+            display: inline-grid;
+            gap: 5px;
+            margin: 15px 0;
+        }
+
+        .interactive-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            margin: 10px 5px;
+            transition: all 0.3s;
+        }
+
+        .interactive-btn:hover {
+            background: #5a67d8;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .interactive-btn:active {
+            transform: translateY(0);
+        }
+
+        .input-group {
+            margin: 15px 0;
+        }
+
+        .input-group input {
+            padding: 10px;
+            border: 2px solid #cbd5e0;
+            border-radius: 8px;
+            font-size: 1em;
+            margin-right: 10px;
+        }
+
+        .uml-diagram {
+            background: white;
+            border: 2px solid #2d3748;
+            padding: 20px;
+            margin: 20px 0;
+            font-family: monospace;
+        }
+
+        .uml-class-name {
+            text-align: center;
+            font-weight: bold;
+            padding: 10px;
+            background: #667eea;
+            color: white;
+            margin-bottom: 10px;
+        }
+
+        .uml-section {
+            border-top: 1px solid #2d3748;
+            padding: 10px;
+        }
+
+        .highlight {
+            background: #fef5e7;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        .tip {
+            background: #e6fffa;
+            border-left: 4px solid #38b2ac;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+        }
+
+        .tip::before {
+            content: "💡 ";
+            font-size: 1.2em;
+        }
+
+        h2 {
+            color: #2d3748;
+            margin: 20px 0 15px 0;
+            font-size: 1.8em;
+        }
+
+        h3 {
+            color: #4a5568;
+            margin: 15px 0 10px 0;
+            font-size: 1.3em;
+        }
+
+        .output {
+            background: #f0fff4;
+            border: 2px solid #68d391;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+            font-family: monospace;
+        }
+
+        .footer {
+            background: #2d3748;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 Aprende Java Interactivamente</h1>
+            <p>Guía completa para dominar conceptos fundamentales de programación</p>
+        </div>
+
+        <div class="nav">
+            <button class="nav-btn active" onclick="showSection('vectores')">Vectores</button>
+            <button class="nav-btn" onclick="showSection('ordenamiento')">Ordenamiento</button>
+            <button class="nav-btn" onclick="showSection('busqueda')">Búsqueda</button>
+            <button class="nav-btn" onclick="showSection('matrices')">Matrices</button>
+            <button class="nav-btn" onclick="showSection('cadenas')">Cadenas</button>
+            <button class="nav-btn" onclick="showSection('clases')">Clases y POO</button>
+            <button class="nav-btn" onclick="showSection('metodos')">Métodos</button>
+            <button class="nav-btn" onclick="showSection('parametros')">Parámetros</button>
+            <button class="nav-btn" onclick="showSection('objetuales')">Arreglos de Objetos</button>
+        </div>
+
+        <div class="content">
+            <!-- SECCIÓN 1: VECTORES -->
+            <div id="vectores" class="section active">
+                <h2>📊 Arreglos de Una Dimensión (Vectores)</h2>
+                
+                <div class="card">
+                    <h3>¿Qué es un Vector?</h3>
+                    <p>Un <span class="highlight">vector</span> es una estructura de datos que almacena múltiples valores del mismo tipo en una única variable. Imagina una fila de casilleros numerados donde puedes guardar cosas.</p>
+                </div>
+
+                <div class="code-block">
+<span class="comment">// Declaración de un vector</span>
+<span class="keyword">int</span>[] numeros = <span class="keyword">new int</span>[5];  <span class="comment">// Vector de 5 enteros</span>
+<span class="keyword">String</span>[] nombres = {<span class="string">"Ana"</span>, <span class="string">"Luis"</span>, <span class="string">"María"</span>};  <span class="comment">// Con valores iniciales</span>
+
+<span class="comment">// Acceder a elementos (índice comienza en 0)</span>
+numeros[0] = 10;  <span class="comment">// Primera posición</span>
+numeros[1] = 20;  <span class="comment">// Segunda posición</span>
+
+<span class="comment">// Recorrer un vector</span>
+<span class="keyword">for</span>(<span class="keyword">int</span> i = 0; i < numeros.length; i++) {
+    System.out.println(<span class="string">"Posición "</span> + i + <span class="string">": "</span> + numeros[i]);
+}
+                </div>
+
+                <div class="visual-demo">
+                    <h3>Visualización Interactiva</h3>
+                    <div id="vectorVisual" class="array-visual"></div>
+                    <div class="input-group">
+                        <input type="number" id="vectorIndex" placeholder="Índice (0-4)" min="0" max="4">
+                        <input type="number" id="vectorValue" placeholder="Valor">
+                        <button class="interactive-btn" onclick="updateVector()">Actualizar</button>
+                        <button class="interactive-btn" onclick="resetVector()">Reiniciar</button>
+                    </div>
+                    <div id="vectorOutput" class="output"></div>
+                </div>
+
+                <div class="tip">
+                    <strong>Recuerda:</strong> Los índices siempre comienzan en 0. Un array de tamaño 5 tiene índices del 0 al 4.
+                </div>
+            </div>
+
+            <!-- SECCIÓN 2: ORDENAMIENTO -->
+            <div id="ordenamiento" class="section">
+                <h2>🔢 Ordenamiento de Vectores</h2>
+                
+                <div class="card">
+                    <h3>¿Qué es Ordenar?</h3>
+                    <p>Ordenar es organizar los elementos de un vector en un orden específico (ascendente o descendente).</p>
+                </div>
+
+                <div class="code-block">
+<span class="comment">// Método de Burbuja (Bubble Sort)</span>
+<span class="keyword">public static void</span> ordenarBurbuja(<span class="keyword">int</span>[] arr) {
+    <span class="keyword">int</span> n = arr.length;
+    <span class="keyword">for</span>(<span class="keyword">int</span> i = 0; i < n-1; i++) {
+        <span class="keyword">for</span>(<span class="keyword">int</span> j = 0; j < n-i-1; j++) {
+            <span class="comment">// Si el elemento actual es mayor que el siguiente, intercambiar</span>
+            <span class="keyword">if</span>(arr[j] > arr[j+1]) {
+                <span class="keyword">int</span> temp = arr[j];
+                arr[j] = arr[j+1];
+                arr[j+1] = temp;
+            }
+        }
+    }
+}
+
+<span class="comment">// Usando Arrays.sort() de Java</span>
+<span class="keyword">import</span> java.util.Arrays;
+<span class="keyword">int</span>[] numeros = {5, 2, 8, 1, 9};
+Arrays.sort(numeros);  <span class="comment">// Ordena automáticamente</span>
+                </div>
+
+                <div class="visual-demo">
+                    <h3>Demo: Ordenamiento Burbuja</h3>
+                    <div id="sortVisual" class="array-visual"></div>
+                    <button class="interactive-btn" onclick="generateRandomArray()">Generar Array Aleatorio</button>
+                    <button class="interactive-btn" onclick="sortStepByStep()">Ordenar Paso a Paso</button>
+                    <button class="interactive-btn" onclick="sortInstant()">Ordenar Instantáneo</button>
+                    <div id="sortOutput" class="output"></div>
+                </div>
+
+                <div class="tip">
+                    <strong>Concepto clave:</strong> El método burbuja compara pares de elementos adyacentes e intercambia los que están en el orden incorrecto.
+                </div>
+            </div>
+
+            <!-- SECCIÓN 3: BÚSQUEDA -->
+            <div id="busqueda" class="section">
+                <h2>🔍 Búsqueda en Vectores</h2>
+                
+                <div class="card">
+                    <h3>Tipos de Búsqueda</h3>
+                    <p><strong>Búsqueda Lineal:</strong> Revisa cada elemento uno por uno.</p>
+                    <p><strong>Búsqueda Binaria:</strong> Divide el array por la mitad repetidamente (requiere que esté ordenado).</p>
+                </div>
+
+                <div class="code-block">
+<span class="comment">// Búsqueda Lineal</span>
+<span class="keyword">public static int</span> busquedaLineal(<span class="keyword">int</span>[] arr, <span class="keyword">int</span> objetivo) {
+    <span class="keyword">for</span>(<span class="keyword">int</span> i = 0; i < arr.length; i++) {
+        <span class="keyword">if</span>(arr[i] == objetivo) {
+            <span class="keyword">return</span> i;  <span class="comment">// Retorna el índice donde se encontró</span>
+        }
+    }
+    <span class="keyword">return</span> -1;  <span class="comment">// No encontrado</span>
+}
+
+<span class="comment">// Búsqueda Binaria (el array debe estar ordenado)</span>
+<span class="keyword">public static int</span> busquedaBinaria(<span class="keyword">int</span>[] arr, <span class="keyword">int</span> objetivo) {
+    <span class="keyword">int</span> izq = 0, der = arr.length - 1;
+    
+    <span class="keyword">while</span>(izq <= der) {
+        <span class="keyword">int</span> medio = izq + (der - izq) / 2;
+        
+        <span class="keyword">if</span>(arr[medio] == objetivo)
+            <span class="keyword">return</span> medio;
+        
+        <span class="keyword">if</span>(arr[medio] < objetivo)
+            izq = medio + 1;
+        <span class="keyword">else</span>
+            der = medio - 1;
+    }
+    <span class="keyword">return</span> -1;
+}
+                </div>
+
+                <div class="visual-demo">
+                    <h3>Demo: Búsqueda Interactiva</h3>
+                    <div id="searchVisual" class="array-visual"></div>
+                    <div class="input-group">
+                        <input type="number" id="searchValue" placeholder="Valor a buscar">
+                        <button class="interactive-btn" onclick="linearSearch()">Búsqueda Lineal</button>
+                        <button class="interactive-btn" onclick="binarySearch()">Búsqueda Binaria</button>
+                    </div>
+                    <div id="searchOutput" class="output"></div>
+                </div>
+            </div>
+
+            <!-- SECCIÓN 4: MATRICES -->
+            <div id="matrices" class="section">
+                <h2>📐 Arreglos de Dos Dimensiones (Matrices)</h2>
+                
+                <div class="card">
+                    <h3>¿Qué es una Matriz?</h3>
+                    <p>Una <span class="highlight">matriz</span> es un arreglo bidimensional, como una tabla con filas y columnas.</p>
+                </div>
+
+                <div class="code-block">
+<span class="comment">// Declaración de una matriz</span>
+<span class="keyword">int</span>[][] matriz = <span class="keyword">new int</span>[3][4];  <span class="comment">// 3 filas, 4 columnas</span>
+
+<span class="comment">// Inicialización con valores</span>
+<span class="keyword">int</span>[][] numeros = {
+    {1, 2, 3, 4},
+    {5, 6, 7, 8},
+    {9, 10, 11, 12}
+};
+
+<span class="comment">// Acceder a elementos</span>
+matriz[0][0] = 5;  <span class="comment">// Primera fila, primera columna</span>
+matriz[1][2] = 10; <span class="comment">// Segunda fila, tercera columna</span>
+
+<span class="comment">// Recorrido por filas</span>
+<span class="keyword">for</span>(<span class="keyword">int</span> i = 0; i < matriz.length; i++) {
+    <span class="keyword">for</span>(<span class="keyword">int</span> j = 0; j < matriz[i].length; j++) {
+        System.out.print(matriz[i][j] + <span class="string">" "</span>);
+    }
+    System.out.println();
+}
+
+<span class="comment">// Recorrido por columnas</span>
+<span class="keyword">for</span>(<span class="keyword">int</span> j = 0; j < matriz[0].length; j++) {
+    <span class="keyword">for</span>(<span class="keyword">int</span> i = 0; i < matriz.length; i++) {
+        System.out.print(matriz[i][j] + <span class="string">" "</span>);
+    }
+    System.out.println();
+}
+                </div>
+
+                <div class="visual-demo">
+                    <h3>Visualización de Matriz</h3>
+                    <div id="matrixVisual" class="matrix-visual"></div>
+                    <div class="input-group">
+                        <input type="number" id="matrixRow" placeholder="Fila (0-2)" min="0" max="2">
+                        <input type="number" id="matrixCol" placeholder="Columna (0-3)" min="0" max="3">
+                        <input type="number" id="matrixValue" placeholder="Valor">
+                        <button class="interactive-btn" onclick="updateMatrix()">Actualizar</button>
+                        <button class="interactive-btn" onclick="fillMatrix()">Llenar Automático</button>
+                    </div>
+                    <div id="matrixOutput" class="output"></div>
+                </div>
+
+                <div class="tip">
+                    <strong>Recuerda:</strong> En una matriz, el primer índice representa la fila y el segundo la columna [fila][columna].
+                </div>
+            </div>
+
+            <!-- SECCIÓN 5: CADENAS -->
+            <div id="cadenas" class="section">
+                <h2>📝 Manipulación de Cadenas</h2>
+                
+                <div class="card">
+                    <h3>La Clase String</h3>
+                    <p>Las <span class="highlight">cadenas</span> (String) son secuencias de caracteres. En Java, String es una clase especial con muchos métodos útiles.</p>
+                </div>
+
+                <div class="code-block">
+<span class="comment">// Declaración de cadenas</span>
+<span class="keyword">String</span> texto = <span class="string">"Hola Mundo"</span>;
+<span class="keyword">String</span> nombre = <span class="keyword">new String</span>(<span class="string">"Java"</span>);
+
+<span class="comment">// Métodos principales</span>
+texto.length();              <span class="comment">// Longitud de la cadena: 10</span>
+texto.charAt(0);             <span class="comment">// Obtener carácter en posición 0: 'H'</span>
+texto.substring(0, 4);       <span class="comment">// Subcadena: "Hola"</span>
+texto.toUpperCase();         <span class="comment">// Convertir a mayúsculas: "HOLA MUNDO"</span>
+texto.toLowerCase();         <span class="comment">// Convertir a minúsculas: "hola mundo"</span>
+texto.indexOf(<span class="string">"Mundo"</span>);      <span class="comment">// Encontrar posición: 5</span>
+texto.replace(<span class="string">"Mundo"</span>, <span class="string">"Java"</span>); <span class="comment">// Reemplazar: "Hola Java"</span>
+texto.trim();                <span class="comment">// Eliminar espacios al inicio y final</span>
+
+<span class="comment">// Comparación de cadenas</span>
+texto.equals(<span class="string">"Hola Mundo"</span>);     <span class="comment">// true</span>
+texto.equalsIgnoreCase(<span class="string">"hola mundo"</span>); <span class="comment">// true</span>
+
+<span class="comment">// Dividir cadena</span>
+<span class="keyword">String</span>[] palabras = texto.split(<span class="string">" "</span>);  <span class="comment">// ["Hola", "Mundo"]</span>
+
+<span class="comment">// Concatenación</span>
+<span class="keyword">String</span> completo = texto + <span class="string">" en Java"</span>;
+<span class="keyword">String</span> completo2 = texto.concat(<span class="string">" en Java"</span>);
+                </div>
+
+                <div class="visual-demo">
+                    <h3>Prueba los Métodos de String</h3>
+                    <div class="input-group">
+                        <input type="text" id="stringInput" placeholder="Escribe un texto" style="width: 300px;">
+                    </div>
+                    <button class="interactive-btn" onclick="testString('length')">Longitud</button>
+                    <button class="interactive-btn" onclick="testString('upper')">Mayúsculas</button>
+                    <button class="interactive-btn" onclick="testString('lower')">Minúsculas</button>
+                    <button class="interactive-btn" onclick="testString('reverse')">Invertir</button>
+                    <button class="interactive-btn" onclick="testString('split')">Dividir</button>
+                    <div id="stringOutput" class="output"></div>
+                </div>
+            </div>
+
+            <!-- SECCIÓN 6: CLASES -->
+            <div id="clases" class="section">
+                <h2>🏗️ Clases y Programación Orientada a Objetos</h2>
+                
+                <div class="card">
+                    <h3>¿Qué es una Clase?</h3>
+                    <p>Una <span class="highlight">clase</span> es un molde o plantilla para crear objetos. Define atributos (datos) y métodos (comportamientos).</p>
+                </div>
+
+                <div class="code-block">
+<span class="comment">// Definición de una clase</span>
+<span class="keyword">public class</span> Estudiante {
+    <span class="comment">// ATRIBUTOS (características)</span>
+    <span class="keyword">private String</span> nombre;      <span class="comment">// Privado: solo accesible dentro de la clase</span>
+    <span class="keyword">private int</span> edad;
+    <span class="keyword">public String</span> carrera;      <span class="comment">// Público: accesible desde cualquier lugar</span>
+    <span class="keyword">protected double</span> promedio;  <span class="comment">// Protegido: accesible en subclases</span>
+    
+    <span class="comment">// CONSTRUCTOR (método especial para crear objetos)</span>
+    <span class="keyword">public</span> Estudiante(<span class="keyword">String</span> nombre, <span class="keyword">int</span> edad, <span class="keyword">String</span> carrera) {
+        <span class="keyword">this</span>.nombre = nombre;
+        <span class="keyword">this</span>.edad = edad;
+        <span class="keyword">this</span>.carrera = carrera;
+        <span class="keyword">this</span>.promedio = 0.0;
+    }
+    
+    <span class="comment">// MÉTODOS (acciones que puede realizar)</span>
+    <span class="keyword">public void</span> mostrarInfo() {
+        System.out.println(<span class="string">"Nombre: "</span> + nombre);
+        System.out.println(<span class="string">"Edad: "</span> + edad);
+        System.out.println(<span class="string">"Carrera: "</span> + carrera);
+    }
+}
+
+<span class="comment">// Crear objetos (instancias de la clase)</span>
+Estudiante est1 = <span class="keyword">new</span> Estudiante(<span class="string">"Carlos"</span>, 17, <span class="string">"Ingeniería"</span>);
+est1.mostrarInfo();
+                </div>
+
+                <div class="card">
+                    <h3>Visibilidad de Datos</h3>
+                    <ul style="margin-left: 20px; margin-top: 10px;">
+                        <li><strong>private:</strong> Solo accesible dentro de la misma clase</li>
+                        <li><strong>public:</strong> Accesible desde cualquier parte del programa</li>
+                        <li><strong>protected:</strong> Accesible en la clase y sus subclases</li>
+                        <li><strong>(sin modificador):</strong> Accesible en el mismo paquete</li>
+                    </ul>
+                </div>
+
+                <div class="visual-demo">
+                    <h3>Diagrama UML de la Clase Estudiante</h3>
+                    <div class="uml-diagram">
+                        <div class="uml-class-name">Estudiante</div>
+                        <div class="uml-section">
+                            <strong>Atributos:</strong><br>
+                            - nombre: String<br>
+                            - edad: int<br>
+                            + carrera: String<br>
+                            # promedio: double
+                        </div>
+                        <div class="uml-section">
+                            <strong>Métodos:</strong><br>
+                            + Estudiante(nombre: String, edad: int, carrera: String)<br>
+                            + mostrarInfo(): void<br>
+                            + getNombre(): String<br>
+                            + setNombre(nombre: String): void
+                        </div>
+                    </div>
+                    <p style="margin-top: 15px;"><strong>Símbolos UML:</strong> - (private), + (public), # (protected)</p>
+                </div>
+            </div>
+
+            <!-- SECCIÓN 7: MÉTODOS -->
+            <div id="metodos" class="section">
+                <h2>⚙️ Tipos de Métodos</h2>
+                
+                <div class="card">
+                    <h3>Clasificación de Métodos</h3>
+                    <p><strong>Constructor:</strong> Inicializa el objeto</p>
+                    <p><strong>Accesor (getter):</strong> Obtiene el valor de un atributo</p>
+                    <p><strong>Mutador (setter):</strong> Modifica el valor de un atributo</p>
+                    <p><strong>Analizador:</strong> Realiza operaciones y retorna un resultado</p>
+                </div>
+
+                <div class="code-block">
+<span class="keyword">public class</span> CuentaBancaria {
+    <span class="keyword">private double</span> saldo;
+    <span class="keyword">private String</span> titular;
+    
+    <span class="comment">// CONSTRUCTOR</span>
+    <span class="keyword">public</span> CuentaBancaria(<span class="keyword">String</span> titular, <span class="keyword">double</span> saldoInicial) {
+        <span class="keyword">this</span>.titular = titular;
+        <span class="keyword">this</span>.saldo = saldoInicial;
+    }
+    
+    <span class="comment">// MÉTODOS GET (Accesores) - Obtienen valores</span>
+    <span class="keyword">public double</span> getSaldo() {
+        <span class="keyword">return</span> saldo;
+    }
+    
+    <span class="keyword">public String</span> getTitular() {
+        <span class="keyword">return</span> titular;
+    }
+    
+    <span class="comment">// MÉTODOS SET (Mutadores) - Modifican valores</span>
+    <span class="keyword">public void</span> setSaldo(<span class="keyword">double</span> nuevoSaldo) {
+        <span class="keyword">if</span>(nuevoSaldo >= 0) {
+            <span class="keyword">this</span>.saldo = nuevoSaldo;
+        }
+    }
+    
+    <span class="keyword">public void</span> setTitular(<span class="keyword">String</span> nuevoTitular) {
+        <span class="keyword">this</span>.titular = nuevoTitular;
+    }
+    
+    <span class="comment">// MÉTODOS ANALIZADORES - Realizan operaciones</span>
+    <span class="keyword">public void</span> depositar(<span class="keyword">double</span> cantidad) {
+        <span class="keyword">if</span>(cantidad > 0) {
+            saldo += cantidad;
+        }
+    }
+    
+    <span class="keyword">public boolean</span> retirar(<span class="keyword">double</span> cantidad) {
+        <span class="keyword">if</span>(cantidad > 0 && cantidad <= saldo) {
+            saldo -= cantidad;
+            <span class="keyword">return true</span>;
+        }
+        <span class="keyword">return false</span>;
+    }
+    
+    <span class="comment">// Método que retorna un cálculo</span>
+    <span class="keyword">public double</span> calcularInteres(<span class="keyword">double</span> tasa) {
+        <span class="keyword">return</span> saldo * (tasa / 100);
+    }
+}
+                </div>
+
+                <div class="tip">
+                    <strong>Buena práctica:</strong> Los atributos deben ser private y accederse mediante métodos get/set para mantener el encapsulamiento.
+                </div>
+
+                <div class="visual-demo">
+                    <h3>Ejemplo: Trabajando con Múltiples Métodos</h3>
+                    <div class="code-block">
+<span class="comment">// Usando la clase CuentaBancaria</span>
+CuentaBancaria cuenta = <span class="keyword">new</span> CuentaBancaria(<span class="string">"Juan"</span>, 1000.0);
+
+<span class="comment">// Usar métodos get</span>
+System.out.println(<span class="string">"Titular: "</span> + cuenta.getTitular());
+System.out.println(<span class="string">"Saldo: $"</span> + cuenta.getSaldo());
+
+<span class="comment">// Usar métodos analizadores</span>
+cuenta.depositar(500);
+System.out.println(<span class="string">"Saldo después de depositar: $"</span> + cuenta.getSaldo());
+
+<span class="keyword">boolean</span> exito = cuenta.retirar(300);
+<span class="keyword">if</span>(exito) {
+    System.out.println(<span class="string">"Retiro exitoso"</span>);
+}
+
+<span class="comment">// Calcular interés</span>
+<span class="keyword">double</span> interes = cuenta.calcularInteres(5.0);
+System.out.println(<span class="string">"Interés al 5%: $"</span> + interes);
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECCIÓN 8: PARÁMETROS -->
+            <div id="parametros" class="section">
+                <h2>🔄 Paso de Parámetros</h2>
+                
+                <div class="card">
+                    <h3>Por Valor vs Por Referencia</h3>
+                    <p><strong>Por Valor:</strong> Se envía una copia del dato. Los cambios NO afectan al original.</p>
+                    <p><strong>Por Referencia:</strong> Se envía la dirección del objeto. Los cambios SÍ afectan al original.</p>
+                </div>
+
+                <div class="code-block">
+<span class="comment">// PASO POR VALOR (tipos primitivos: int, double, boolean, etc.)</span>
+<span class="keyword">public static void</span> modificarNumero(<span class="keyword">int</span> numero) {
+    numero = 100;  <span class="comment">// Solo modifica la copia</span>
+    System.out.println(<span class="string">"Dentro del método: "</span> + numero);
+}
+
+<span class="keyword">public static void</span> main(<span class="keyword">String</span>[] args) {
+    <span class="keyword">int</span> x = 5;
+    modificarNumero(x);
+    System.out.println(<span class="string">"Fuera del método: "</span> + x);  <span class="comment">// Sigue siendo 5</span>
+}
+
+<span class="comment">// PASO POR REFERENCIA (objetos y arrays)</span>
+<span class="keyword">public static void</span> modificarArray(<span class="keyword">int</span>[] arr) {
+    arr[0] = 999;  <span class="comment">// Modifica el array original</span>
+}
+
+<span class="keyword">public static void</span> modificarEstudiante(Estudiante est) {
+    est.setNombre(<span class="string">"Nuevo Nombre"</span>);  <span class="comment">// Modifica el objeto original</span>
+}
+
+<span class="keyword">public static void</span> main(<span class="keyword">String</span>[] args) {
+    <span class="keyword">int</span>[] numeros = {1, 2, 3};
+    modificarArray(numeros);
+    System.out.println(numeros[0]);  <span class="comment">// Ahora es 999</span>
+    
+    Estudiante est = <span class="keyword">new</span> Estudiante(<span class="string">"Ana"</span>, 17, <span class="string">"Ing."</span>);
+    modificarEstudiante(est);
+    System.out.println(est.getNombre());  <span class="comment">// Ahora es "Nuevo Nombre"</span>
+}
+                </div>
+
+                <div class="card">
+                    <h3>Envío y Retorno de Parámetros</h3>
+                    <div class="code-block">
+<span class="comment">// Método que recibe parámetros y retorna un valor</span>
+<span class="keyword">public static int</span> sumar(<span class="keyword">int</span> a, <span class="keyword">int</span> b) {
+    <span class="keyword">int</span> resultado = a + b;
+    <span class="keyword">return</span> resultado;  <span class="comment">// Retorna el resultado</span>
+}
+
+<span class="comment">// Método que recibe un array y retorna el promedio</span>
+<span class="keyword">public static double</span> calcularPromedio(<span class="keyword">int</span>[] numeros) {
+    <span class="keyword">double</span> suma = 0;
+    <span class="keyword">for</span>(<span class="keyword">int</span> num : numeros) {
+        suma += num;
+    }
+    <span class="keyword">return</span> suma / numeros.length;
+}
+
+<span class="comment">// Método que recibe un objeto y retorna información procesada</span>
+<span class="keyword">public static String</span> obtenerResumen(Estudiante est) {
+    <span class="keyword">return</span> est.getNombre() + <span class="string">" - "</span> + est.getCarrera();
+}
+
+<span class="comment">// Uso</span>
+<span class="keyword">int</span> total = sumar(5, 10);  <span class="comment">// total = 15</span>
+<span class="keyword">double</span> prom = calcularPromedio(<span class="keyword">new int</span>[]{8, 9, 7});  <span class="comment">// prom = 8.0</span>
+                    </div>
+                </div>
+
+                <div class="tip">
+                    <strong>Regla de oro:</strong> En Java, los tipos primitivos siempre se pasan por valor, y los objetos se pasan por referencia (técnicamente, se pasa el valor de la referencia).
+                </div>
+            </div>
+
+            <!-- SECCIÓN 9: ARREGLOS OBJETUALES -->
+            <div id="objetuales" class="section">
+                <h2>🎯 Arreglos de Objetos</h2>
+                
+                <div class="card">
+                    <h3>¿Qué son los Arreglos Objetuales?</h3>
+                    <p>Son arreglos donde cada elemento es un <span class="highlight">objeto</span> de una clase, no un tipo primitivo.</p>
+                </div>
+
+                <div class="code-block">
+<span class="comment">// Clase Producto</span>
+<span class="keyword">public class</span> Producto {
+    <span class="keyword">private String</span> nombre;
+    <span class="keyword">private double</span> precio;
+    <span class="keyword">private int</span> stock;
+    
+    <span class="keyword">public</span> Producto(<span class="keyword">String</span> nombre, <span class="keyword">double</span> precio, <span class="keyword">int</span> stock) {
+        <span class="keyword">this</span>.nombre = nombre;
+        <span class="keyword">this</span>.precio = precio;
+        <span class="keyword">this</span>.stock = stock;
+    }
+    
+    <span class="comment">// Getters y setters...</span>
+    <span class="keyword">public String</span> getNombre() { <span class="keyword">return</span> nombre; }
+    <span class="keyword">public double</span> getPrecio() { <span class="keyword">return</span> precio; }
+    <span class="keyword">public int</span> getStock() { <span class="keyword">return</span> stock; }
+    
+    <span class="keyword">public void</span> mostrar() {
+        System.out.println(nombre + <span class="string">" - $"</span> + precio + <span class="string">" (Stock: "</span> + stock + <span class="string">")"</span>);
+    }
+}
+
+<span class="comment">// CREAR ARRAY DE OBJETOS</span>
+<span class="keyword">public class</span> Tienda {
+    <span class="keyword">public static void</span> main(<span class="keyword">String</span>[] args) {
+        <span class="comment">// Declarar array de objetos</span>
+        Producto[] inventario = <span class="keyword">new</span> Producto[3];
+        
+        <span class="comment">// Crear y asignar cada objeto</span>
+        inventario[0] = <span class="keyword">new</span> Producto(<span class="string">"Laptop"</span>, 1200.0, 5);
+        inventario[1] = <span class="keyword">new</span> Producto(<span class="string">"Mouse"</span>, 25.0, 50);
+        inventario[2] = <span class="keyword">new</span> Producto(<span class="string">"Teclado"</span>, 75.0, 30);
+        
+        <span class="comment">// Recorrer y usar los objetos</span>
+        <span class="keyword">for</span>(<span class="keyword">int</span> i = 0; i < inventario.length; i++) {
+            inventario[i].mostrar();
+        }
+        
+        <span class="comment">// Buscar producto más caro</span>
+        Producto masCaro = inventario[0];
+        <span class="keyword">for</span>(Producto p : inventario) {
+            <span class="keyword">if</span>(p.getPrecio() > masCaro.getPrecio()) {
+                masCaro = p;
+            }
+        }
+        System.out.println(<span class="string">"Más caro: "</span> + masCaro.getNombre());
+    }
+}
+                </div>
+
+                <div class="card">
+                    <h3>Operaciones Comunes con Arreglos de Objetos</h3>
+                    <div class="code-block">
+<span class="comment">// Ordenar array de objetos</span>
+<span class="keyword">public static void</span> ordenarPorPrecio(Producto[] productos) {
+    <span class="keyword">for</span>(<span class="keyword">int</span> i = 0; i < productos.length-1; i++) {
+        <span class="keyword">for</span>(<span class="keyword">int</span> j = 0; j < productos.length-i-1; j++) {
+            <span class="keyword">if</span>(productos[j].getPrecio() > productos[j+1].getPrecio()) {
+                Producto temp = productos[j];
+                productos[j] = productos[j+1];
+                productos[j+1] = temp;
+            }
+        }
+    }
+}
+
+<span class="comment">// Buscar objeto por nombre</span>
+<span class="keyword">public static</span> Producto buscarProducto(Producto[] productos, <span class="keyword">String</span> nombre) {
+    <span class="keyword">for</span>(Producto p : productos) {
+        <span class="keyword">if</span>(p.getNombre().equalsIgnoreCase(nombre)) {
+            <span class="keyword">return</span> p;
+        }
+    }
+    <span class="keyword">return null</span>;  <span class="comment">// No encontrado</span>
+}
+
+<span class="comment">// Calcular valor total del inventario</span>
+<span class="keyword">public static double</span> valorTotalInventario(Producto[] productos) {
+    <span class="keyword">double</span> total = 0;
+    <span class="keyword">for</span>(Producto p : productos) {
+        total += p.getPrecio() * p.getStock();
+    }
+    <span class="keyword">return</span> total;
+}
+                    </div>
+                </div>
+
+                <div class="tip">
+                    <strong>¡Importante!</strong> Cuando creas un array de objetos, primero creas el array y luego debes crear cada objeto individualmente con "new".
+                </div>
+
+                <div class="visual-demo">
+                    <h3>Ejemplo Visual: Array de Estudiantes</h3>
+                    <div class="code-block">
+<span class="comment">// Array de estudiantes</span>
+Estudiante[] curso = <span class="keyword">new</span> Estudiante[3];
+
+curso[0] = <span class="keyword">new</span> Estudiante(<span class="string">"Ana"</span>, 17, <span class="string">"Sistemas"</span>);
+curso[1] = <span class="keyword">new</span> Estudiante(<span class="string">"Luis"</span>, 18, <span class="string">"Industrial"</span>);
+curso[2] = <span class="keyword">new</span> Estudiante(<span class="string">"María"</span>, 17, <span class="string">"Civil"</span>);
+
+<span class="comment">// Mostrar todos los estudiantes</span>
+<span class="keyword">for</span>(Estudiante e : curso) {
+    e.mostrarInfo();
+    System.out.println(<span class="string">"---"</span>);
+}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>💻 Herramienta Interactiva de Aprendizaje Java</p>
+            <p>Creado para facilitar tu comprensión de conceptos fundamentales de programación</p>
+        </div>
+    </div>
+
+    <script>
+        // Variables globales
+        let vectorData = [0, 0, 0, 0, 0];
+        let sortArray = [];
+        let searchArray = [2, 5, 8, 12, 15, 18, 23, 28];
+        let matrixData = [[0,0,0,0],[0,0,0,0],[0,0,0,0]];
+
+        // Navegación
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.section');
+            const buttons = document.querySelectorAll('.nav-btn');
+            
+            sections.forEach(section => section.classList.remove('active'));
+            buttons.forEach(btn => btn.classList.remove('active'));
+            
+            document.getElementById(sectionId).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // VECTORES
+        function renderVector() {
+            const container = document.getElementById('vectorVisual');
+            container.innerHTML = '';
+            vectorData.forEach((value, index) => {
+                const cell = document.createElement('div');
+                cell.className = 'array-cell';
+                cell.innerHTML = `<div class="array-index">[${index}]</div><div class="array-value">${value}</div>`;
+                container.appendChild(cell);
+            });
+        }
+
+        function updateVector() {
+            const index = parseInt(document.getElementById('vectorIndex').value);
+            const value = parseInt(document.getElementById('vectorValue').value);
+            
+            if(index >= 0 && index < vectorData.length && !isNaN(value)) {
+                vectorData[index] = value;
+                renderVector();
+                document.getElementById('vectorOutput').innerHTML = 
+                    `✅ Array actualizado: [${vectorData.join(', ')}]<br>` +
+                    `Posición ${index} ahora tiene el valor ${value}`;
+            } else {
+                document.getElementById('vectorOutput').innerHTML = 
+                    '❌ Error: Índice fuera de rango o valor inválido';
+            }
+        }
+
+        function resetVector() {
+            vectorData = [0, 0, 0, 0, 0];
+            renderVector();
+            document.getElementById('vectorOutput').innerHTML = '🔄 Vector reiniciado a valores iniciales';
+        }
+
+        // ORDENAMIENTO
+        function renderSortArray() {
+            const container = document.getElementById('sortVisual');
+            container.innerHTML = '';
+            sortArray.forEach((value, index) => {
+                const cell = document.createElement('div');
+                cell.className = 'array-cell';
+                cell.innerHTML = `<div class="array-index">[${index}]</div><div class="array-value">${value}</div>`;
+                container.appendChild(cell);
+            });
+        }
+
+        function generateRandomArray() {
+            sortArray = [];
+            for(let i = 0; i < 6; i++) {
+                sortArray.push(Math.floor(Math.random() * 50) + 1);
+            }
+            renderSortArray();
+            document.getElementById('sortOutput').innerHTML = 
+                `🎲 Array aleatorio generado: [${sortArray.join(', ')}]`;
+        }
+
+        function sortStepByStep() {
+            const arr = [...sortArray];
+            let output = '📊 Proceso de ordenamiento burbuja:<br><br>';
+            
+            for(let i = 0; i < arr.length-1; i++) {
+                for(let j = 0; j < arr.length-i-1; j++) {
+                    if(arr[j] > arr[j+1]) {
+                        output += `Paso: Comparar ${arr[j]} y ${arr[j+1]} → Intercambiar<br>`;
+                        let temp = arr[j];
+                        arr[j] = arr[j+1];
+                        arr[j+1] = temp;
+                        output += `Resultado: [${arr.join(', ')}]<br><br>`;
+                    }
+                }
+            }
+            
+            sortArray = arr;
+            renderSortArray();
+            document.getElementById('sortOutput').innerHTML = output + 
+                `✅ Array ordenado final: [${sortArray.join(', ')}]`;
+        }
+
+        function sortInstant() {
+            sortArray.sort((a, b) => a - b);
+            renderSortArray();
+            document.getElementById('sortOutput').innerHTML = 
+                `⚡ Array ordenado instantáneamente: [${sortArray.join(', ')}]`;
+        }
+
+        // BÚSQUEDA
+        function renderSearchArray() {
+            const container = document.getElementById('searchVisual');
+            container.innerHTML = '';
+            searchArray.forEach((value, index) => {
+                const cell = document.createElement('div');
+                cell.className = 'array-cell';
+                cell.innerHTML = `<div class="array-index">[${index}]</div><div class="array-value">${value}</div>`;
+                container.appendChild(cell);
+            });
+        }
+
+        function linearSearch() {
+            const target = parseInt(document.getElementById('searchValue').value);
+            let output = `🔍 Búsqueda lineal del valor ${target}:<br><br>`;
+            
+            for(let i = 0; i < searchArray.length; i++) {
+                output += `Revisando posición [${i}] = ${searchArray[i]}`;
+                if(searchArray[i] === target) {
+                    output += ` ✅ ¡Encontrado!<br>`;
+                    output += `<br>El valor ${target} está en el índice ${i}`;
+                    document.getElementById('searchOutput').innerHTML = output;
+                    return;
+                }
+                output += `<br>`;
+            }
+            
+            output += `<br>❌ El valor ${target} no se encuentra en el array`;
+            document.getElementById('searchOutput').innerHTML = output;
+        }
+
+        function binarySearch() {
+            const target = parseInt(document.getElementById('searchValue').value);
+            let output = `🔍 Búsqueda binaria del valor ${target}:<br><br>`;
+            let left = 0, right = searchArray.length - 1;
+            let step = 1;
+            
+            while(left <= right) {
+                let mid = Math.floor((left + right) / 2);
+                output += `Paso ${step}: Revisar medio [${mid}] = ${searchArray[mid]}<br>`;
+                
+                if(searchArray[mid] === target) {
+                    output += `✅ ¡Encontrado en el índice ${mid}!`;
+                    document.getElementById('searchOutput').innerHTML = output;
+                    return;
+                }
+                
+                if(searchArray[mid] < target) {
+                    output += `${searchArray[mid]} < ${target}, buscar en la mitad derecha<br><br>`;
+                    left = mid + 1;
+                } else {
+                    output += `${searchArray[mid]} > ${target}, buscar en la mitad izquierda<br><br>`;
+                    right = mid - 1;
+                }
+                step++;
+            }
+            
+            output += `❌ El valor ${target} no se encuentra en el array`;
+            document.getElementById('searchOutput').innerHTML = output;
+        }
+
+        // MATRICES
+        function renderMatrix() {
+            const container = document.getElementById('matrixVisual');
+            container.style.gridTemplateColumns = `repeat(${matrixData[0].length}, 60px)`;
+            container.innerHTML = '';
+            
+            matrixData.forEach((row, i) => {
+                row.forEach((value, j) => {
+                    const cell = document.createElement('div');
+                    cell.className = 'array-cell';
+                    cell.innerHTML = `<div class="array-index">[${i}][${j}]</div><div class="array-value">${value}</div>`;
+                    container.appendChild(cell);
+                });
+            });
+        }
+
+        function updateMatrix() {
+            const row = parseInt(document.getElementById('matrixRow').value);
+            const col = parseInt(document.getElementById('matrixCol').value);
+            const value = parseInt(document.getElementById('matrixValue').value);
+            
+            if(row >= 0 && row < matrixData.length && 
+               col >= 0 && col < matrixData[0].length && !isNaN(value)) {
+                matrixData[row][col] = value;
+                renderMatrix();
+                document.getElementById('matrixOutput').innerHTML = 
+                    `✅ Matriz[${row}][${col}] = ${value}<br>Matriz actualizada correctamente`;
+            } else {
+                document.getElementById('matrixOutput').innerHTML = 
+                    '❌ Error: Índices fuera de rango o valor inválido';
+            }
+        }
+
+        function fillMatrix() {
+            let counter = 1;
+            for(let i = 0; i < matrixData.length; i++) {
+                for(let j = 0; j < matrixData[i].length; j++) {
+                    matrixData[i][j] = counter++;
+                }
+            }
+            renderMatrix();
+            document.getElementById('matrixOutput').innerHTML = 
+                '✅ Matriz llenada automáticamente con valores secuenciales';
+        }
+
+        // CADENAS
+        function testString(operation) {
+            const input = document.getElementById('stringInput').value;
+            let output = '';
+            
+            switch(operation) {
+                case 'length':
+                    output = `📏 Longitud: ${input.length} caracteres`;
+                    break;
+                case 'upper':
+                    output = `🔠 Mayúsculas: ${input.toUpperCase()}`;
+                    break;
+                case 'lower':
+                    output = `🔡 Minúsculas: ${input.toLowerCase()}`;
+                    break;
+                case 'reverse':
+                    output = `🔄 Invertido: ${input.split('').reverse().join('')}`;
+                    break;
+                case 'split':
+                    const words = input.split(' ');
+                    output = `✂️ Dividido en palabras:<br>`;
+                    words.forEach((word, i) => {
+                        output += `[${i}] = "${word}"<br>`;
+                    });
+                    break;
+            }
+            
+            document.getElementById('stringOutput').innerHTML = output;
+        }
+
+        // Inicialización
+        document.addEventListener('DOMContentLoaded', function() {
+            renderVector();
+            generateRandomArray();
+            renderSearchArray();
+            renderMatrix();
+        });
+    </script>
+</body>
+</html>
